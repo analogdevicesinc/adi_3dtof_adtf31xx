@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Launch file to run the node to decompress and publish the raw image 
+    The camera prefix can be passed as an argument, 
+    the node assumes the topic names for depth and ir as
+    compressed_depth_image and compressed_ir_image respectively.
+    The decompressed output is published as depth_image and ir_image 
+  -->
+
+    <!-- General arguments -->
+    <arg name="ns_prefix_cam1" default="cam1" />
+    <!-- use "raw" for uncompressed subscription
+         "compressed" for compressed image subscription
+         "compressedDepth" for compressed depth image subscription -->
+    <arg name="compression_parameter" default="compressedDepth" />
+
+    <!-- Subscriber Node-->
+    <group ns="$(arg ns_prefix_cam1)">
+      <node name="adi_3dtof_adtf31xx_compressed_image_subscriber_node" pkg="adi_3dtof_adtf31xx" type="adi_3dtof_adtf31xx_compressed_image_subscriber_node" output="screen">
+            <param name="param_camera_prefix" value="$(arg ns_prefix_cam1)"/>
+            <!-- The name of this parameter should not be changed; it is a part of the image_transport package.-->
+            <param name="image_transport" value="$(arg compression_parameter)" />
+      </node>
+    </group>
+
+    <!-- Launch RViz-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find adi_3dtof_adtf31xx)/rviz/adi_3dtof_adtf31xx_raw.rviz" required="true">
+    </node>
+
+</launch>
+

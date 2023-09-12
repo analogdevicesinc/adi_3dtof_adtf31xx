@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Ex: <arg name="in_file_name" default=$(find adi_3dtof_adtf31xx)/../4camera.bag/> -->
+    <arg name="in_file_name" default="no name" />
+    <arg name="camera1_name" default="CR307" />
+    <arg name="camera2_name" default="CR405" />
+    <arg name="camera3_name" default="CR477" />
+    <arg name="camera4_name" default="CR513" />
+
+    <!-- Populate this array based on the configuration, the number of sensors is derived from this array.
+    The array is expected to contain the prefixes of the active cameras only -->
+    <arg name="camera_names" default="[$(arg camera1_name), $(arg camera2_name), $(arg camera3_name), $(arg camera4_name)]"/>
+
+    <!-- Launch RViz-->
+    <node name="read_rosbags_node" pkg="adi_3dtof_adtf31xx" type="read_rosbags_node" output="screen" >
+        <param name="param_input_file_name" value="$(arg in_file_name)"/>
+        <rosparam param="param_camera_prefixes" subst_value="True">$(arg camera_names)</rosparam> 
+    </node>
+
+</launch>
