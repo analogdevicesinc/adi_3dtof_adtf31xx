@@ -82,7 +82,7 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
 # Software Setup and Running the ROS node on the EVAL-ADTF3175D-NXZ:
 1. Download and install the latest version of *ADI 3DToF ADTF31xx* from the Release pages.
 
-2. After installing the software, go to the installation folder(~/Analog Devices/ADI3DToFADTF31xx-Rel1.0.0/image) and run the get_image.sh script. This script will download the custom Ubuntu 20.04 image for the EVAL-ADTF3175D-NXZ. 
+2. After installing the software, go to the installation folder(~/Analog Devices/ADI3DToFADTF31xx-Relx.x.x) and run the get_image.sh script. This script will download the custom Ubuntu 20.04 image for the EVAL-ADTF3175D-NXZ. 
 
 3.	Flash .img file to the SD card, follow steps in this link[EVAL-ADTF3175D-NXZ Users Guide](https://wiki.analog.com/resources/eval/user-guides/eval-adsd3100-nxz/flashing_image_instructions) to flash the .img file to SD card.
     
@@ -141,17 +141,18 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
     ```
 
     >:memo:*Note:*   
-    >If you are using WSL as the Host machine, then setting Host as ROS Master does not work. In this case, you must unset the ROS master. 
+    >If you are using WSL as the Host machine, then setting Host as ROS Master does not work. In this case, you must unset the ROS master.
     >Run the following command to unset the ROS Master and use the EVAL-ADTF3175D-NXZ as the ROS master. 
     >On the WSL Host, open an Ubuntu 20.04 Terminal and run the following command
     >```bash
     >$ export ROS_MASTER_URI=http://10.42.0.1:11311
     >$ export ROS_IP=10.42.0.100
+    >$ export ROS_HOSTNAME="Your Device name"
     >```
     >On Device,
     >```bash
     >$ unset ROS_MASTER_URI
-    >$ roslaunch adi_3dtof_adtf31uuxx adi_3dtof_adtf31xx.launch
+    >$ roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx.launch
     >```
 
     At this stage, the *adi_3dtof_adtf31xx_node* will be launched and start publishing the topics ```/cam1/depth_image, /cam1/ir_image and /cam1/camera_info```.
@@ -316,7 +317,7 @@ The Node can be run on a Host machine without the need for the actual 3D ToF sen
 ## Requirement on file-io input video files
 To run the *adi_3dtof_adtf31xx_node* in file-io mode, the video files should be given as input.
 Please follow the below instructions to set up the input video files.
-1. Go to the installation directory of the *ADI 3DToF ADTF31xx* appliation (~/Analog Devices/ADI3DToFADTF31xx-Rel1.0.0/videos)
+1. Go to the installation directory of the *ADI 3DToF ADTF31xx* appliation (~/Analog Devices/ADI3DToFADTF31xx-Relx.x.x)
 2. Run the *get_videos.sh* script which will download the *adi_3dtof_input_video_files.zip* file in the current directory.
 3. Unzip it and copy the directory as *~/catkin_ws/src/adi_3dtof_input_video_files*.
 4. Update the input file argument *arg_input_file_name_or_ros_topic_prefix_name* in the launch file *adi_3dtof_adtf31xx.launch* as per the above file path.
