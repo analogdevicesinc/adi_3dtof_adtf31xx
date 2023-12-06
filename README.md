@@ -7,14 +7,14 @@ The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working
 ![arch_diagram](docs/images/architecture_diagram.png)
 
 
-[![Noetic](https://img.shields.io/badge/-NOETIC-green?style=plastic&logo=ros)](http://wiki.ros.org/noetic) [![Ubuntu 20.04](https://img.shields.io/badge/-UBUNTU%2020.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/focal/) [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE) ![ARM64](https://img.shields.io/badge/arm64-blue?style=plastic&logo=arm&logoColor=white) ![x86_64](https://img.shields.io/badge/x86__64-blue?style=plastic&logo=intel&logoColor=white) 
+[![Humble](https://img.shields.io/badge/-humble-green?style=plastic&logo=ros)](https://docs.ros.org/en/humble/index.html) [![Ubuntu 20.04](https://img.shields.io/badge/-UBUNTU%2020.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/focal/) [![Ubuntu 22.04](https://img.shields.io/badge/-UBUNTU%2022.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/jammy/) [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE.txt) ![ARM64](https://img.shields.io/badge/arm64-blue?style=plastic&logo=arm&logoColor=white) ![x86_64](https://img.shields.io/badge/x86__64-blue?style=plastic&logo=intel&logoColor=white) 
 
 ---
 # Hardware
 
 - [EVAL-ADTF3175D-NXZ Module](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/EVAL-ADTF3175.html#eb-overview)
 - USB type-c to type-A cable - with 5gbps data speed support
-- Host laptop with intel i5 of higher cpu running Ubuntu-20.04LTS
+- Host laptop with intel i5 of higher cpu running Ubuntu-22.04LTS
 
  :memo: _Note_: Refer the [EVAL-ADTF3175D-NXZ User Guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz) to ensure the Eval module has adequate power supply during operation.
 
@@ -86,7 +86,7 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
 
 3.	Flash .img file to the SD card, follow steps in this link[EVAL-ADTF3175D-NXZ Users Guide](https://wiki.analog.com/resources/eval/user-guides/eval-adsd3100-nxz/flashing_image_instructions) to flash the .img file to SD card.
     
-    *Note*: This image contains the necessary software and code to start using the ROS node. The source code for the ```adi_3dtof_adtf31xx``` can be found in ```/home/analog/catkin_ws/src/```
+    *Note*: This image contains the necessary software and code to start using the ROS2 node. The source code for the ```adi_3dtof_adtf31xx``` can be found in ```/home/analog/ros2_ws/src/```
 
 4.	Follow the instructions below to run the *adi_3dtof_adtf31xx* application on the EVAL-ADTF3175D-NXZ module.
 
@@ -118,46 +118,46 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
 >-  https://ubuntuforums.org/showthread.php?t=862620  
 >-  https://timetoolsltd.com/ntp/how-to-install-and-configure-ntp-on-linux/  
 
-> 2. The ROS Noetic and dependent packages are already installed in the EVAL-ADTF3175D-NXZ image and the source code for the *adi_3dtof_adtf31xx* is present in `/home/analog/catkin_ws/src/` folder. The package is also pre-built, hence there is no need to build the package.  
->    If the source files are modified, then use the following commands to build the package.  
+> 2. The ROS2 Humble and dependent packages are already installed in the EVAL-ADTF3175D-NXZ image and the source code for the *adi_3dtof_adtf31xx* is present in `/home/analog/ros2_ws/src/` folder. The package is also pre-built, hence there is no need to build the package.   
+>    If the source files are modified, then use the following commands to build the package.
+>    copy the tof libraries from ~/Workspace/ToF/build/sdk/ to adi_3dtof_adtf31xx/libs/ use the below command
 >>```bash
->>$ cd ~/catkin_ws/  
->> $ catkin_make -DCMAKE_BUILD_TYPE=RELEASE -j2  
+>> $ cp ~/Workspace/ToF/build/sdk/libaditof.so* ~/ros2_ws/src/adi_3dtof_adtf31xx/libs/ 
+>>```
+3. Ensure rmw settings are updated in the device to support muti-sensor usecases
+>>```bash
+>> #Update the default rmw xml profile file to the settings file present inside "rmw_config" foler
+>> $ export FASTRTPS_DEFAULT_PROFILES_FILE= ~/ros2_ws/src/adi_3dtof_adtf31xx/rmw_config/rmw_settings.xml
+>>#Next restart ROS daemon for the profile changes to take effect
+>>$ ros2 daemon stop
+>>```
+- The above mentioned steps for rmw settings setup can also be completed by running the "setup_rmw_settings.sh" script present inside the "rmw_config" folder.
+>>```bash
+>>$ cd ~/ros2_ws/src/adi_3dtof_adtf31xx/rmw_config
+>>$ chmod +x setup_rmw_settings.sh
+>>$ source setup_rmw_settings.sh
+>>```
+Next, Build the code
+>>```bash
+>>$ cd ~/ros2_ws/  
+>> $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release  
 >>```
 >
->    Note: `/home/analog/catkin_ws/` is set up as the catkin workspace and this workspace is already sourced in the `~/.bashrc`
+>    Note: `/home/analog/ros2_ws/` is set up as the ros2 workspace and this workspace is already sourced in the `~/.bashrc`
 
 7.	Running the ROS Node:
 
-    On the EVAL-ADTF3175D-NXZ device, the ROS Master is set to the IP address of the Host machine, hence it is required to run `roscore` on the Host machine (*applicable only to Linux host*).
-
-    On the Linux Host, open a terminal and run the following command
-    ```bash
-    $ roscore
-    ```
     On the Device:
     ```bash
-    $ roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx.launch
+    $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_launch.py
     ```
 
     >:memo:*Note:*   
-    >If you are using WSL as the Host machine, then setting Host as ROS Master does not work. In this case, you must unset the ROS master.
-    >Run the following command to unset the ROS Master and use the EVAL-ADTF3175D-NXZ as the ROS master. 
-    >On the WSL Host, open an Ubuntu 20.04 Terminal and run the following command
-    >```bash
-    >$ export ROS_MASTER_URI=http://10.42.0.1:11311
-    >$ export ROS_IP=10.42.0.100
-    >$ export ROS_HOSTNAME="Your Device name"
-    >```
-    >On Device,
-    >```bash
-    >$ unset ROS_MASTER_URI
-    >$ roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx.launch
-    >```
+    >The demo may not work if WSL is used as the Host machine
 
     At this stage, the *adi_3dtof_adtf31xx_node* will be launched and start publishing the topics ```/cam1/depth_image, /cam1/ir_image and /cam1/camera_info```.
 
-    To see the depth and IR images on the Host machine, simply open the RVIZ and add ```/cam1/depth_image``` and ```/cam1/ir_image``` topics to visualize the images
+    To see the depth and IR images on the Host machine, simply open the RVIZ2 and add ```/cam1/depth_image``` and ```/cam1/ir_image``` topics to visualize the images
 
 8.  The Node supports sending the Depth and IR images as compressed streams using RVL compression. To publish the compressed images set the ```arg_enable_depth_ir_compression``` parameter to ```1``` in the launch file.  
     The topic names for the compressed Depth and IR images are ```/cam1/depth_image/compressedDepth``` and ```/cam1/ir_image/compressedDepth``` respectively.  
@@ -168,7 +168,7 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
     
     To run the node run the following command 
     ```bash
-    $ roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_compressed_host.launch
+    $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_compressed_host_launch.py
     ```
     This launch file will run the Host node which decompresses the incoming images, computes the Point-cloud and publish the raw images. The launch file also invokes ```adi_3dtof_adtf31xx_raw.rviz``` for visualization.
 
@@ -266,7 +266,7 @@ If RVL image-compression is enabled:
     - ROS Topic prefix name to subscribe
 
 
-## read_rosbags_node
+## adi_3dtof_adtf31xx_read_rosbag_node
 
 ### Parameters
 
@@ -284,13 +284,13 @@ If RVL image-compression is enabled:
 
 
 ---
-# Dynamic Reconfigure
-Using Dynamic Reconfigure some parameters of *adi_3dtof_adtf31xx* ROS node can be modifed during run time. The Perspective file is present in ```rqt_config/``` folder.  
+# Parameter Tuning
+Some parameters of *adi_3dtof_adtf31xx* ROS node can be modifed during run time. The Perspective file is present in ```rqt_config/``` folder.  
 
 <div style="text-align:center"><img src="./docs/images/dynamic_reconfigure.png" alt="Dynamic Reconfigure"/></div>  
 The GUI can be started by running the following command.
 
-``` roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_rqt.launch ```  
+``` ros2 launch  adi_3dtof_adtf31xx adi_3dtof_adtf31xx_rqt_launch.py ```  
 
 Make sure the *adi_3dtof_adtf31xx* is already running before executing this command.
 
@@ -312,35 +312,35 @@ Any other inquiries are also welcome.
 # Steps to run the Node on a Host machine in File-IO mode
 The Node can be run on a Host machine without the need for the actual 3D ToF sensor. This mode is supported for users who would want to test some algorithms on the recorded video files. In this mode the *adi_3dtof_adtf31xx_node* will read the video file and publish the frames as ROS topics. Follow the below instructions to build and run the node in File-IO mode.
 
-*Note:* It is assumed that the correct version of ROS is installed and configured properly, if not please install the ROS from [here](http://wiki.ros.org/noetic/Installation/Ubuntu) 
+*Note:* It is assumed that the correct version of ROS is installed and configured properly, if not please install the ROS from [here](https://docs.ros.org/en/humble/Installation.html) 
 
 ## Requirement on file-io input video files
 To run the *adi_3dtof_adtf31xx_node* in file-io mode, the video files should be given as input.
 Please follow the below instructions to set up the input video files.
 1. Go to the installation directory of the *ADI 3DToF ADTF31xx* appliation (~/Analog Devices/ADI3DToFADTF31xx-Relx.x.x)
 2. Run the *get_videos.sh* script which will download the *adi_3dtof_input_video_files.zip* file in the current directory.
-3. Unzip it and copy the directory as *~/catkin_ws/src/adi_3dtof_input_video_files*.
-4. Update the input file argument *arg_input_file_name_or_ros_topic_prefix_name* in the launch file *adi_3dtof_adtf31xx.launch* as per the above file path.
+3. Unzip it and copy the directory as *~/ros2_ws/src/adi_3dtof_input_video_files*.
+4. Update the input file argument *arg_in_file_name* in the launch file *adi_3dtof_adtf31xx_launch.py* as per the above file path.
 
 ## Steps to run *adi_3dtof_adtf31xx_node* node
 
 1. Clone the repo and checkout the corect release branch/
-tag into catkin workspace directory
+tag into ros2 workspace directory
 
     ```bash
-    $ cd ~/catkin_ws/src
-    $ git clone https://github.com/analogdevicesinc/adi_3dtof_adtf31xx.git -b v1.0.0
+    $ cd ~/ros2_ws/src
+    $ git clone https://github.com/analogdevicesinc/adi_3dtof_adtf31xx.git -b vx.x.x
     ```
 2. Install dependencies:
     ```bash
-    $ cd ~/catkin_ws/
+    $ cd ~/ros2_ws/
     $ rosdep install --from-paths src -y --ignore-src    
     ```
 3. Build the package
     ```bash
-    $ cd ~/catkin_ws/src
-    $ catkin_make -DCMAKE_BUILD_TYPE=RELEASE -DHOST_BUILD=TRUE -j2
-    $ source devel/setup.bash
+    $ cd ~/ros2_ws/src
+    $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --cmake-args -DHOST_BUILD=TRUE
+    $ source install/setup.bash
     ```
 
 4. To run the *adi_3dtof_adtf31xx_node* in File-IO mode, we need to make some changes in the launch file. Change the following parameters in launch file.
@@ -351,14 +351,17 @@ tag into catkin workspace directory
 
 5. After updating the launch file, run the roslaunch with the updated launch file.
     ```bash
-    $ roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx.launch
+    $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_launch.py
     ```
 
 At this stage, the *adi_3dtof_adtf31xx_node* will be launched and start publishing the topics ```/cam1/depth_image, /cam1/ir_image and /cam1/camera_info```.
 
-# Steps to convert bag file to bin file
-[rosbag](http://wiki.ros.org/rosbag), a utility provided by ROS, is used to record topics. The data is collected in bag format, and the read_rosbags node converts it to bin file format. 
-format of bin file as given below.
+To see the depth and IR images open an other Terminal and open the RVIZ and add ```/cam1/depth_image``` and ```/cam1/ir_image``` topics to visualize the images
+
+
+# Steps to convert rosbag file to bin file
+[rosbag2](https://github.com/ros2/rosbag2), a utility provided by ROS, is used to record topics. The data is collected in bag format, and the adi_3dtof_adtf31xx_read_rosbag_node node converts it to bin file format. 
+The format of bin file as given below.
 ```
 start of bin file
 
@@ -387,37 +390,20 @@ n number of frames
 end of bin file
 ```
 
-## How to use read_rosbags node?
-Change below parameters in ```read_bagfile.lauch``` file
+## Steps to use adi_3dtof_adtf31xx_read_rosbag_node:
+Change below parameters in ```adi_3dtof_adtf31xx_read_rosbag_launch.py``` file
 
-1. in_file_name = enter the file name with path  
-   ex: ```<arg name="in_file_name" default="$(find adi_3dtof_adtf31xx)/../4camera.bag"/>``` 
+1. arg_in_file_name : The rosbag2 file name
 
-2. Add Camera names for arguments camera1_name, camera2_name, camera3_name and camera4_name.  
-   ex:  
-        ```<arg name="camera1_name" default="cam1"/>```     
-        ```<arg name="camera2_name" default="cam2"/>```  
-        ```<arg name="camera3_name" default="cam3"/>```  
-        ```<arg name="camera4_name" default="cam4"/>```  
-
-
-3. In ```<arg name="camera_names" default="[$(arg camera1_name), $(arg camera2_name), $(arg camera3_name), $(arg camera4_name)]"/>``` change the number of arguments in default section
-   to get output binary files for those number of cameras.  
-   ex: for single camera   
-       ```<arg name="camera_names" default="[$(arg camera1_name)]"/>```  
-       the name of the generated output file will be ```2022-11-03-22-12-27_cam1_out.bin```  
-       for two cameras  
-       ```<arg name="camera_names" default="[$(arg camera1_name), $(arg camera2_name)]"/>```  
-       the name of the generated output files will be  
-       ```2022-11-03-22-12-27_cam1_out.bin``` and ```2022-11-03-22-12-27_cam2_out.bin```
+2. arg_camera_prefixes : Camera prefix, more than one camera prefixes can be passed. For example if the recoreded topic names are /cam1/depth_image and /cam2/depth_image, arg_camera_prefixes can be set to "[cam1,cam2]"
 									  
-4. run below command to launch read_rosbags node
+4. Run the below command to launch adi_3dtof_adtf31xx_read_rosbag_node node
    ``` 
-   $ roslaunch read_rosbags read_bagfile.launch
+   $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_read_rosbag_launch.py
    ```
 5. The output files will have names in following manner: **input_file_name_camera_name_out.bin**   
-   Ex: if input file name is ```4cameras.bag``` and camera name is ```cam5``` then output is ```4cameras_cam5_out.bin```  
+   Ex: if input file name is ```4cameras.bag``` and camera prefix is ```cam5``` then output is ```4cameras_cam5_out.bin```  
+
+## Why this is required?
+    Our first question is, "Why is it necessary to convert collected bag files to binary format before performing file IO?" Why can't we use FileIO directly while subscribing to ros topics that rosbags publishes? The reason for this is that rosbags may store images in a disorganized order rather than in a sequential manner. For this reason, in order to produce the output, the FileIO code must queue up the publishing rosbag images and synchronize the depth and IR images. The FileIO process becomes slower as a result.  
      
-
-To see the depth and IR images open an other Terminal and open the RVIZ and add ```/cam1/depth_image``` and ```/cam1/ir_image``` topics to visualize the images
-

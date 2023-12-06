@@ -38,101 +38,98 @@
 /**
  * @brief Namespace aditof
  */
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @struct FrameDataDetails
  * @brief Describes the properties of a data that embedded within the frame
  */
-struct FrameDataDetails
-{
-  /**
-   * @brief The type of data that can be found in a frame. For example it
-   * could be depth data or IR data, etc.
-   */
-  std::string type;
+struct FrameDataDetails {
+    /**
+     * @brief The type of data that can be found in a frame. For example it
+     * could be depth data or IR data, etc.
+     */
+    std::string type;
 
-  /**
-   * @brief The width of the frame data
-   */
-  unsigned int width;
+    /**
+     * @brief The width of the frame data
+     */
+    unsigned int width;
 
-  /**
-   * @brief The height of the frame data
-   */
-  unsigned int height;
+    /**
+     * @brief The height of the frame data
+     */
+    unsigned int height;
 
-  /**
-   * @brief The size in bytes of a sub-element.
-   * A sub-element is a sub-component of an element. All sub-elements make up
-   * an element. For instance a 3D point (which is an element) has X, Y and Z
-   * coordinates which are sub-elements of the 3D point.
-   */
-  unsigned int subelementSize;
+    /**
+     * @brief The size in bytes of a sub-element.
+     * A sub-element is a sub-component of an element. All sub-elements make up
+     * an element. For instance a 3D point (which is an element) has X, Y and Z
+     * coordinates which are sub-elements of the 3D point.
+     */
+    unsigned int subelementSize;
 
-  /**
-   * @brief The number of sub-elements that an element has.
-   * An element is the smallest part of the image (a.k.a. captured scene) that
-   * together with other elements make up the entire image.
-   */
-  unsigned int subelementsPerElement;
+    /**
+     * @brief The number of sub-elements that an element has.
+     * An element is the smallest part of the image (a.k.a. captured scene) that
+     * together with other elements make up the entire image.
+     */
+    unsigned int subelementsPerElement;
 };
 
 /**
  * @struct FrameDetails
  * @brief Describes the properties of a frame.
  */
-struct FrameDetails
-{
-  /**
-   * @brief The type of the frame. Can be one of the types provided by the
-   * camera.
-   */
-  std::string type;
+struct FrameDetails {
+    /**
+     * @brief The type of the frame. Can be one of the types provided by the
+     * camera.
+     */
+    std::string type;
 
-  /**
-   * @brief A frame can have multiple types of data. For example it could
-   * hold data about depth and/or data about IR.
-   */
-  std::vector<FrameDataDetails> dataDetails;
+    /**
+     * @brief A frame can have multiple types of data. For example it could
+     * hold data about depth and/or data about IR.
+     */
+    std::vector<FrameDataDetails> dataDetails;
 
-  /**
-   * @brief The mode the camera was set when the frame was captured.
-   */
-  std::string cameraMode;
+    /**
+     * @brief The mode the camera was set when the frame was captured.
+     */
+    std::string cameraMode;
 
-  /**
-   * @brief The width of the frame.
-   */
-  unsigned int width;
+    /**
+     * @brief The width of the frame.
+     */
+    unsigned int width;
 
-  /**
-   * @brief The height of the frame.
-   */
-  unsigned int height;
+    /**
+     * @brief The height of the frame.
+     */
+    unsigned int height;
 
-  /**
-   * @brief totalCaptures or subframes in a frame
-   */
-  uint8_t totalCaptures;
+    /**
+     * @brief totalCaptures or subframes in a frame
+     */
+    uint8_t totalCaptures;
 
-  /**
-   * @brief is a passive IR frame appended
-   */
-  bool passiveIRCaptured;
+    /**
+    * @brief is a passive IR frame appended
+    */
+    bool passiveIRCaptured;
 };
 
 /**
  * @struct Point3I
  * @brief Holds the xyz values of a frame
  */
-struct Point3I
-{
-  int16_t a;  //!< X Information
-  int16_t b;  //!< Y Information
-  int16_t c;  //!< Z Information
+struct Point3I {
+    int16_t a; //!< X Information
+    int16_t b; //!< Y Information
+    int16_t c; //!< Z Information
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // FRAME_DEFINITIONS_H
+#endif // FRAME_DEFINITIONS_H

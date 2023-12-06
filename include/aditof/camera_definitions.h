@@ -44,156 +44,154 @@
 /**
  * @brief Namespace aditof
  */
-namespace aditof
-{
+namespace aditof {
+
 class Frame;
 
 /**
  * @brief Callback for frame updates
  */
-typedef std::function<void(Status, Frame*)> FrameUpdateCallback;
+typedef std::function<void(Status, Frame *)> FrameUpdateCallback;
 
 /**
  * @struct IntrinsicParameters
  * @brief Describes the intrinsic parameters of a camera.
  */
-struct IntrinsicParameters
-{
-  /**
-   * @brief fx
-   */
-  float fx;
+struct IntrinsicParameters {
+    /**
+     * @brief fx
+     */
+    float fx;
 
-  /**
-   * @brief fy
-   */
-  float fy;
+    /**
+     * @brief fy
+     */
+    float fy;
 
-  /**
-   * @brief cx
-   */
-  float cx;
+    /**
+     * @brief cx
+     */
+    float cx;
 
-  /**
-   * @brief cy
-   */
-  float cy;
+    /**
+     * @brief cy
+     */
+    float cy;
 
-  /**
-   * @brief codx
-   */
-  float codx;
+    /**
+     * @brief codx
+     */
+    float codx;
 
-  /**
-   * @brief cody
-   */
-  float cody;
+    /**
+     * @brief cody
+     */
+    float cody;
 
-  /**
-   * @brief k1
-   */
-  float k1;
+    /**
+     * @brief k1
+     */
+    float k1;
 
-  /**
-   * @brief k2
-   */
-  float k2;
+    /**
+     * @brief k2
+     */
+    float k2;
 
-  /**
-   * @brief k3
-   */
-  float k3;
+    /**
+     * @brief k3
+     */
+    float k3;
 
-  /**
-   * @brief k4
-   */
-  float k4;
+    /**
+     * @brief k4
+     */
+    float k4;
 
-  /**
-   * @brief k5
-   */
-  float k5;
+    /**
+     * @brief k5
+     */
+    float k5;
 
-  /**
-   * @brief k6
-   */
-  float k6;
+    /**
+     * @brief k6
+     */
+    float k6;
 
-  /**
-   * @brief p2
-   */
-  float p2;
+    /**
+     * @brief p2
+     */
+    float p2;
 
-  /**
-   * @brief p1
-   */
-  float p1;
+    /**
+     * @brief p1
+     */
+    float p1;
 };
 
 /**
  * @struct CameraDetails
  * @brief Describes the properties of a camera.
  */
-struct CameraDetails
-{
-  /**
-   * @brief Camera identification
-   */
-  std::string cameraId;
+struct CameraDetails {
+    /**
+     * @brief Camera identification
+     */
+    std::string cameraId;
 
-  /**
-   * @brief The mode in which the camera operates
-   */
-  std::string mode;
+    /**
+     * @brief The mode in which the camera operates
+     */
+    std::string mode;
 
-  /**
-   * @brief Details about the frames that camera is capturing
-   */
-  FrameDetails frameType;
+    /**
+     * @brief Details about the frames that camera is capturing
+     */
+    FrameDetails frameType;
 
-  /**
-   * @brief The type of connection with the camera
-   */
-  ConnectionType connection;
+    /**
+     * @brief The type of connection with the camera
+     */
+    ConnectionType connection;
 
-  /**
-   * @brief Details about the intrinsic parameters of the camera
-   */
-  IntrinsicParameters intrinsics;
+    /**
+     * @brief Details about the intrinsic parameters of the camera
+     */
+    IntrinsicParameters intrinsics;
 
-  /**
-   * @brief The maximum distance (in millimeters) the camera can measure in
-   * the current operating mode.
-   */
-  int maxDepth;
+    /**
+     * @brief The maximum distance (in millimeters) the camera can measure in
+     * the current operating mode.
+     */
+    int maxDepth;
 
-  /**
-   * @brief The minimum distance (in millimeters) the camera can measure in
-   * the current operating mode.
-   */
-  int minDepth;
+    /**
+     * @brief The minimum distance (in millimeters) the camera can measure in
+     * the current operating mode.
+     */
+    int minDepth;
 
-  /**
-   * @brief The number of bits used for representing one pixel data.
-   */
-  int bitCount;
+    /**
+     * @brief The number of bits used for representing one pixel data.
+     */
+    int bitCount;
 
-  /**
-   * @brief The U-Boot version that is installed on the embedded system that the camera is attached to.
-   */
-  std::string uBootVersion;
+    /**
+     * @brief The U-Boot version that is installed on the embedded system that the camera is attached to.
+     */
+    std::string uBootVersion;
 
-  /**
-   * @brief The kernel version that is installed on the embedded system that the camera is attached to.
-   */
-  std::string kernelVersion;
+    /**
+     * @brief The kernel version that is installed on the embedded system that the camera is attached to.
+     */
+    std::string kernelVersion;
 
-  /**
-   * @brief The SD card image version on the embedded system that the camera is attached to.
-   */
-  std::string sdCardImageVersion;
+    /**
+     * @brief The SD card image version on the embedded system that the camera is attached to.
+     */
+    std::string sdCardImageVersion;
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // CAMERA_DEFINITIONS_H
+#endif // CAMERA_DEFINITIONS_H

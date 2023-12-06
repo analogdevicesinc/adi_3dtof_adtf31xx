@@ -40,73 +40,77 @@
 #include <memory>
 #include <vector>
 
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @class SensorEnumeratorInterface
  * @brief Can search for sensors and retrieve sensors by category.
  */
-class SensorEnumeratorInterface
-{
-public:
-  /**
-   * @brief Destructor
-   */
-  virtual ~SensorEnumeratorInterface() = default;
+class SensorEnumeratorInterface {
+  public:
+    /**
+     * @brief Destructor
+     */
+    virtual ~SensorEnumeratorInterface() = default;
 
-  /**
-   * @brief Do a search for the available sensors.
-   * @return Status
-   */
-  virtual aditof::Status searchSensors() = 0;
+    /**
+     * @brief Do a search for the available sensors.
+     * @return Status
+     */
+    virtual aditof::Status searchSensors() = 0;
 
-  /**
-   * @brief Get the available depth sensors.
-   * @param[out] depthSensors - list of found sensors
-   * @return Status
-   */
-  virtual aditof::Status getDepthSensors(std::vector<std::shared_ptr<aditof::DepthSensorInterface>>& depthSensors) = 0;
+    /**
+     * @brief Get the available depth sensors.
+     * @param[out] depthSensors - list of found sensors
+     * @return Status
+     */
+    virtual aditof::Status
+    getDepthSensors(std::vector<std::shared_ptr<aditof::DepthSensorInterface>>
+                        &depthSensors) = 0;
 
-  /**
-   * @brief Get the available storage.
-   * @param[out] storages - list of found storages
-   * @return Status
-   */
-  virtual aditof::Status getStorages(std::vector<std::shared_ptr<aditof::StorageInterface>>& storages) = 0;
+    /**
+     * @brief Get the available storage.
+     * @param[out] storages - list of found storages
+     * @return Status
+     */
+    virtual aditof::Status getStorages(
+        std::vector<std::shared_ptr<aditof::StorageInterface>> &storages) = 0;
 
-  /**
-   * @brief Get the available temperature sensors.
-   * @param[out] temperatureSensors - list of found sensors
-   * @return Status
-   */
-  virtual aditof::Status
-  getTemperatureSensors(std::vector<std::shared_ptr<aditof::TemperatureSensorInterface>>& temperatureSensors) = 0;
+    /**
+     * @brief Get the available temperature sensors.
+     * @param[out] temperatureSensors - list of found sensors
+     * @return Status
+     */
+    virtual aditof::Status getTemperatureSensors(
+        std::vector<std::shared_ptr<aditof::TemperatureSensorInterface>>
+            &temperatureSensors) = 0;
 
-  /**
-   * @brief Get the U-Boot version that is installed on the embedded system
-   * that the camera is attached to.
-   * @param[out] uBootVersion - string containing data abouth the version.
-   * @return Status
-   */
-  virtual aditof::Status getUbootVersion(std::string& uBootVersion) const = 0;
+    /**
+     * @brief Get the U-Boot version that is installed on the embedded system
+     * that the camera is attached to.
+     * @param[out] uBootVersion - string containing data abouth the version.
+     * @return Status
+     */
+    virtual aditof::Status getUbootVersion(std::string &uBootVersion) const = 0;
 
-  /**
-   * @brief Get the kernel version that is installed on the embedded system
-   * that the camera is attached to.
-   * @param[out] kernelVersion - string containing data abouth the version.
-   * @return Status
-   */
-  virtual aditof::Status getKernelVersion(std::string& kernelVersion) const = 0;
+    /**
+     * @brief Get the kernel version that is installed on the embedded system
+     * that the camera is attached to.
+     * @param[out] kernelVersion - string containing data abouth the version.
+     * @return Status
+     */
+    virtual aditof::Status
+    getKernelVersion(std::string &kernelVersion) const = 0;
 
-  /**
-   * @brief Get the SD card image version on the embedded system that the
-   * camera is attached to.
-   * @param[out] sdVersion - string containing data abouth the version.
-   * @return Status
-   */
-  virtual aditof::Status getSdVersion(std::string& sdVersion) const = 0;
+    /**
+     * @brief Get the SD card image version on the embedded system that the
+     * camera is attached to.
+     * @param[out] sdVersion - string containing data abouth the version.
+     * @return Status
+     */
+    virtual aditof::Status getSdVersion(std::string &sdVersion) const = 0;
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // SENSOR_ENUMERATOR_INTERFACE_H
+#endif // SENSOR_ENUMERATOR_INTERFACE_H

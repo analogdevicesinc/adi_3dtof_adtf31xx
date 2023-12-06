@@ -41,23 +41,22 @@
 /**
  * @brief Namespace aditof
  */
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @struct SensorDetails
  * @brief Provides details about the device
  */
-struct SensorDetails
-{
-  /**
-   * @brief The sensor's name
-   */
-  std::string sensorName;
+struct SensorDetails {
+    /**
+     * @brief The sensor's name
+     */
+    std::string sensorName;
 
-  /**
-   * @brief The type of connection with the sensor
-   */
-  ConnectionType connectionType;
+    /**
+     * @brief The type of connection with the sensor
+     */
+    ConnectionType connectionType;
 };
 
 /**
@@ -65,72 +64,70 @@ struct SensorDetails
  * @brief Describes the content of a frame. For example: A frame could contain
  * depth and IR data.
  */
-struct DepthSensorFrameContent
-{
-  /**
-   * @brief The type of frame content supported by the sensor
-   */
-  std::string type;
+struct DepthSensorFrameContent {
+    /**
+     * @brief The type of frame content supported by the sensor
+     */
+    std::string type;
 
-  /**
-   * @brief The width of the frame content that the sensor can capture
-   */
-  unsigned int width;
+    /**
+     * @brief The width of the frame content that the sensor can capture
+     */
+    unsigned int width;
 
-  /**
-   * @brief The height of the frame content that the sensor can capture
-   */
-  unsigned int height;
+    /**
+     * @brief The height of the frame content that the sensor can capture
+     */
+    unsigned int height;
 };
 
 /**
  * @struct DepthSensorFrameType
  * @brief Describes the type of entire frame that a depth sensor can capture and transmit
  */
-struct DepthSensorFrameType
-{
-  /**
-   * @brief The type of entire frame supported by the sensor
-   */
-  std::string type;
+struct DepthSensorFrameType {
+    /**
+     * @brief The type of entire frame supported by the sensor
+     */
+    std::string type;
 
-  /**
-   * @brief Describes the content of the entire frame
-   */
-  std::vector<struct DepthSensorFrameContent> content;
+    /**
+     * @brief Describes the content of the entire frame
+     */
+    std::vector<struct DepthSensorFrameContent> content;
 
-  /**
-   * @brief The width of the entire frame that the sensor can capture
-   */
-  unsigned int width;
+    /**
+     * @brief The width of the entire frame that the sensor can capture
+     */
+    unsigned int width;
 
-  /**
-   * @brief The height of the entire frame that the sensor can capture
-   */
-  unsigned int height;
+    /**
+     * @brief The height of the entire frame that the sensor can capture
+     */
+    unsigned int height;
 };
 
 /**
  * @brief prints human readable frame content details
  */
-inline std::ostream& operator<<(std::ostream& o, const DepthSensorFrameContent& a)
-{
-  o << "T: " << a.type << "\tW: " << a.width << "\tH: " << a.height << "\n";
-  return o;
+inline std::ostream &operator<<(std::ostream &o,
+                                const DepthSensorFrameContent &a) {
+    o << "T: " << a.type << "\tW: " << a.width << "\tH: " << a.height << "\n";
+    return o;
 }
 
 /**
  * @brief prints human readable frame details
  */
-inline std::ostream& operator<<(std::ostream& o, const DepthSensorFrameType& a)
-{
-  o << "DepthSensorFrame: T: " << a.type << "\tW: " << a.width << "\tH: " << a.height << " contains:\n";
-  for (const DepthSensorFrameContent& content : a.content)
-  {
-    o << "\t" << content;
-  }
-  return o;
+inline std::ostream &operator<<(std::ostream &o,
+                                const DepthSensorFrameType &a) {
+    o << "DepthSensorFrame: T: " << a.type << "\tW: " << a.width
+      << "\tH: " << a.height << " contains:\n";
+    for (const DepthSensorFrameContent &content : a.content) {
+        o << "\t" << content;
+    }
+    return o;
 }
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // SENSOR_DEFINITIONS_H
+#endif // SENSOR_DEFINITIONS_H

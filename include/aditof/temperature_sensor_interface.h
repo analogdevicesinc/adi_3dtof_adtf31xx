@@ -37,48 +37,47 @@
 
 #include <string>
 
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @class TemperatureSensorInterface
  * @brief Interface for a temperature sensor
  */
-class SDK_API TemperatureSensorInterface
-{
-public:
-  /**
+class SDK_API TemperatureSensorInterface {
+  public:
+    /**
    * @brief Destructor
    */
-  virtual ~TemperatureSensorInterface() = default;
+    virtual ~TemperatureSensorInterface() = default;
 
-  /**
-   * @brief Open the communication channel with the temperature sensor.
-   * @param handle - A handle to the object through which communication is done
-   * @return Status
-   */
-  virtual aditof::Status open(void* handle) = 0;
+    /**
+     * @brief Open the communication channel with the temperature sensor.
+     * @param handle - A handle to the object through which communication is done
+     * @return Status
+     */
+    virtual aditof::Status open(void *handle) = 0;
 
-  /**
-   * @brief Read data from the temperature sensor
-   * @param[out] temperature - This is set with the temperature read from the sensor
-   * @return Status
-   */
-  virtual aditof::Status read(float& temperature) = 0;
+    /**
+     * @brief Read data from the temperature sensor
+     * @param[out] temperature - This is set with the temperature read from the sensor
+     * @return Status
+     */
+    virtual aditof::Status read(float &temperature) = 0;
 
-  /**
-   * @brief Close the communication channel with the EEPROM.
-   * @return Status
-   */
-  virtual aditof::Status close() = 0;
+    /**
+     * @brief Close the communication channel with the EEPROM.
+     * @return Status
+     */
+    virtual aditof::Status close() = 0;
 
-  /**
-   * @brief Retrieves the name of the temperature sensor
-   * @param[out] name - This gets set with the name of the temperature sensor
-   * @return Status
-   */
-  virtual aditof::Status getName(std::string& name) const = 0;
+    /**
+      * @brief Retrieves the name of the temperature sensor
+      * @param[out] name - This gets set with the name of the temperature sensor
+      * @return Status
+      */
+    virtual aditof::Status getName(std::string &name) const = 0;
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // TEMPERATURE_SENSOR_INTERFACE_H
+#endif // TEMPERATURE_SENSOR_INTERFACE_H

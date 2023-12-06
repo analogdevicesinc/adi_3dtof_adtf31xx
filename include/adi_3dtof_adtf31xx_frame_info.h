@@ -6,9 +6,8 @@ and its licensors.
 #ifndef ADI_3DTOF_ADTF31XX_FRAME_INFO_H
 #define ADI_3DTOF_ADTF31XX_FRAME_INFO_H
 
-#include <pcl_ros/point_cloud.h>
-#include <pcl/point_types.h>
 #include <cstring>
+#include <rclcpp/rclcpp.hpp>
 /**
  * @brief This is the class for adtf31xx sensor frame
  *
@@ -40,7 +39,7 @@ public:
     compressed_ir_frame_ = new unsigned char[2 * image_width * image_height];
     compressed_depth_frame_size_ = 0;
     compressed_ir_frame_size_ = 0;
-    frame_timestamp_ = ros::Time::now();
+    frame_timestamp_ = rclcpp::Clock{}.now();
   }
 
   /**
@@ -48,24 +47,19 @@ public:
    */
   ~ADI3DToFADTF31xxFrameInfo()
   {
-    if (depth_frame_ != nullptr)
-    {
+    if (depth_frame_ != nullptr) {
       delete[] depth_frame_;
     }
-    if (ir_frame_ != nullptr)
-    {
+    if (ir_frame_ != nullptr) {
       delete[] ir_frame_;
     }
-    if (xyz_frame_ != nullptr)
-    {
+    if (xyz_frame_ != nullptr) {
       delete[] xyz_frame_;
     }
-    if (compressed_depth_frame_ != nullptr)
-    {
+    if (compressed_depth_frame_ != nullptr) {
       delete[] compressed_depth_frame_;
     }
-    if (compressed_ir_frame_ != nullptr)
-    {
+    if (compressed_ir_frame_ != nullptr) {
       delete[] compressed_ir_frame_;
     }
   }
@@ -75,90 +69,63 @@ public:
    *
    * @return unsigned short* depth image pointer
    */
-  unsigned short* getDepthFrame() const
-  {
-    return depth_frame_;
-  }
+  unsigned short * getDepthFrame() const { return depth_frame_; }
 
   /**
    * @brief Get the IR image frame
    *
    * @return unsigned short* IR image pointer
    */
-  unsigned short* getIRFrame() const
-  {
-    return ir_frame_;
-  }
+  unsigned short * getIRFrame() const { return ir_frame_; }
 
   /**
    * @brief Get point cloud frame
    *
    * @return short* point cloud pointer
    */
-  short* getXYZFrame() const
-  {
-    return xyz_frame_;
-  }
+  short * getXYZFrame() const { return xyz_frame_; }
 
   /**
    * @brief Get Compressed depth image frame
    *
    * @return unsigned char* compressed depth image pointer
    */
-  unsigned char* getCompressedDepthFrame() const
-  {
-    return compressed_depth_frame_;
-  }
+  unsigned char * getCompressedDepthFrame() const { return compressed_depth_frame_; }
 
   /**
    * @brief Get Compressed IR image frame
    *
    * @return unsigned char* compressed IR image pointer
    */
-  unsigned char* getCompressedIRFrame() const
-  {
-    return compressed_ir_frame_;
-  }
+  unsigned char * getCompressedIRFrame() const { return compressed_ir_frame_; }
 
   /**
    * @brief Get Frame Timestamp Pointer
    *
-   * @return ros::Time* Frame Timnestamp pointer
+   * @return rclcpp::Time* Frame Timnestamp pointer
    */
-  ros::Time* getFrameTimestampPtr()
-  {
-    return &frame_timestamp_;
-  }
+  rclcpp::Time * getFrameTimestampPtr() { return &frame_timestamp_; }
 
   /**
    * @brief Get Frame Timestamp
    *
-   * @return ros::Time Frame Timestamp
+   * @return rclcpp::Time Frame Timestamp
    */
-  ros::Time getFrameTimestamp() const
-  {
-    return frame_timestamp_;
-  }
+  rclcpp::Time getFrameTimestamp() const { return frame_timestamp_; }
 
   /**
    * @brief Gives compressed depth image size
    *
    * @return int size of compressed depth image
    */
-  int getCompressedDepthFrameSize() const
-  {
-    return compressed_depth_frame_size_;
-  }
+  int getCompressedDepthFrameSize() const { return compressed_depth_frame_size_; }
 
   /**
    * @brief Gives compressed IR image size
    *
    * @return int size of compressed IR image
    */
-  int getCompressedIRFrameSize() const
-  {
-    return compressed_ir_frame_size_;
-  }
+  int getCompressedIRFrameSize() const { return compressed_ir_frame_size_; }
 
   /**
    * @brief Set the Compressed depth image size
@@ -181,7 +148,7 @@ public:
   }
 
   // Assignment operator
-  ADI3DToFADTF31xxFrameInfo& operator=(const ADI3DToFADTF31xxFrameInfo& rhs)
+  ADI3DToFADTF31xxFrameInfo & operator=(const ADI3DToFADTF31xxFrameInfo & rhs)
   {
     image_width_ = rhs.image_width_;
     image_height_ = rhs.image_height_;
@@ -190,9 +157,12 @@ public:
     memcpy(xyz_frame_, rhs.xyz_frame_, sizeof(xyz_frame_[0]) * image_width_ * image_height_ * 3);
     compressed_depth_frame_size_ = rhs.compressed_depth_frame_size_;
     compressed_ir_frame_size_ = rhs.compressed_ir_frame_size_;
-    memcpy(compressed_depth_frame_, rhs.compressed_depth_frame_,
-           sizeof(compressed_depth_frame_[0]) * compressed_depth_frame_size_);
-    memcpy(compressed_ir_frame_, rhs.compressed_ir_frame_, sizeof(compressed_ir_frame_[0]) * compressed_ir_frame_size_);
+    memcpy(
+      compressed_depth_frame_, rhs.compressed_depth_frame_,
+      sizeof(compressed_depth_frame_[0]) * compressed_depth_frame_size_);
+    memcpy(
+      compressed_ir_frame_, rhs.compressed_ir_frame_,
+      sizeof(compressed_ir_frame_[0]) * compressed_ir_frame_size_);
     frame_timestamp_ = rhs.frame_timestamp_;
     return *this;
   }
@@ -201,27 +171,27 @@ private:
   /**
    * @brief Depth image
    */
-  unsigned short* depth_frame_;
+  unsigned short * depth_frame_;
 
   /**
    * @brief IR image
    */
-  unsigned short* ir_frame_;
+  unsigned short * ir_frame_;
   /**
    * @brief xyz frame
    *
    */
-  short* xyz_frame_;
+  short * xyz_frame_;
   /**
    * @brief compressed depth frame
    *
    */
-  unsigned char* compressed_depth_frame_;
+  unsigned char * compressed_depth_frame_;
   /**
    * @brief compressed ir frame
    *
    */
-  unsigned char* compressed_ir_frame_;
+  unsigned char * compressed_ir_frame_;
   /**
    * @brief compressed depth frame size
    *
@@ -243,7 +213,7 @@ private:
   /**
    * @brief Frame Timestamp
    */
-  ros::Time frame_timestamp_;
+  rclcpp::Time frame_timestamp_;
 };
 
 #endif

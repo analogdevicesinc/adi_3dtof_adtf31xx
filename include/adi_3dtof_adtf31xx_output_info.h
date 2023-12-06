@@ -46,30 +46,25 @@ public:
    */
   ~ADI3DToFADTF31xxOutputInfo()
   {
-    if (depth_frame_ != nullptr)
-    {
+    if (depth_frame_ != nullptr) {
       delete[] depth_frame_;
     }
-    if (ir_frame_ != nullptr)
-    {
+    if (ir_frame_ != nullptr) {
       delete[] ir_frame_;
     }
-    if (xyz_frame_ != nullptr)
-    {
+    if (xyz_frame_ != nullptr) {
       delete[] xyz_frame_;
     }
-    if (compressed_depth_frame_ != nullptr)
-    {
+    if (compressed_depth_frame_ != nullptr) {
       delete[] compressed_depth_frame_;
     }
-    if (compressed_ir_frame_ != nullptr)
-    {
+    if (compressed_ir_frame_ != nullptr) {
       delete[] compressed_ir_frame_;
     }
   }
 
   // Assignment operator
-  ADI3DToFADTF31xxOutputInfo& operator=(const ADI3DToFADTF31xxOutputInfo& rhs)
+  ADI3DToFADTF31xxOutputInfo & operator=(const ADI3DToFADTF31xxOutputInfo & rhs)
   {
     frame_number_ = rhs.frame_number_;
     image_width_ = rhs.image_width_;
@@ -79,21 +74,24 @@ public:
     memcpy(depth_frame_, rhs.depth_frame_, sizeof(depth_frame_[0]) * image_width_ * image_height_);
     memcpy(ir_frame_, rhs.ir_frame_, sizeof(ir_frame_[0]) * image_width_ * image_height_);
     memcpy(xyz_frame_, rhs.xyz_frame_, sizeof(xyz_frame_[0]) * image_width_ * image_height_ * 3);
-    memcpy(compressed_depth_frame_, rhs.compressed_depth_frame_,
-           sizeof(compressed_depth_frame_[0]) * compressed_depth_frame_size_);
-    memcpy(compressed_ir_frame_, rhs.compressed_ir_frame_, sizeof(compressed_ir_frame_[0]) * compressed_ir_frame_size_);
+    memcpy(
+      compressed_depth_frame_, rhs.compressed_depth_frame_,
+      sizeof(compressed_depth_frame_[0]) * compressed_depth_frame_size_);
+    memcpy(
+      compressed_ir_frame_, rhs.compressed_ir_frame_,
+      sizeof(compressed_ir_frame_[0]) * compressed_ir_frame_size_);
 
     return *this;
   }
 
   int frame_number_;
-  unsigned short* depth_frame_;
-  unsigned short* ir_frame_;
-  unsigned char* compressed_depth_frame_;
-  unsigned char* compressed_ir_frame_;
+  unsigned short * depth_frame_;
+  unsigned short * ir_frame_;
+  unsigned char * compressed_depth_frame_;
+  unsigned char * compressed_ir_frame_;
   int compressed_depth_frame_size_;
   int compressed_ir_frame_size_;
-  short* xyz_frame_;
+  short * xyz_frame_;
   int image_width_;
   int image_height_;
 };

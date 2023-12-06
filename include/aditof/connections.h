@@ -35,20 +35,19 @@
 /**
  * @brief Namespace aditof
  */
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @enum ConnectionType
  * @brief Types of connections
  */
-enum class ConnectionType
-{
-  ON_TARGET,  //!< on the target, direct sysfs access
-  USB,        //!< connects to target via USB
-  NETWORK,    //!< connects to target via Network
-  OFFLINE,    //!< connects to a software module, no hardware involved
+enum class ConnectionType {
+    ON_TARGET, //!< on the target, direct sysfs access
+    USB,       //!< connects to target via USB
+    NETWORK,   //!< connects to target via Network
+    OFFLINE,   //!< connects to a software module, no hardware involved
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // CONNECTIONS_H
+#endif // CONNECTIONS_H

@@ -42,4 +42,4 @@
 #define SDK_API
 #endif
 
-#endif  // SDK_EXPORTS_H
+#endif // SDK_EXPORTS_H

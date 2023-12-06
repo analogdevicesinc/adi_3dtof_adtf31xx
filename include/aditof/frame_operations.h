@@ -34,8 +34,8 @@
 
 #include "frame_definitions.h"
 
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @brief operator ==
  *
@@ -43,7 +43,7 @@ namespace aditof
  * @param rhs - RHS FrameDataDetails
  * @return bool
  */
-bool operator==(const FrameDataDetails& lhs, const FrameDataDetails& rhs);
+bool operator==(const FrameDataDetails &lhs, const FrameDataDetails &rhs);
 
 /**
  * @brief operator !=
@@ -52,7 +52,7 @@ bool operator==(const FrameDataDetails& lhs, const FrameDataDetails& rhs);
  * @param rhs - RHS FrameDataDetails
  * @return bool
  */
-bool operator!=(const FrameDataDetails& lhs, const FrameDataDetails& rhs);
+bool operator!=(const FrameDataDetails &lhs, const FrameDataDetails &rhs);
 /**
  * @brief operator ==
  *
@@ -60,7 +60,7 @@ bool operator!=(const FrameDataDetails& lhs, const FrameDataDetails& rhs);
  * @param rhs - RHS FrameDetails
  * @return bool
  */
-bool operator==(const FrameDetails& lhs, const FrameDetails& rhs);
+bool operator==(const FrameDetails &lhs, const FrameDetails &rhs);
 
 /**
  * @brief operator !=
@@ -69,8 +69,8 @@ bool operator==(const FrameDetails& lhs, const FrameDetails& rhs);
  * @param rhs - RHS FrameDetails
  * @return bool
  */
-bool operator!=(const FrameDetails& lhs, const FrameDetails& rhs);
+bool operator!=(const FrameDetails &lhs, const FrameDetails &rhs);
 
-};  // namespace aditof
+}; // namespace aditof
 
-#endif  // FRAME_OPERATIONS_H
+#endif // FRAME_OPERATIONS_H

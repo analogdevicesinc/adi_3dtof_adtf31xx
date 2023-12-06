@@ -37,22 +37,14 @@
 #define ADITOF_API_VERSION_MAJOR "4"
 #define ADITOF_API_VERSION_MINOR "0"
 #define ADITOF_API_VERSION_PATCH "0"
-#define ADITOF_API_VERSION (ADITOF_API_VERSION_MAJOR "." ADITOF_API_VERSION_MINOR "." ADITOF_API_VERSION_PATCH)
+#define ADITOF_API_VERSION                                                     \
+    (ADITOF_API_VERSION_MAJOR "." ADITOF_API_VERSION_MINOR                     \
+                              "." ADITOF_API_VERSION_PATCH)
 
-namespace aditof
-{
-static inline const std::string getApiVersion()
-{
-  return std::string(ADITOF_API_VERSION);
-}
-static inline const std::string getBranchVersion()
-{
-  return std::string("master");
-}
-static inline const std::string getCommitVersion()
-{
-  return std::string("93635899");
-}
-}  // namespace aditof
+namespace aditof {
+    static inline const std::string getApiVersion() { return std::string(ADITOF_API_VERSION); }
+    static inline const std::string getBranchVersion() { return std::string("master"); }
+    static inline const std::string getCommitVersion() { return std::string("93635899"); }
+} // namespace aditof
 
-#endif  // VERSION_H
+#endif // VERSION_H

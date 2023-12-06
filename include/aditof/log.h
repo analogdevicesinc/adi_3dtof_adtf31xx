@@ -35,10 +35,9 @@
 
 #include <iostream>
 
-// glog/logging.h defines this namespace
-// which is required by protobuf library
-namespace google
-{
+//glog/logging.h defines this namespace
+//which is required by protobuf library
+namespace google {
 #ifdef _MSC_VER
 typedef signed __int8 int8;
 typedef __int16 int16;
@@ -61,8 +60,8 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 #endif
 
-static void InitGoogleLogging(char* val){};
-}  // namespace google
+static void InitGoogleLogging(char *val){};
+} // namespace google
 
 static int FLAGS_alsologtostderr;
 static int FLAGS_logtostderr;
@@ -73,4 +72,4 @@ static int FLAGS_logtostderr;
 #define LOG(x) std::cout << "\n"
 #define DLOG(x) std::cout << "\n"
 
-#endif  // LOG_COUT_H
+#endif // LOG_COUT_H

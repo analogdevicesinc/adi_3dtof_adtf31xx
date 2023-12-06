@@ -37,67 +37,68 @@
 #include <cstdint>
 #include <string>
 
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @class StorageInterface
  * @brief Interface for storage of data.
  * For example: EEPROM, Flash, file on disk, etc.
  */
-class StorageInterface
-{
-public:
-  /**
+class StorageInterface {
+  public:
+    /**
    * @brief Destructor
    */
-  virtual ~StorageInterface() = default;
+    virtual ~StorageInterface() = default;
 
-  /**
-   * @brief Open the communication channel with the storage.
-   * @param handle - A handle to the object through which communication is done
-   * @return Status
-   */
-  virtual aditof::Status open(void* handle) = 0;
+    /**
+     * @brief Open the communication channel with the storage.
+     * @param handle - A handle to the object through which communication is done
+     * @return Status
+     */
+    virtual aditof::Status open(void *handle) = 0;
 
-  /**
-   * @brief Read data from storage
-   * @param address - The address from where the data should be read
-   * @param[out] data - The location where the read data should be stored
-   * @param bytesCount - The number of bytes to read
-   * @return Status
-   */
-  virtual aditof::Status read(const uint32_t address, uint8_t* data, const size_t bytesCount) = 0;
+    /**
+     * @brief Read data from storage
+     * @param address - The address from where the data should be read
+     * @param[out] data - The location where the read data should be stored
+     * @param bytesCount - The number of bytes to read
+     * @return Status
+     */
+    virtual aditof::Status read(const uint32_t address, uint8_t *data,
+                                const size_t bytesCount) = 0;
 
-  /**
-   * @brief Write data to storage
-   * @param address - The starting address where the data should be written
-   * @param data - The location of the data to be written
-   * @param bytesCount - The number of bytes to write
-   * @return Status
-   */
-  virtual aditof::Status write(const uint32_t address, const uint8_t* data, const size_t bytesCount) = 0;
+    /**
+     * @brief Write data to storage
+     * @param address - The starting address where the data should be written
+     * @param data - The location of the data to be written
+     * @param bytesCount - The number of bytes to write
+     * @return Status
+     */
+    virtual aditof::Status write(const uint32_t address, const uint8_t *data,
+                                 const size_t bytesCount) = 0;
 
-  /**
-   * @brief Retrieves the storage capacity of the memory in bytes
-   * @param[out] nbBytes - The number of bytes that describes the size of the storage
-   * @return Status
-   */
-  virtual aditof::Status getCapacity(size_t& nbBytes) const = 0;
+    /**
+     * @brief Retrieves the storage capacity of the memory in bytes
+     * @param[out] nbBytes - The number of bytes that describes the size of the storage
+     * @return Status
+     */
+    virtual aditof::Status getCapacity(size_t &nbBytes) const = 0;
 
-  /**
-   * @brief Close the communication channel with the storage.
-   * @return Status
-   */
-  virtual aditof::Status close() = 0;
+    /**
+     * @brief Close the communication channel with the storage.
+     * @return Status
+     */
+    virtual aditof::Status close() = 0;
 
-  /**
-   * @brief Retrieves the name of the storage
-   * @param[out] name - This gets set with the name of the storage
-   * @return Status
-   */
-  virtual aditof::Status getName(std::string& name) const = 0;
+    /**
+     * @brief Retrieves the name of the storage
+     * @param[out] name - This gets set with the name of the storage
+     * @return Status
+     */
+    virtual aditof::Status getName(std::string &name) const = 0;
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // STORAGE_INTERFACE_H
+#endif // STORAGE_INTERFACE_H

@@ -41,60 +41,62 @@
 
 class SystemImpl;
 
-namespace aditof
-{
+namespace aditof {
+
 class Camera;
 
 /**
  * @class System
  * @brief The TOF system that manages the cameras.
  */
-class System
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  SDK_API System();
+class System {
+  public:
+    /**
+     * @brief Constructor
+     */
+    SDK_API System();
 
-  /**
-   * @brief Destructor
-   */
-  SDK_API ~System();
+    /**
+     * @brief Destructor
+     */
+    SDK_API ~System();
 
-  // Make System movable and non-copyable
-  /**
-   * @brief Move constructor
-   */
-  SDK_API System(System&& op) noexcept;
+    // Make System movable and non-copyable
+    /**
+     * @brief Move constructor
+     */
+    SDK_API System(System &&op) noexcept;
 
-  /**
-   * @brief Move assignment
-   */
-  SDK_API System& operator=(System&& op) noexcept;
+    /**
+     * @brief Move assignment
+     */
+    SDK_API System &operator=(System &&op) noexcept;
 
-public:
-  /**
-   * @brief Populates the given list with Camera objects that correspond to
-   * the available cameras.
-   * @param[out] cameraList - A container to be set with the available cameras
-   * @return Status
-   */
-  SDK_API Status getCameraList(std::vector<std::shared_ptr<Camera>>& cameraList) const;
+  public:
+    /**
+     * @brief Populates the given list with Camera objects that correspond to
+     * the available cameras.
+     * @param[out] cameraList - A container to be set with the available cameras
+     * @return Status
+     */
+    SDK_API Status
+    getCameraList(std::vector<std::shared_ptr<Camera>> &cameraList) const;
 
-  /**
-   * @brief Populates the given list with Camera objects that correspond to
-   * the available cameras from the remote target.
-   * @param[out] cameraList - A container to be set with the available cameras
-   * @param ip - The IP of the remote target
-   * @return Status
-   */
-  SDK_API Status getCameraListAtIp(std::vector<std::shared_ptr<Camera>>& cameraList, const std::string& ip) const;
+    /**
+     * @brief Populates the given list with Camera objects that correspond to
+     * the available cameras from the remote target.
+     * @param[out] cameraList - A container to be set with the available cameras
+     * @param ip - The IP of the remote target
+     * @return Status
+     */
+    SDK_API Status
+    getCameraListAtIp(std::vector<std::shared_ptr<Camera>> &cameraList,
+                      const std::string &ip) const;
 
-private:
-  std::unique_ptr<SystemImpl> m_impl;
+  private:
+    std::unique_ptr<SystemImpl> m_impl;
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // SYSTEM_H
+#endif // SYSTEM_H

@@ -37,43 +37,46 @@
 
 #include <memory>
 
-namespace aditof
-{
+namespace aditof {
+
 /**
  * @class SensorEnumeratorFactory
  * @brief Provides the means to construct different types of sensors enumerators.
  * Based on the connection type (on target, USB, Network), different enumerators need
  * to be used.
  */
-class SDK_API SensorEnumeratorFactory
-{
-public:
-  /**
-   * @brief Factory method to create an enumerator to look for sensors on target.
-   * Factory method will return null if the call is not made on target.
-   * @return std::unique_ptr<SensorEnumeratorInterface>
-   */
-  static std::unique_ptr<SensorEnumeratorInterface> buildTargetSensorEnumerator();
+class SDK_API SensorEnumeratorFactory {
+  public:
+    /**
+     * @brief Factory method to create an enumerator to look for sensors on target.
+     * Factory method will return null if the call is not made on target.
+     * @return std::unique_ptr<SensorEnumeratorInterface>
+     */
+    static std::unique_ptr<SensorEnumeratorInterface>
+    buildTargetSensorEnumerator();
 
-  /**
-   * Factory method to create an enumerator to look for sensors over USB.
-   * @return std::unique_ptr<DeviceEnumeratorInterface>
-   */
-  static std::unique_ptr<SensorEnumeratorInterface> buildUsbSensorEnumerator();
+    /**
+     * Factory method to create an enumerator to look for sensors over USB.
+     * @return std::unique_ptr<DeviceEnumeratorInterface>
+     */
+    static std::unique_ptr<SensorEnumeratorInterface>
+    buildUsbSensorEnumerator();
 
-  /**
-   * Factory method to create an enumerator to look for sensors over network.
-   * @return std::unique_ptr<DeviceEnumeratorInterface>
-   */
-  static std::unique_ptr<SensorEnumeratorInterface> buildNetworkSensorEnumerator(const std::string& ip);
+    /**
+     * Factory method to create an enumerator to look for sensors over network.
+     * @return std::unique_ptr<DeviceEnumeratorInterface>
+     */
+    static std::unique_ptr<SensorEnumeratorInterface>
+    buildNetworkSensorEnumerator(const std::string &ip);
 
-  /**
-   * Factory method to create an offline enumerator.
-   * @return std::unique_ptr<DeviceEnumeratorInterface>
-   */
-  static std::unique_ptr<SensorEnumeratorInterface> buildOfflineSensorEnumerator();
+    /**
+     * Factory method to create an offline enumerator.
+     * @return std::unique_ptr<DeviceEnumeratorInterface>
+     */
+    static std::unique_ptr<SensorEnumeratorInterface>
+    buildOfflineSensorEnumerator();
 };
 
-}  // namespace aditof
+} // namespace aditof
 
-#endif  // SENSOR_ENUMERATOR_FACTORY_H
+#endif // SENSOR_ENUMERATOR_FACTORY_H
