@@ -123,26 +123,26 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
 >    copy the tof libraries from ~/Workspace/ToF/build/sdk/ to adi_3dtof_adtf31xx/libs/ use the below command
 >>```bash
 >> $ cp ~/Workspace/ToF/build/sdk/libaditof.so* ~/ros2_ws/src/adi_3dtof_adtf31xx/libs/ 
+
+>>```bash
+>>$ cd ~/ros2_ws/  
+>> $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release  
 >>```
-3. Ensure rmw settings are updated in the device to support muti-sensor usecases
+>
+>  3. Ensure rmw settings are updated in the device to support muti-sensor usecases
 >>```bash
 >> #Update the default rmw xml profile file to the settings file present inside "rmw_config" foler
 >> $ export FASTRTPS_DEFAULT_PROFILES_FILE= ~/ros2_ws/src/adi_3dtof_adtf31xx/rmw_config/rmw_settings.xml
 >>#Next restart ROS daemon for the profile changes to take effect
 >>$ ros2 daemon stop
 >>```
-- The above mentioned steps for rmw settings setup can also be completed by running the "setup_rmw_settings.sh" script present inside the "rmw_config" folder.
+> - The above mentioned steps for rmw settings setup can also be completed by running the "setup_rmw_settings.sh" script present inside the "rmw_config" folder.
 >>```bash
 >>$ cd ~/ros2_ws/src/adi_3dtof_adtf31xx/rmw_config
 >>$ chmod +x setup_rmw_settings.sh
 >>$ source setup_rmw_settings.sh
 >>```
-Next, Build the code
->>```bash
->>$ cd ~/ros2_ws/  
->> $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release  
->>```
->
+
 >    Note: `/home/analog/ros2_ws/` is set up as the ros2 workspace and this workspace is already sourced in the `~/.bashrc`
 
 7.	Running the ROS Node:
