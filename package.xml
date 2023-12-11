@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>adi_3dtof_adtf31xx</name>
-  <version>1.1.0</version>
+  <version>2.0.0</version>
   <description>The ROS node to capture depth and IR images from ADI's 3D ToF ADTF31xx sensor</description>
   <maintainer email="ros@analog.com">Analog Devices</maintainer>
   <license>BSD</license>

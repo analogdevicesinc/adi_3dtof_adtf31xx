@@ -129,6 +129,20 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
 >> $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release  
 >>```
 >
+>    Note: `/home/analog/ros2_ws/` is set up as the ros2 workspace and this workspace is already sourced in the `~/.bashrc`.
+
+>  **:warning: <span style="color:red">If the above command is stuck in the console then execute below commands**</span> 
+>>```bash
+>> $ cd ~/ros2_ws/build/adi_3dtof_adtf31xx 
+>> $ make -j1
+>>```
+    once the build is successful, run the below commands so that files gets installed in the proper paths.
+>>```bash
+>> $ cd ~/ros2_ws/
+>> $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+>> $ source install/setup.bash
+>>```
+
 >  3. Ensure rmw settings are updated in the device to support muti-sensor usecases
 >>```bash
 >> #Update the default rmw xml profile file to the settings file present inside "rmw_config" foler

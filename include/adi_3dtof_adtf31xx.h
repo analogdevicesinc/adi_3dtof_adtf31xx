@@ -107,7 +107,7 @@ public:
     // ab threshold to be set to device
     rcl_interfaces::msg::ParameterDescriptor ab_threshold_descriptor{};
     rcl_interfaces::msg::IntegerRange ab_threshold_range;
-    ab_threshold_range.set__from_value(1).set__to_value(255).set__step(1);
+    ab_threshold_range.set__from_value(1).set__to_value(255);
     ab_threshold_descriptor.integer_range = {ab_threshold_range};
     ab_threshold_descriptor.description = "Set ab threshold value to device";
     this->declare_parameter<int>("param_ab_threshold", 10, ab_threshold_descriptor);
@@ -115,7 +115,7 @@ public:
     // confidence threshold to be set to device
     rcl_interfaces::msg::ParameterDescriptor confidence_threshold_descriptor{};
     rcl_interfaces::msg::IntegerRange confidence_threshold_range;
-    confidence_threshold_range.set__from_value(1).set__to_value(255).set__step(1);
+    confidence_threshold_range.set__from_value(1).set__to_value(255);
     confidence_threshold_descriptor.integer_range = {confidence_threshold_range};
     confidence_threshold_descriptor.description = "Set confidence threshold value to device";
     this->declare_parameter<int>("param_confidence_threshold", 10, confidence_threshold_descriptor);
