@@ -7,7 +7,7 @@ and its licensors.
 #define MODULE_PROFILE_H
 
 #ifdef ENABLE_FUNCTION_PROFILING
-extern volatile int* pprof_buff;
+extern volatile int * pprof_buff;
 void dumpFunctionParams(int ID);
 void initProfile(void);
 void closeProfile(void);
@@ -30,8 +30,8 @@ void flushProfile(void);
 #endif /* !ENABLE_FUNCTION_PROFILING */
 
 #ifdef PARSE_FUNCTION
-#define PROFILE_ID_START()                                                                                             \
-  void profile_id_init(void)                                                                                           \
+#define PROFILE_ID_START()   \
+  void profile_id_init(void) \
   {
 #define PROFILE_ID_END() }
 #define PROFILE_ID(id_name, id_num) profiles[id_num].func_name = #id_name;
@@ -48,7 +48,7 @@ PROFILE_ID_START()
 PROFILE_ID(adtf31xx_readNextFrame, 0)
 PROFILE_ID(publish_PointCloud, 1)
 PROFILE_ID(adtf31xx_computePointCloud, 2)
-PROFILE_ID(adtf31xx_irFrameCompression, 3)
+PROFILE_ID(adtf31xx_abFrameCompression, 3)
 PROFILE_ID(adtf31xx_depthFrameCompression, 4)
 PROFILE_ID(Publish_CompressImg, 5)
 PROFILE_ID(readInput_Thread, 6)

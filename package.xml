@@ -1,20 +1,11 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>adi_3dtof_adtf31xx</name>
-  <version>1.0.0</version>
-  <description>The ROS node to capture depth and IR images from ADI's 3D ToF ADTF31xx sensor</description>
-
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
-  <!-- Example:  -->
-  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <version>2.1.0</version>
+  <description>The ROS node to capture depth and AB images from ADI's 3D ToF ADTF31xx sensor</description>
   <maintainer email="ros@analog.com">Analog Devices</maintainer>
-
-
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
   <license>BSD</license>
-
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
@@ -48,52 +39,33 @@
   <!--   <test_depend>gtest</test_depend> -->
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>cv_bridge</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>eigen_conversions</build_depend>
-  <build_depend>image_geometry</build_depend>
-  <build_depend>image_transport</build_depend>
-  <build_depend>tf2</build_depend>
-  <build_depend>tf2_ros</build_depend>
-  <build_depend>dynamic_reconfigure</build_depend>
-  <build_depend>image_view</build_depend>
-  <build_depend>tf2_geometry_msgs</build_depend>
-  <build_depend>compressed_depth_image_transport</build_depend>
-  <build_depend>pcl_ros</build_depend>
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>cv_bridge</build_export_depend>
-  <build_export_depend>std_msgs</build_export_depend>
-  <build_export_depend>sensor_msgs</build_export_depend>
-  <build_export_depend>eigen_conversions</build_export_depend>
-  <build_export_depend>image_geometry</build_export_depend>
-  <build_export_depend>image_transport</build_export_depend>
-  <build_export_depend>tf2</build_export_depend>
-  <build_export_depend>tf2_ros</build_export_depend>
-  <build_export_depend>image_view</build_export_depend>
-  <build_export_depend>tf2_geometry_msgs</build_export_depend>
-  <build_export_depend>compressed_depth_image_transport</build_export_depend>
-  <build_export_depend>pcl_ros</build_export_depend>
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>cv_bridge</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>eigen_conversions</exec_depend>
-  <exec_depend>image_geometry</exec_depend>
-  <exec_depend>image_transport</exec_depend>
-  <exec_depend>tf2</exec_depend>
-  <exec_depend>tf2_ros</exec_depend>
-  <exec_depend>dynamic_reconfigure</exec_depend>
-  <exec_depend>image_view</exec_depend>
-  <exec_depend>tf2_geometry_msgs</exec_depend>
-  <exec_depend>compressed_depth_image_transport</exec_depend>
-  <exec_depend>pcl_ros</exec_depend>
 
-  <!-- The export tag contains other, unspecified, tags -->
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>libaditof</depend>
+  <depend>std_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>sensor_msgs</depend>
+  <depend>image_geometry</depend>
+  <depend>image_transport</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>pcl_ros</depend>  
+  <depend>compressed_depth_image_transport</depend>
+  <depend>tf2_eigen</depend>
+  <depend>rosbag2_cpp</depend>
+
+  <exec_depend>ros2launch</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+
   <export>
     <!-- Other tools can request additional information be placed here -->
-
-  </export>
+    <build_type>ament_cmake</build_type>
+  </export> 
 </package>

@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-    <!-- Launch rqt GUI -->
-    <node name="rqt_gui_launch" pkg="rqt_gui" type="rqt_gui" output="screen" args="--perspective-file $(find adi_3dtof_adtf31xx)/rqt_config/adi_3dtof_adtf31xx_rqt.perspective">
-    </node>
-
-</launch>

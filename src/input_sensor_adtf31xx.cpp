@@ -5,11 +5,15 @@ and its licensors.
 ******************************************************************************/
 
 #include "input_sensor_adtf31xx.h"
-#include "aditof/camera.h"
-#include "aditof/frame.h"
-#include "aditof/system.h"
-#include <ros/ros.h>
+
 #include <fstream>
+
+#include "aditof/camera.h"
+#include "aditof/depth_sensor_interface.h"
+#include "aditof/frame.h"
+#include "aditof/sensor_definitions.h"
+#include "aditof/system.h"
+#include "aditof/version.h"
 
 using aditof::Status;
 
@@ -22,37 +26,51 @@ using aditof::Status;
  * @param processing_scale scale factor for image and camera intrinsics
  * @param config_file_name path of configuration json file for ToF SDK.
  */
-void InputSensorADTF31XX::openSensor(std::string /*sensor_name*/, int input_image_width, int input_image_height,
-                                     int processing_scale, std::string config_file_name)
+void InputSensorADTF31XX::openSensor(
+  std::string /*sensor_name*/, int input_image_width, int input_image_height,
+  std::string config_file_name, std::string input_sensor_ip)
 {
   sensor_open_flag_ = false;
 
   // realtime mode
   Status status = Status::OK;
   aditof::System system;
-
   std::vector<std::shared_ptr<aditof::Camera>> cameras;
-  system.getCameraList(cameras);
-  if (cameras.empty())
-  {
-    ROS_ERROR("No cameras found");
+
+  if (!input_sensor_ip.empty()) {
+    std::string ip = "ip:" + input_sensor_ip;
+    system.getCameraList(cameras, ip);
+  } else {
+    system.getCameraList(cameras);
+  }
+
+  if (cameras.empty()) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "No cameras found");
     return;
   }
 
   camera_ = cameras.front();
 
-  // user can pass any config.json stored anywhere in HW
-  status = camera_->setControl("initialization_config", config_file_name);
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not set the initialization config file!");
-    return;
+  // Registering a callback to be executed when ADSD3500 issues an interrupt
+  std::shared_ptr<aditof::DepthSensorInterface> sensor = camera_->getSensor();
+  aditof::SensorInterruptCallback callback = [](aditof::Adsd3500Status status) {
+    if (status == aditof::Adsd3500Status::OK) {
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Hardware interrupt message received: Status::OK");
+    } else {
+      RCLCPP_ERROR(
+        rclcpp::get_logger("rclcpp"), "Hardware interrupt error received! Stopping node..");
+      rclcpp::shutdown();
+    }
+  };
+
+  Status registerCbStatus = sensor->adsd3500_register_interrupt_callback(callback);
+  if (registerCbStatus != Status::OK) {
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Could not register callback");
   }
 
-  status = camera_->initialize();
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not initialize camera!");
+  status = camera_->initialize(config_file_name);
+  if (status != Status::OK) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not initialize camera!");
     return;
   }
 
@@ -60,7 +78,6 @@ void InputSensorADTF31XX::openSensor(std::string /*sensor_name*/, int input_imag
 
   frame_width_ = input_image_width;
   frame_height_ = input_image_height;
-  input_scale_factor_ = processing_scale;
 
   // Clear camera parameters.
   memset(&camera_intrinsics_, 0, sizeof(camera_intrinsics_));
@@ -71,30 +88,36 @@ void InputSensorADTF31XX::openSensor(std::string /*sensor_name*/, int input_imag
 /**
  * @brief Configures the camera
  *
- * @param frame_type frame type
+ * @param camera_mode camera_mode
  */
-void InputSensorADTF31XX::configureSensor(std::string frame_type)
+void InputSensorADTF31XX::configureSensor(int camera_mode)
 {
   Status status = Status::OK;
   aditof::System system;
 
-  std::vector<std::string> frame_types;
-  camera_->getAvailableFrameTypes(frame_types);
-  if (frame_types.empty())
-  {
-    ROS_ERROR("no frame type avaialble!");
+  std::vector<uint8_t> available_modes;
+  camera_->getAvailableModes(available_modes);
+  if (available_modes.empty()) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Camera Mode not avaialble!");
     return;
   }
 
   aditof::CameraDetails camera_details;
   camera_->getDetails(camera_details);
 
-  std::cout << "Cx, Cy : " << camera_details.intrinsics.cx << ", " << camera_details.intrinsics.cy << std::endl;
-  std::cout << "Fx, Fy : " << camera_details.intrinsics.fx << ", " << camera_details.intrinsics.fy << std::endl;
-  std::cout << "K1, K2 : " << camera_details.intrinsics.k1 << ", " << camera_details.intrinsics.k2 << std::endl;
-  std::cout << "K3, K4 : " << camera_details.intrinsics.k3 << ", " << camera_details.intrinsics.k4 << std::endl;
-  std::cout << "K5, K6 : " << camera_details.intrinsics.k5 << ", " << camera_details.intrinsics.k6 << std::endl;
-  std::cout << "P1, P2 : " << camera_details.intrinsics.p1 << ", " << camera_details.intrinsics.p2 << std::endl;
+  std::cout << std::endl << "Camera Parameters:" << std::endl;
+  std::cout << "Cx, Cy : " << camera_details.intrinsics.cx << ", " << camera_details.intrinsics.cy
+            << std::endl;
+  std::cout << "Fx, Fy : " << camera_details.intrinsics.fx << ", " << camera_details.intrinsics.fy
+            << std::endl;
+  std::cout << "K1, K2 : " << camera_details.intrinsics.k1 << ", " << camera_details.intrinsics.k2
+            << std::endl;
+  std::cout << "K3, K4 : " << camera_details.intrinsics.k3 << ", " << camera_details.intrinsics.k4
+            << std::endl;
+  std::cout << "K5, K6 : " << camera_details.intrinsics.k5 << ", " << camera_details.intrinsics.k6
+            << std::endl;
+  std::cout << "P1, P2 : " << camera_details.intrinsics.p1 << ", " << camera_details.intrinsics.p2
+            << std::endl;
 
   // Camera matrix = [fx, 0, cx, 0, fy, cy, 0, 0, 1]
   camera_intrinsics_.camera_matrix[0] = camera_details.intrinsics.fx;
@@ -119,17 +142,38 @@ void InputSensorADTF31XX::configureSensor(std::string frame_type)
   camera_intrinsics_.distortion_coeffs[6] = camera_details.intrinsics.k5;
   camera_intrinsics_.distortion_coeffs[7] = camera_details.intrinsics.k6;
 
-  status = camera_->setFrameType(frame_type);
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not set camera frame type!");
+  status = camera_->setMode(camera_mode);
+  if (status != Status::OK) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not set camera mode!");
     return;
   }
 
+  aditof::DepthSensorModeDetails depth_sensor_details;
+  std::shared_ptr<aditof::DepthSensorInterface> sensor = camera_->getSensor();
+
+  aditof::Status st = sensor->getModeDetails(camera_mode, depth_sensor_details);
+  if (st != aditof::Status::OK) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to get mode details!");
+    return;
+  }
+
+  setFrameWidth(depth_sensor_details.baseResolutionWidth);
+  setFrameHeight(depth_sensor_details.baseResolutionHeight);
+
+  // Set the scale factor
+  if (
+    (depth_sensor_details.baseResolutionWidth == 1024 &&
+     depth_sensor_details.baseResolutionHeight == 1024) ||
+    (depth_sensor_details.baseResolutionWidth == 512 &&
+     depth_sensor_details.baseResolutionHeight == 640)) {
+    setProcessingScale(1);
+  } else {
+    setProcessingScale(2);
+  }
+
   status = camera_->start();
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not start the camera!");
+  if (status != Status::OK) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not start the camera!");
     return;
   }
 
@@ -141,7 +185,7 @@ void InputSensorADTF31XX::configureSensor(std::string frame_type)
  *
  * @param camera_intrinsics camera intrinsics of ToF module.
  */
-void InputSensorADTF31XX::getIntrinsics(CameraIntrinsics* camera_intrinsics)
+void InputSensorADTF31XX::getIntrinsics(CameraIntrinsics * camera_intrinsics)
 {
   *camera_intrinsics = camera_intrinsics_;
 
@@ -158,49 +202,70 @@ void InputSensorADTF31XX::getIntrinsics(CameraIntrinsics* camera_intrinsics)
  * @brief reads frame from ToF SDK
  *
  * @param depth_frame pointer to get depth frame
- * @param ir_frame pointer to get ir frame
+ * @param ab_frame pointer to get ab frame
  * @return true if read is successful
  * @return false if read is not successful
  */
 
-bool InputSensorADTF31XX::readNextFrame(unsigned short* depth_frame, unsigned short* ir_frame)
+bool InputSensorADTF31XX::readNextFrame(
+  unsigned short * depth_frame, unsigned short * ab_frame, unsigned short * conf_frame,
+  short * xyz_frame)
 {
   aditof::Frame frame;
 
   Status status = camera_->requestFrame(&frame);
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not request frame!");
+
+  if (status != Status::OK) {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not request frame!");
     return false;
   }
+
+  int frame_width = frame_width_;
+  int frame_height = frame_height_;
 
   // Depth
-  uint16_t* depth_frame_src;
-  status = frame.getData("depth", &depth_frame_src);
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not get depth data!");
-    return false;
+  if (depth_frame != nullptr) {
+    uint16_t * depth_frame_src;
+    status = frame.getData("depth", &depth_frame_src);
+    if (status != Status::OK) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not get depth data!");
+      return false;
+    }
+    memcpy(depth_frame, depth_frame_src, frame_width * frame_height * bytes_per_pixel_);
   }
-  int frame_width = frame_width_ / input_scale_factor_;
-  int frame_height = frame_height_ / input_scale_factor_;
 
-  // Copy Depth
-  memcpy(depth_frame, depth_frame_src, frame_width * frame_height * bytes_per_pixel_);
-
-  // IR
-  unsigned short* ir_frame_src;
-  status = frame.getData("ir", &ir_frame_src);
-  if (status != Status::OK)
-  {
-    ROS_ERROR("Could not get ir data!");
-    return false;
+  // AB
+  if (ab_frame != nullptr) {
+    unsigned short * ab_frame_src;
+    status = frame.getData("ab", &ab_frame_src);
+    if (status != Status::OK) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not get ab data!");
+      return false;
+    }
+    memcpy(ab_frame, ab_frame_src, frame_width * frame_height * bytes_per_pixel_);
   }
-  memcpy(ir_frame, ir_frame_src, frame_width * frame_height * bytes_per_pixel_);
 
   // Confidence image
-  // unsigned char* confidence_img = (unsigned char*)&ir_frame_src[frame_width * frame_height];
-  // memcpy(conf_frame, confidence_img, frame_width * frame_height);
+  if (conf_frame != nullptr) {
+    uint16_t * conf_frame_src;
+    status = frame.getData("conf", &conf_frame_src);
+    if (status != Status::OK) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not get confidence data!");
+      return false;
+    }
+    memcpy(conf_frame, conf_frame_src, frame_width * frame_height * bytes_per_pixel_);
+  }
+
+  // XYZ image
+  if (xyz_frame != nullptr) {
+    short * xyz_frame_src;
+    status = frame.getData("xyz", (unsigned short int **)&xyz_frame_src);
+    if (status != Status::OK) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Could not get XYZ data!");
+      return false;
+    }
+    memcpy(xyz_frame, xyz_frame_src, frame_width * frame_height * 3 * sizeof(short));
+  }
 
   return true;
 }
@@ -210,9 +275,9 @@ bool InputSensorADTF31XX::readNextFrame(unsigned short* depth_frame, unsigned sh
  *
  */
 
-bool InputSensorADTF31XX::getFrameTimestamp(ros::Time* timestamp)
+bool InputSensorADTF31XX::getFrameTimestamp(rclcpp::Time * timestamp)
 {
-  *timestamp = ros::Time::now();
+  *timestamp = rclcpp::Clock{}.now();
   return true;
 }
 
@@ -222,7 +287,7 @@ bool InputSensorADTF31XX::getFrameTimestamp(ros::Time* timestamp)
  * @param camera_extrinsics Camera extrinsics
  */
 
-void InputSensorADTF31XX::getExtrinsics(CameraExtrinsics* camera_extrinsics)
+void InputSensorADTF31XX::getExtrinsics(CameraExtrinsics * camera_extrinsics)
 {
   camera_extrinsics->rotation_matrix[0] = 1.0f;
   camera_extrinsics->rotation_matrix[1] = 0.0f;
@@ -247,7 +312,7 @@ void InputSensorADTF31XX::getExtrinsics(CameraExtrinsics* camera_extrinsics)
  */
 void InputSensorADTF31XX::closeSensor()
 {
-  ROS_INFO("Stopping the Camera");
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Stopping the Camera");
   camera_->stop();
   return;
 }
@@ -271,5 +336,49 @@ void InputSensorADTF31XX::setABinvalidationThreshold(int threshold)
 void InputSensorADTF31XX::setConfidenceThreshold(int threshold)
 {
   camera_->adsd3500SetConfidenceThreshold(threshold);
+  return;
+}
+
+/**
+ * @brief sets the state of JBLF filter
+ *
+ * @param enable_jblf_filter parameter to enable or disable JBLF filter
+ */
+void InputSensorADTF31XX::setJBLFFilterState(bool enable_jblf_filter)
+{
+  camera_->adsd3500SetJBLFfilterEnableState(enable_jblf_filter);
+  return;
+}
+
+/**
+ * @brief sets the size of JBLF filter
+ *
+ * @param jbfl_filter_size parameter to set JBLF filter size
+ */
+void InputSensorADTF31XX::setJBLFFilterSize(int jbfl_filter_size)
+{
+  camera_->adsd3500SetJBLFfilterSize(jbfl_filter_size);
+  return;
+}
+
+/**
+ * @brief sets the minimum threshold for radial filter
+ *
+ * @param radial_threshold_min parameter to set minimum threshold for radial filter
+ */
+void InputSensorADTF31XX::setRadialFilterMinThreshold(int radial_min_threshold)
+{
+  camera_->adsd3500SetRadialThresholdMin(radial_min_threshold);
+  return;
+}
+
+/**
+ * @brief sets the maximum threshold for radial filter
+ *
+ * @param radial_threshold_max parameter to set maximum threshold for radial filter
+ */
+void InputSensorADTF31XX::setRadialFilterMaxThreshold(int radial_max_threshold)
+{
+  camera_->adsd3500SetRadialThresholdMax(radial_max_threshold);
   return;
 }
