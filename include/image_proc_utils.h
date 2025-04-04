@@ -7,7 +7,11 @@ and its licensors.
 #ifndef IMAGE_PROC_UTILS_H
 #define IMAGE_PROC_UTILS_H
 
+#ifdef ROS_HUMBLE
 #include <cv_bridge/cv_bridge.h>
+#else
+#include <cv_bridge/cv_bridge.hpp>
+#endif
 
 #include <cmath>
 #include <opencv2/calib3d.hpp>
@@ -63,10 +67,10 @@ public:
       camera_intrinsics->distortion_coeffs[4], camera_intrinsics->distortion_coeffs[5],
       camera_intrinsics->distortion_coeffs[6], camera_intrinsics->distortion_coeffs[7]};
 
-    cv::Mat K_raw = cv::Mat(3, 3, CV_64F, k_raw_array);
-    cv::Mat D_raw = cv::Mat(1, 8, CV_64F, d_raw_array);
+    cv::Mat k_raw = cv::Mat(3, 3, CV_64F, k_raw_array);
+    cv::Mat d_raw = cv::Mat(1, 8, CV_64F, d_raw_array);
     cv::Size img_size(image_width_, image_height_);
-    cv::Mat K_rect = cv::getOptimalNewCameraMatrix(K_raw, D_raw, img_size, 0, img_size, nullptr);
+    cv::Mat k_rect = cv::getOptimalNewCameraMatrix(k_raw, d_raw, img_size, 0, img_size, nullptr);
 
     // Prepare the rectification maps
     cv::Mat r = cv::Mat::eye(3, 3, CV_32F);
@@ -78,7 +82,7 @@ public:
         cv::Mat distorted_pt(1, 1, CV_32FC2, cv::Scalar(x, y));
         cv::Mat undistorted_pt(1, 1, CV_32FC2);
 
-        cv::undistortPoints(distorted_pt, undistorted_pt, K_raw, D_raw);
+        cv::undistortPoints(distorted_pt, undistorted_pt, k_raw, d_raw);
 
         float ux = undistorted_pt.at<float>(0);
         float uy = undistorted_pt.at<float>(1);

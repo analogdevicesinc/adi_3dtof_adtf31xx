@@ -64,10 +64,31 @@ void ADI3DToFADTF31xx::readInput()
       new ADI3DToFADTF31xxFrameInfo(image_width_, image_height_);
     if (new_frame != nullptr) {
       PROFILE_FUNCTION_START(readInput_Thread)
-      bool result =
-        input_sensor_->readNextFrame(new_frame->getDepthFrame(), new_frame->getIRFrame());
+      unsigned short * depth_frame = new_frame->getDepthFrame();
+      unsigned short * ab_frame = new_frame->getABFrame();
+      unsigned short * conf_frame = new_frame->getConfFrame();
+      short * xyz_frame = new_frame->getXYZFrame();
+
+      //Set input pointer to nullptr if the corresponding publish is not enabled
+      if (!enable_depth_publish_) {
+        depth_frame = nullptr;
+      }
+      if (!enable_ab_publish_) {
+        ab_frame = nullptr;
+      }
+      if (!enable_conf_publish_) {
+        conf_frame = nullptr;
+      }
+      if (!enable_xyz_publish_) {
+        xyz_frame = nullptr;
+      }
+
+      // Read the frame
+      bool result = input_sensor_->readNextFrame(depth_frame, ab_frame, conf_frame, xyz_frame);
+      // Get the timestamp
       input_sensor_->getFrameTimestamp(new_frame->getFrameTimestampPtr());
       PROFILE_FUNCTION_END(readInput_Thread)
+      // Check if the read was successful
       if (!result) {
         // free memory
         delete new_frame;

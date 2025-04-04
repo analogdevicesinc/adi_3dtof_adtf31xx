@@ -107,7 +107,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /cam1/raw_ir_image
+        Value: /cam1/raw_ab_image
       Value: true
     - Class: rviz_default_plugins/Axes
       Enabled: true

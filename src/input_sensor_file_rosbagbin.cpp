@@ -21,16 +21,14 @@ and its licensors.
  * @param config_file_name config file name of ToF SDK is not used as this is file io mode.
  */
 void InputSensorFileRosbagBin::openSensor(
-  std::string sensor_name, int input_image_width, int input_image_height, int processing_scale,
-  std::string /*config_file_name*/)
+  std::string sensor_name, int input_image_width, int input_image_height,
+  std::string /*config_file_name*/, std::string /*input_sensor_ip*/)
 {
   in_file_name_ = sensor_name;
   frame_counter_ = 0;
   sensor_open_flag_ = false;
   frame_width_ = input_image_width;
   frame_height_ = input_image_height;
-  processing_scale_ = processing_scale;
-  input_scale_factor_ = processing_scale_;
 
   // Open file for streaming.
   in_file_.open(sensor_name, std::ifstream::binary);
@@ -43,9 +41,9 @@ void InputSensorFileRosbagBin::openSensor(
 /**
  * @brief Configures the sensor
  *
- * @param frame_type frame type, not used in file-io mode
+ * @param camera_mode camera mode, not used in file-io mode
  */
-void InputSensorFileRosbagBin::configureSensor(std::string /*frame_type*/)
+void InputSensorFileRosbagBin::configureSensor(int /*camera_mode*/)
 {
   total_frames_ = 0;
   if (in_file_.is_open()) {
@@ -60,8 +58,10 @@ void InputSensorFileRosbagBin::configureSensor(std::string /*frame_type*/)
     header_ptr += 4;  // skipping head byte
     memcpy(&input_frame_width_, header_ptr, sizeof(uint32_t));
     header_ptr += 4;
+    printf("input_frame_width= %d \n", input_frame_width_);
     memcpy(&input_frame_height_, header_ptr, sizeof(uint32_t));
     header_ptr += 4;
+    printf("input_frame_height= %d \n", input_frame_height_);
     memcpy(&bytes_per_pixel_, header_ptr, sizeof(uint32_t));
     header_ptr += 4;
     memcpy(&header_version_, header_ptr, sizeof(uint32_t));
@@ -75,21 +75,24 @@ void InputSensorFileRosbagBin::configureSensor(std::string /*frame_type*/)
 
     in_file_.read((char *)cam_info_buffer_, first_frame_pos - 36);  // 36 bytes header excluded
     uint8_t * cam_info_ptr = cam_info_buffer_;
-    if (input_frame_width_ == 512 && input_frame_height_ == 512) {
+    if (
+      (input_frame_width_ == 1024 && input_frame_height_ == 1024) ||
+      (input_frame_width_ == 512 && input_frame_height_ == 640)) {
       processing_scale_ = 1;
       setProcessingScale(processing_scale_);
-      // Scale Intrinsics
-      camera_intrinsics_.camera_matrix[0] /= 2;
-      camera_intrinsics_.camera_matrix[2] /= 2;
-      camera_intrinsics_.camera_matrix[4] /= 2;
-      camera_intrinsics_.camera_matrix[5] /= 2;
-      // Setting frame width and height for data processing
-      setFrameWidth(512);
-      setFrameHeight(512);
     } else {
       processing_scale_ = 2;
       setProcessingScale(processing_scale_);
     }
+
+    // Scale Intrinsics
+    camera_intrinsics_.camera_matrix[0] /= input_scale_factor_;
+    camera_intrinsics_.camera_matrix[2] /= input_scale_factor_;
+    camera_intrinsics_.camera_matrix[4] /= input_scale_factor_;
+    camera_intrinsics_.camera_matrix[5] /= input_scale_factor_;
+
+    setFrameWidth(input_frame_width_);
+    setFrameHeight(input_frame_height_);
 
     // Reading camera info
 
@@ -133,7 +136,7 @@ void InputSensorFileRosbagBin::configureSensor(std::string /*frame_type*/)
       for (int i = 0; i < 8; i++) {
         camera_intrinsics_.distortion_coeffs[i] = (float)d_cam[i + 8];
       }
-    } else if (header_version_ == 2) {
+    } else if (header_version_ >= 2) {
       for (int i = 0; i < 8; i++) {
         camera_intrinsics_.distortion_coeffs[i] = (float)d_cam[i];
       }
@@ -169,14 +172,15 @@ void InputSensorFileRosbagBin::getExtrinsics(CameraExtrinsics * camera_extrinsic
 /**
  * @brief reads next frame
  *
- * @param scaled_depth_frame pointer to read depth frame
- * @param scaled_ir_frame pointer to read ir frame
+ * @param out_depth_frame pointer to read depth frame
+ * @param out_ab_frame pointer to read ab frame
 
  * @return true if reading next frame is successful.
  * @return false if reading next frame is failure.
  */
 bool InputSensorFileRosbagBin::readNextFrame(
-  unsigned short * scaled_depth_frame, unsigned short * scaled_ir_frame)
+  unsigned short * out_depth_frame, unsigned short * out_ab_frame, __attribute__((unused)) unsigned short * out_conf_frame,
+  __attribute__((unused)) short * out_xyz_frame)
 {
   // Read next frame
 
@@ -185,16 +189,28 @@ bool InputSensorFileRosbagBin::readNextFrame(
 
   int num_samples_in_frame = input_frame_width_ * input_frame_height_;
   int num_bytes_in_combo_frame =
-    ((num_samples_in_frame * bytes_per_pixel_) + 8) * 2;  // 9 header bytes per frame
+    ((num_samples_in_frame * bytes_per_pixel_) + 8) * 2;  // 8 header bytes per frame
   char * frame_buffer = new char[num_bytes_in_combo_frame];
   bool error_reading_frame = false;
 
   // Allocate memory
   unsigned short * depth_frame = new unsigned short[num_samples_in_frame];
-  unsigned short * ir_frame = new unsigned short[num_samples_in_frame];
+  unsigned short * ab_frame = new unsigned short[num_samples_in_frame];
 
-  assert(scaled_depth_frame != nullptr);
-  assert(scaled_ir_frame != nullptr);
+  assert(out_depth_frame != nullptr);
+  assert(out_ab_frame != nullptr);
+
+  if (header_version_ >= 3) {
+    // Version 3 and above would have confidence image as well
+    num_bytes_in_combo_frame += ((num_samples_in_frame * bytes_per_pixel_) + 8);
+    assert(out_conf_frame != nullptr);
+  }
+
+  if (header_version_ == 4) {
+    // Version 4 will have xyz image as well
+    num_bytes_in_combo_frame += (num_samples_in_frame * bytes_per_pixel_ * 3);
+    assert(out_xyz_frame != nullptr);
+  }
 
   if (in_file_.is_open() && (frame_counter_ < total_frames_)) {
     in_file_.read(frame_buffer, num_bytes_in_combo_frame);
@@ -213,25 +229,25 @@ bool InputSensorFileRosbagBin::readNextFrame(
   uint8_t * pframe_buffer_ptr = reinterpret_cast<uint8_t *>(frame_buffer);
   uint8_t * ptemp_frame_buffer_ptr;
   bool read_pass = false;
-  uint64_t timestamp_ir, timestamp_depth;
+  uint64_t timestamp_ab, timestamp_depth;
   if (!error_reading_frame) {
     while (!read_pass) {
       ptemp_frame_buffer_ptr = pframe_buffer_ptr;
       memcpy(&timestamp_depth, ptemp_frame_buffer_ptr, sizeof(uint64_t));
       ptemp_frame_buffer_ptr += 8;  // skipping frame header
-      // Copy depth data and ir data
+      // Copy depth data and ab data
       // First comes depth frame,
       memcpy(depth_frame, ptemp_frame_buffer_ptr, num_samples_in_frame * bytes_per_pixel_);
-      pframe_buffer_ptr += 8 + (num_samples_in_frame * bytes_per_pixel_);  // proceeding to ir data
+      pframe_buffer_ptr += 8 + (num_samples_in_frame * bytes_per_pixel_);  // proceeding to ab data
       ptemp_frame_buffer_ptr = pframe_buffer_ptr;
-      memcpy(&timestamp_ir, ptemp_frame_buffer_ptr, sizeof(uint64_t));
-      if (timestamp_ir == timestamp_depth) {
+      memcpy(&timestamp_ab, ptemp_frame_buffer_ptr, sizeof(uint64_t));
+      if (timestamp_ab == timestamp_depth) {
         ptemp_frame_buffer_ptr += 8;  // skipping frame header
-        // followed by ir frame.
-        memcpy(ir_frame, ptemp_frame_buffer_ptr, num_samples_in_frame * bytes_per_pixel_);
+        // followed by ab frame.
+        memcpy(ab_frame, ptemp_frame_buffer_ptr, num_samples_in_frame * bytes_per_pixel_);
         pframe_buffer_ptr += 8 + (num_samples_in_frame * bytes_per_pixel_);
         read_pass = true;
-        frame_timestamp_ = timestamp_ir;
+        frame_timestamp_ = timestamp_ab;
       }
     }
   }
@@ -243,26 +259,28 @@ bool InputSensorFileRosbagBin::readNextFrame(
     // delete memory
     delete[] frame_buffer;
     delete[] depth_frame;
-    delete[] ir_frame;
+    delete[] ab_frame;
     return false;
   }
 
   unsigned short * temp_depth_frame = depth_frame;
-  unsigned short * temp_ir_frame = ir_frame;
+  unsigned short * temp_ab_frame = ab_frame;
 
-  for (unsigned int i = 0; i < input_frame_height_; i += input_scale_factor_) {
-    for (unsigned int j = 0; j < input_frame_width_; j += input_scale_factor_) {
-      *scaled_depth_frame++ = temp_depth_frame[j];
-      *scaled_ir_frame++ = temp_ir_frame[j];
+  for (unsigned int i = 0; i < input_frame_height_; i++) {
+    for (unsigned int j = 0; j < input_frame_width_; j++) {
+      *out_depth_frame++ = temp_depth_frame[j];
+      *out_ab_frame++ = temp_ab_frame[j];
     }
-    // Skip rows.
-    temp_depth_frame += (input_frame_width_ * input_scale_factor_);
-    temp_ir_frame += (input_frame_width_ * input_scale_factor_);
+
+    temp_depth_frame += (input_frame_width_);
+    temp_ab_frame += (input_frame_width_);
   }
+
+  //Compute XYZ
 
   delete[] frame_buffer;
   delete[] depth_frame;
-  delete[] ir_frame;
+  delete[] ab_frame;
 
   return true;
 }

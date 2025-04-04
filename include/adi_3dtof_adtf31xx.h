@@ -6,9 +6,13 @@ and its licensors.
 #ifndef ADI_3DTOF_ADTF31XX__H
 #define ADI_3DTOF_ADTF31XX__H
 
-#include <compressed_depth_image_transport/compression_common.h>
+#ifdef ROS_HUMBLE
 #include <cv_bridge/cv_bridge.h>
 #include <image_geometry/pinhole_camera_model.h>
+#else
+#include <cv_bridge/cv_bridge.hpp>
+#include <image_geometry/pinhole_camera_model.hpp>
+#endif
 #include <sensor_msgs/msg/image.h>
 #include <sensor_msgs/msg/point_cloud2.h>
 
@@ -29,6 +33,7 @@ and its licensors.
 #include "input_sensor_factory.h"
 #include "module_profile.h"
 #include "ros-perception/image_transport_plugins/compressed_depth_image_transport/rvl_codec.h"
+#include "ros-perception/image_transport_plugins/compressed_depth_image_transport/compression_common.h"
 
 using namespace std::chrono_literals;
 namespace enc = sensor_msgs::image_encodings;
@@ -83,13 +88,42 @@ public:
     this->declare_parameter<std::string>(
       "param_input_file_name", "no name", input_file_name_descriptor);
 
-    // Enable option to publish depth and ir compressed image
-    rcl_interfaces::msg::ParameterDescriptor enable_depth_ir_compressed_image_descriptor{};
-    enable_depth_ir_compressed_image_descriptor.read_only = true;
-    enable_depth_ir_compressed_image_descriptor.description =
+    // Enable option to publish depth and ab compressed image
+    rcl_interfaces::msg::ParameterDescriptor enable_depth_ab_compressed_image_descriptor{};
+    enable_depth_ab_compressed_image_descriptor.read_only = true;
+    enable_depth_ab_compressed_image_descriptor.description =
       "Unchecked: Publishes uncompressed images, Checked: Publishes compressed images";
     this->declare_parameter<bool>(
-      "param_enable_depth_ir_compression", false, enable_depth_ir_compressed_image_descriptor);
+      "param_enable_depth_ab_compression", false, enable_depth_ab_compressed_image_descriptor);
+
+    // Enable option to publish depth image
+    rcl_interfaces::msg::ParameterDescriptor enable_depth_image_publish_descriptor{};
+    enable_depth_image_publish_descriptor.read_only = true;
+    enable_depth_image_publish_descriptor.description =
+      "Unchecked: Do not publish depth image, Checked: Publish depth image";
+    this->declare_parameter<bool>(
+      "param_enable_depth_publish", true, enable_depth_image_publish_descriptor);
+
+    // Enable option to publish ab image
+    rcl_interfaces::msg::ParameterDescriptor enable_ab_image_publish_descriptor{};
+    enable_ab_image_publish_descriptor.description =
+      "Unchecked: Do not publish ab image, Checked: Publish ab image";
+    this->declare_parameter<bool>(
+      "param_enable_ab_publish", true, enable_ab_image_publish_descriptor);
+
+    // Enable option to publish confidence image
+    rcl_interfaces::msg::ParameterDescriptor enable_conf_image_publish_descriptor{};
+    enable_conf_image_publish_descriptor.description =
+      "Unchecked: Do not publish confidence image, Checked: Publish confidence image";
+    this->declare_parameter<bool>(
+      "param_enable_conf_publish", true, enable_conf_image_publish_descriptor);
+
+    // Enable option to publish xyz image
+    rcl_interfaces::msg::ParameterDescriptor enable_point_cloud_image_publish_descriptor{};
+    enable_point_cloud_image_publish_descriptor.description =
+      "Unchecked: Do not publish Point cloud image, Checked: Publish Point cloud image";
+    this->declare_parameter<bool>(
+      "param_enable_point_cloud_publish", false, enable_point_cloud_image_publish_descriptor);
 
     // Path of the config file to read from tof sdk
     rcl_interfaces::msg::ParameterDescriptor path_of_the_config_file_descriptor{};
@@ -99,10 +133,23 @@ public:
       "param_config_file_name_of_tof_sdk", "no name", path_of_the_config_file_descriptor);
 
     // Frame type supported in TOF SDK
-    rcl_interfaces::msg::ParameterDescriptor frame_type_descriptor{};
-    frame_type_descriptor.read_only = true;
-    frame_type_descriptor.description = "Frame type";
-    this->declare_parameter<std::string>("param_frame_type", "no name", frame_type_descriptor);
+    rcl_interfaces::msg::ParameterDescriptor camera_mode_descriptor{};
+    camera_mode_descriptor.read_only = true;
+    camera_mode_descriptor.description = "Camera Mode";
+    this->declare_parameter<int>("param_camera_mode", 3, camera_mode_descriptor);
+
+    // ip address of the sensor
+    rcl_interfaces::msg::ParameterDescriptor ip_address_of_sensor_descriptor{};
+    ip_address_of_sensor_descriptor.read_only = true;
+    ip_address_of_sensor_descriptor.description = "IP address of the sensor";
+    this->declare_parameter<std::string>(
+      "param_input_sensor_ip", "no name", ip_address_of_sensor_descriptor);
+
+    // Encoding type
+    rcl_interfaces::msg::ParameterDescriptor param_encoding_type_descriptor{};    
+    param_encoding_type_descriptor.description = "Frame encoding type, allowed values: mono16, 16UC1";
+    this->declare_parameter<std::string>(
+      "param_encoding_type", "mono16", param_encoding_type_descriptor);
 
     // ab threshold to be set to device
     rcl_interfaces::msg::ParameterDescriptor ab_threshold_descriptor{};
@@ -120,8 +167,48 @@ public:
     confidence_threshold_descriptor.description = "Set confidence threshold value to device";
     this->declare_parameter<int>("param_confidence_threshold", 10, confidence_threshold_descriptor);
 
+    rcl_interfaces::msg::ParameterDescriptor enable_jblf_filter_descriptor{};
+    enable_jblf_filter_descriptor.description =
+      "Unchecked: Disable JBLF Filter, Checked: Enable JBLF Filter";
+    this->declare_parameter<bool>("param_enable_jblf_filter", true, enable_jblf_filter_descriptor);
+
+    rcl_interfaces::msg::ParameterDescriptor jblf_filter_size_descriptor{};
+    rcl_interfaces::msg::IntegerRange jblf_filter_size;
+    jblf_filter_size_descriptor.description =
+      "Set JBLF Filter size,Allowed values: 3, 5, 7, 9, 11, 13, 15";
+    jblf_filter_size_descriptor.additional_constraints = "Allowed values: 3, 5, 7, 9, 11, 13, 15";
+    this->declare_parameter<int>("param_jblf_filter_size", 7, jblf_filter_size_descriptor);
+
+    rcl_interfaces::msg::ParameterDescriptor radial_threshold_min_descriptor{};
+    rcl_interfaces::msg::IntegerRange radial_threshold_min_range;
+    radial_threshold_min_range.set__from_value(1).set__to_value(300);
+    radial_threshold_min_descriptor.integer_range = {radial_threshold_min_range};
+    radial_threshold_min_descriptor.description = "Set minimum value for Radial threshold";
+    this->declare_parameter<int>(
+      "param_radial_threshold_min", 100, radial_threshold_min_descriptor);
+
+    rcl_interfaces::msg::ParameterDescriptor radial_threshold_max_descriptor{};
+    rcl_interfaces::msg::IntegerRange radial_threshold_max_range;
+    radial_threshold_max_range.set__from_value(6000).set__to_value(12000);
+    radial_threshold_max_descriptor.integer_range = {radial_threshold_max_range};
+    radial_threshold_max_descriptor.description = "Set maximum value for Radial threshold";
+    this->declare_parameter<int>(
+      "param_radial_threshold_max", 10000, radial_threshold_max_descriptor);
+
+    enable_jblf_filter_ =
+      this->get_parameter("param_enable_jblf_filter").get_parameter_value().get<bool>();
+
+    jblf_filter_size_ =
+      this->get_parameter("param_jblf_filter_size").get_parameter_value().get<int>();
+
+    radial_threshold_min_ =
+      this->get_parameter("param_radial_threshold_min").get_parameter_value().get<int>();
+
+    radial_threshold_max_ =
+      this->get_parameter("param_radial_threshold_max").get_parameter_value().get<int>();
+
     std::string config_file_name_of_tof_sdk;
-    std::string frame_type;
+    int camera_mode;
     camera_link_ =
       this->get_parameter("param_camera_link").get_parameter_value().get<std::string>();
     input_sensor_mode_ =
@@ -129,47 +216,73 @@ public:
 
     input_file_name_ =
       this->get_parameter("param_input_file_name").get_parameter_value().get<std::string>();
-    enable_depth_ir_compression_ =
-      this->get_parameter("param_enable_depth_ir_compression").get_parameter_value().get<bool>();
+    enable_depth_ab_compression_ =
+      this->get_parameter("param_enable_depth_ab_compression").get_parameter_value().get<bool>();
+    enable_depth_publish_ =
+      this->get_parameter("param_enable_depth_publish").get_parameter_value().get<bool>();
+    enable_ab_publish_ =
+      this->get_parameter("param_enable_ab_publish").get_parameter_value().get<bool>();
+    enable_conf_publish_ =
+      this->get_parameter("param_enable_conf_publish").get_parameter_value().get<bool>();
+    enable_xyz_publish_ =
+      this->get_parameter("param_enable_point_cloud_publish").get_parameter_value().get<bool>();
     ab_threshold_ = this->get_parameter("param_ab_threshold").get_parameter_value().get<int>();
     confidence_threshold_ =
       this->get_parameter("param_confidence_threshold").get_parameter_value().get<int>();
     config_file_name_of_tof_sdk = this->get_parameter("param_config_file_name_of_tof_sdk")
                                     .get_parameter_value()
                                     .get<std::string>();
-    frame_type = this->get_parameter("param_frame_type").get_parameter_value().get<std::string>();
+    camera_mode = this->get_parameter("param_camera_mode").get_parameter_value().get<int>();
+    input_sensor_ip_ =
+      this->get_parameter("param_input_sensor_ip").get_parameter_value().get<std::string>();
+    encoding_type_ =
+      this->get_parameter("param_encoding_type").get_parameter_value().get<std::string>();
 
     tunable_params_.ab_threshold = ab_threshold_;
     tunable_params_.confidence_threshold = confidence_threshold_;
+    tunable_params_.enable_depth_publish = enable_depth_publish_;
+    tunable_params_.enable_ab_publish = enable_ab_publish_;
+    tunable_params_.enable_conf_publish = enable_conf_publish_;
+    tunable_params_.enable_xyz_publish = enable_xyz_publish_;
+    tunable_params_.enable_jblf_filter = enable_jblf_filter_;
+    tunable_params_.jblf_filter_size = jblf_filter_size_;
+    tunable_params_.radial_threshold_min = radial_threshold_min_;
+    tunable_params_.radial_threshold_max = radial_threshold_max_;
+    tunable_params_.encoding_type = encoding_type_;
+
     param_subscriber_ = std::make_shared<rclcpp::ParameterEventHandler>(this);
     callback_handle_ = this->add_on_set_parameters_callback(
       std::bind(&ADI3DToFADTF31xx::parametersCallback, this, std::placeholders::_1));
 
     frame_number_ = 0;
 
-    timer_ = this->create_wall_timer(25ms, std::bind(&ADI3DToFADTF31xx::timer_callback, this));
+    timer_ = this->create_wall_timer(25ms, std::bind(&ADI3DToFADTF31xx::timerCallback, this));
 
     // Get input sensor module
     input_sensor_ = InputSensorFactory::getInputSensor(input_sensor_mode_);
 
     // Open the sensor
+    if (input_sensor_mode_ != 3) {
+      // If the mode is not ADTF31xx sensor over Network, then the ip should be set to ""
+      input_sensor_ip_.clear();
+    }
     input_sensor_->openSensor(
-      input_file_name_, image_width_, image_height_, processing_scale_,
-      config_file_name_of_tof_sdk);
+      input_file_name_, image_width_, image_height_, config_file_name_of_tof_sdk, input_sensor_ip_);
     if (!input_sensor_->isOpened()) {
       RCLCPP_ERROR(this->get_logger(), "Could not open the sensor %s", input_file_name_.c_str());
       rclcpp::shutdown();
     }
 
-    input_sensor_->setProcessingScale(processing_scale_);
-
     // Configure the sensor
-    input_sensor_->configureSensor(frame_type);
+    input_sensor_->configureSensor(camera_mode);
+
+    input_sensor_->setJBLFFilterState(enable_jblf_filter_);
+
+    input_sensor_->setJBLFFilterSize(jblf_filter_size_);
 
     // Buffer allocations.
     image_width_ = input_sensor_->getFrameWidth();
     image_height_ = input_sensor_->getFrameHeight();
-    xyz_frame_ = nullptr;
 
     // Get intrinsics and extrinsics
     input_sensor_->getIntrinsics(&depth_intrinsics_);
@@ -177,22 +290,27 @@ public:
 
     // Create publishers.
     // Input and Intermediate Debug Images
-    if (enable_depth_ir_compression_ == 1) {
+    if (enable_depth_ab_compression_ == 1) {
       compressed_depth_image_publisher_ = this->create_publisher<sensor_msgs::msg::CompressedImage>(
         "depth_image/compressedDepth",
         rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
-      compressed_ir_image_publisher_ = this->create_publisher<sensor_msgs::msg::CompressedImage>(
-        "ir_image/compressedDepth",
+      compressed_ab_image_publisher_ = this->create_publisher<sensor_msgs::msg::CompressedImage>(
+        "ab_image/compressedDepth",
+        rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
+      compressed_conf_image_publisher_ = this->create_publisher<sensor_msgs::msg::CompressedImage>(
+        "conf_image/compressedDepth",
         rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
     } else {
       depth_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
         "depth_image", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
-      ir_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
-        "ir_image", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
+      ab_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
+        "ab_image", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
+      conf_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
+        "conf_image", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
     }
 
-    //xyz_image_publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("point_cloud",
-    //                  rclcpp::QoS( rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile ) );
+    xyz_image_publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
+      "point_cloud", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
 
     // Camera Infos
     depth_info_publisher_ = this->create_publisher<sensor_msgs::msg::CameraInfo>(
@@ -203,13 +321,17 @@ public:
     input_sensor_->setABinvalidationThreshold(ab_threshold_);
 
     input_sensor_->setConfidenceThreshold(confidence_threshold_);
+       
+    input_sensor_->setRadialFilterMinThreshold(radial_threshold_min_);
+
+    input_sensor_->setRadialFilterMaxThreshold(radial_threshold_max_);
   }
 
   /**
    * @brief Destroy the ADI3DToFADTF31xx object
    *
    */
-  ~ADI3DToFADTF31xx()
+  ~ADI3DToFADTF31xx() override
   {
     if (image_proc_utils_ != nullptr) {
       delete image_proc_utils_;
@@ -217,7 +339,7 @@ public:
     }
   }
 
-  void timer_callback()
+  void timerCallback()
   {
     RCLCPP_INFO_STREAM(
       this->get_logger(), "adi_3dtof_adtf31xx_node : Running loop : " << frame_number_);
@@ -243,19 +365,24 @@ private:
   int image_width_ = 1024;
   int image_height_ = 1024;
   int frame_number_;
-  bool enable_depth_ir_compression_;
+  bool enable_depth_ab_compression_;
+  bool enable_depth_publish_;
+  bool enable_ab_publish_;
+  bool enable_conf_publish_;
+  bool enable_xyz_publish_;
   int ab_threshold_ = 10;
   int confidence_threshold_ = 10;
   std::string input_file_name_;
+  std::string input_sensor_ip_;
+  std::string encoding_type_;
   sensor_msgs::msg::CameraInfo cam_info_msg_;
-  unsigned short * depth_frame_;
-  unsigned short * ir_frame_;
-  short * xyz_frame_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr depth_image_publisher_;
-  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr ir_image_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr ab_image_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr conf_image_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr compressed_depth_image_publisher_;
-  rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr compressed_ir_image_publisher_;
-  //rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr xyz_image_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr compressed_ab_image_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr compressed_conf_image_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr xyz_image_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr depth_info_publisher_;
   CameraIntrinsics depth_intrinsics_;
   CameraExtrinsics depth_extrinsics_;
@@ -276,14 +403,18 @@ private:
   int max_debug_queue_length_ = 10;
   std::queue<ADI3DToFADTF31xxOutputInfo *> output_node_queue_;
 
+  bool enable_jblf_filter_ = false;
+  int jblf_filter_size_ = 7;
+  int radial_threshold_min_ = 100;
+  int radial_threshold_max_ = 10000;
+
   /**
    * @brief    This is the scale factor to scale the input image.
                The processing will happen on the scaled down image
                The topics and the output coordinates will correspond
                to the scaled image size.
    *
-   */
-  int processing_scale_ = 2;
+   */  
   rclcpp::Time curr_frame_timestamp_ = rclcpp::Clock{}.now();
 
   std::shared_ptr<rclcpp::ParameterEventHandler> param_subscriber_;
@@ -293,6 +424,15 @@ private:
   {
     int ab_threshold;
     int confidence_threshold;
+    bool enable_depth_publish;
+    bool enable_ab_publish;
+    bool enable_conf_publish;
+    bool enable_xyz_publish;
+    bool enable_jblf_filter;
+    int jblf_filter_size;
+    int radial_threshold_min;
+    int radial_threshold_max;
+    std::string encoding_type;
   };
 
   TunableParameters tunable_params_;
@@ -328,6 +468,97 @@ private:
             param.value_to_string().c_str());
         }
       }
+
+      if (param.get_name() == "param_enable_depth_publish") {
+        if (tunable_params_.enable_depth_publish != param.as_bool()) {
+          tunable_params_.enable_depth_publish = param.as_bool();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_enable_depth_publish is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      if (param.get_name() == "param_enable_ab_publish") {
+        if (tunable_params_.enable_ab_publish != param.as_bool()) {
+          tunable_params_.enable_ab_publish = param.as_bool();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_enable_ab_publish is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      if (param.get_name() == "param_enable_conf_publish") {
+        if (tunable_params_.enable_conf_publish != param.as_bool()) {
+          tunable_params_.enable_conf_publish = param.as_bool();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_enable_conf_publish is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      if (param.get_name() == "param_enable_point_cloud_publish") {
+        if (tunable_params_.enable_xyz_publish != param.as_bool()) {
+          tunable_params_.enable_xyz_publish = param.as_bool();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_enable_point_cloud_publish is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      if (param.get_name() == "param_enable_jblf_filter") {
+        if (tunable_params_.enable_jblf_filter != param.as_bool()) {
+          tunable_params_.enable_jblf_filter = param.as_bool();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_enable_jblf_filter is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      // JBLF Filter Size(only use the allowed values, stored in jblf_filter_size_allowed_values array, others will be ignored)
+      std::vector<int> jblf_filter_size_allowed_values = {3, 5, 7, 9, 11, 13, 15};
+      if (param.get_name() == "param_jblf_filter_size") {
+        if (
+          std::find(
+            jblf_filter_size_allowed_values.begin(), jblf_filter_size_allowed_values.end(),
+            param.as_int()) != jblf_filter_size_allowed_values.end()) {
+          if (tunable_params_.jblf_filter_size != param.as_int()) {
+            tunable_params_.jblf_filter_size = param.as_int();
+            RCLCPP_INFO(
+              this->get_logger(), "The value of param_jblf_filter_size is changed to %s",
+              param.value_to_string().c_str());
+          }
+        }
+      }
+
+      //Radial Threshold Min
+      if (param.get_name() == "param_radial_threshold_min") {
+        if (tunable_params_.radial_threshold_min != param.as_int()) {
+          tunable_params_.radial_threshold_min = param.as_int();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_radial_threshold_min is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      //Radius Threshold Max
+      if (param.get_name() == "param_radial_threshold_max") {
+        if (tunable_params_.radial_threshold_max != param.as_int()) {
+          tunable_params_.radial_threshold_max = param.as_int();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_radial_threshold_max is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
+      if (param.get_name() == "param_encoding_type") {
+        if (tunable_params_.encoding_type != param.as_string()) {
+          tunable_params_.encoding_type = param.as_string();
+          RCLCPP_INFO(
+            this->get_logger(), "The value of param_encoding_type is changed to %s",
+            param.value_to_string().c_str());
+        }
+      }
+
     }
     return result;
   }
@@ -351,6 +582,66 @@ private:
         this->get_logger(), "Changed Confidence threshold value is %d", confidence_threshold_);
       input_sensor_->setConfidenceThreshold(confidence_threshold_);
     }
+
+    if (enable_depth_publish_ != tunable_params_.enable_depth_publish) {
+      enable_depth_publish_ = tunable_params_.enable_depth_publish;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Enable/Disable Depth image publish value is %d",
+        enable_depth_publish_);
+    }
+
+    if (enable_ab_publish_ != tunable_params_.enable_ab_publish) {
+      enable_ab_publish_ = tunable_params_.enable_ab_publish;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Enable/Disable AB image publish value is %d",
+        enable_ab_publish_);
+    }
+
+    if (enable_conf_publish_ != tunable_params_.enable_conf_publish) {
+      enable_conf_publish_ = tunable_params_.enable_conf_publish;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Enable/Disable Confidence image publish  value is %d",
+        enable_conf_publish_);
+    }
+
+    if (enable_xyz_publish_ != tunable_params_.enable_xyz_publish) {
+      enable_xyz_publish_ = tunable_params_.enable_xyz_publish;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Enable/Disable XYZ image publish value is %d",
+        enable_xyz_publish_);
+    }
+
+    if (enable_jblf_filter_ != tunable_params_.enable_jblf_filter) {
+      enable_jblf_filter_ = tunable_params_.enable_jblf_filter;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Enable/Disable JBLF filter value is %d", enable_jblf_filter_);
+      input_sensor_->setJBLFFilterState(enable_jblf_filter_);
+    }
+
+    if (jblf_filter_size_ != tunable_params_.jblf_filter_size) {
+      jblf_filter_size_ = tunable_params_.jblf_filter_size;
+      RCLCPP_INFO(this->get_logger(), "Changed JBLF filter size value is %d", jblf_filter_size_);
+      input_sensor_->setJBLFFilterSize(jblf_filter_size_);
+    }
+
+    if (radial_threshold_min_ != tunable_params_.radial_threshold_min) {
+      radial_threshold_min_ = tunable_params_.radial_threshold_min;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Radial Threshold Min value is %d", radial_threshold_min_);
+      input_sensor_->setRadialFilterMinThreshold(radial_threshold_min_);
+    }
+
+    if (radial_threshold_max_ != tunable_params_.radial_threshold_max) {
+      radial_threshold_max_ = tunable_params_.radial_threshold_max;
+      RCLCPP_INFO(
+        this->get_logger(), "Changed Radial Threshold Max value is %d", radial_threshold_max_);
+      input_sensor_->setRadialFilterMaxThreshold(radial_threshold_max_);
+    }
+
+    if (encoding_type_ != tunable_params_.encoding_type) {
+      encoding_type_ = tunable_params_.encoding_type;
+      RCLCPP_INFO(this->get_logger(), "Changed Encoding type is %s", encoding_type_.c_str());
+    }
   }
 
   /**
@@ -360,7 +651,7 @@ private:
    * @param publisher This is Ros publisher
    */
   void fillAndPublishCameraInfo(
-    std::string frame_id,
+    const std::string & frame_id,
     const rclcpp::Publisher<sensor_msgs::msg::CameraInfo>::SharedPtr publisher)
   {
     cam_info_msg_.header.stamp = curr_frame_timestamp_;
@@ -418,7 +709,7 @@ private:
    * @param publisher This is ros publisher
    */
   void publishImageAsRosMsg(
-    cv::Mat img, const std::string & encoding_type, std::string frame_id,
+    const cv::Mat & img, const std::string & encoding_type, const std::string & frame_id,
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher)
   {
     cv_bridge::CvImagePtr cv_ptr(new cv_bridge::CvImage);
@@ -469,72 +760,65 @@ private:
     }
 
     // Publisher
-    //xyz_image_publisher_->publish(*pointcloud_msg);
+    xyz_image_publisher_->publish(*pointcloud_msg);
   }
 
   /**
-   * @brief This function publihes the camera info, compressed depth and ir images.
-   *
-   * @param compressed_depth_frame - Pointer to compressed depth image
-   * @param compressed_depth_frame_size - Buffer size(compressed depth image)
-   * @param compressed_ir_frame - Pointer to compressed ir image
-   * @param compressed_ir_frame_size - Buffer size(compressed ir image)
+   * @brief This function publishes the images as Ros message.
+   * 
+   * @param out_frame Pointer to the output frame containing the compressed depth frame and its size.
    */
-  void publishImageAndCameraInfo(
-    unsigned char * compressed_depth_frame, int compressed_depth_frame_size,
-    unsigned char * compressed_ir_frame, int compressed_ir_frame_size, short * /*xyz_frame*/)
+  void publishImageAndCameraInfo(ADI3DToFADTF31xxOutputInfo * out_frame)
   {
     // Publish image as Ros message
-    cv::Mat m_disp_image_depth, m_disp_image_ir, m_disp_virtual_depth;
+    cv::Mat m_disp_image_depth, m_disp_image_ab, m_disp_virtual_depth, m_disp_image_conf;
 
-    // convert to 16 bit depth and IR image of CV format.
-    m_disp_image_depth = cv::Mat(image_height_, image_width_, CV_16UC1, depth_frame_);
-    m_disp_image_ir = cv::Mat(image_height_, image_width_, CV_16UC1, ir_frame_);
+    // convert to 16 bit depth and AB image of CV format.
+    m_disp_image_depth = cv::Mat(image_height_, image_width_, CV_16UC1, out_frame->depth_frame_);
+    m_disp_image_ab = cv::Mat(image_height_, image_width_, CV_16UC1, out_frame->ab_frame_);
+    m_disp_image_conf = cv::Mat(image_height_, image_width_, CV_16UC1, out_frame->conf_frame_);
 
     fillAndPublishCameraInfo(camera_link_, depth_info_publisher_);
 
-    if (enable_depth_ir_compression_ == true) {
+    if (enable_depth_ab_compression_) {
       PROFILE_FUNCTION_START(Publish_CompressImg)
-      publishRVLCompressedImageAsRosMsg(
-        compressed_depth_frame, compressed_depth_frame_size, "mono16", camera_link_,
-        compressed_depth_image_publisher_);
+      if (enable_depth_publish_) {
+        publishRVLCompressedImageAsRosMsg(
+          out_frame->compressed_depth_frame_, out_frame->compressed_depth_frame_size_,
+          encoding_type_, camera_link_, compressed_depth_image_publisher_);
+      }
 
-      publishRVLCompressedImageAsRosMsg(
-        compressed_ir_frame, compressed_ir_frame_size, "mono16", camera_link_,
-        compressed_ir_image_publisher_);
+      if (enable_ab_publish_) {
+        publishRVLCompressedImageAsRosMsg(
+          out_frame->compressed_ab_frame_, out_frame->compressed_ab_frame_size_, encoding_type_,
+          camera_link_, compressed_ab_image_publisher_);
+      }
+      if (enable_conf_publish_) {
+        publishRVLCompressedImageAsRosMsg(
+          out_frame->compressed_conf_frame_, out_frame->compressed_conf_frame_size_, encoding_type_,
+          camera_link_, compressed_conf_image_publisher_);
+      }
       PROFILE_FUNCTION_END(Publish_CompressImg)
     } else {
-      publishImageAsRosMsg(m_disp_image_depth, "mono16", camera_link_, depth_image_publisher_);
-      publishImageAsRosMsg(m_disp_image_ir, "mono16", camera_link_, ir_image_publisher_);
+      if (enable_depth_publish_) {
+        publishImageAsRosMsg(
+          m_disp_image_depth, encoding_type_, camera_link_, depth_image_publisher_);
+      }
+      if (enable_ab_publish_) {
+        publishImageAsRosMsg(m_disp_image_ab, encoding_type_, camera_link_, ab_image_publisher_);
+      }
+      if (enable_conf_publish_) {
+        publishImageAsRosMsg(
+          m_disp_image_conf, encoding_type_, camera_link_, conf_image_publisher_);
+      }
     }
 
-    PROFILE_FUNCTION_START(publish_PointCloud)
-    // PublishPointCloud
-    //publishPointCloud(xyz_frame);
-    PROFILE_FUNCTION_END(publish_PointCloud)
-  }
-
-  /**
-   * @brief This function publishes depth image , ir image, point-cloud and camera info.
-   *
-   * @param depth_frame - Pointer to the depth frame buffer
-   * @param ir_frame - Pointer to the ir frame buffer
-   */
-  void publishImageAndCameraInfo(
-    unsigned short * depth_frame, unsigned short * ir_frame, short * /*xyz_frame*/)
-  {
-    // Publish image as Ros message
-    cv::Mat m_disp_image_depth, temp_depth, m_disp_image_ir, m_disp_virtual_depth;
-
-    // convert to 16 bit depth and IR image of CV format.
-    m_disp_image_depth = cv::Mat(image_height_, image_width_, CV_16UC1, depth_frame);
-    m_disp_image_ir = cv::Mat(image_height_, image_width_, CV_16UC1, ir_frame);
-
-    fillAndPublishCameraInfo(camera_link_, depth_info_publisher_);
-    publishImageAsRosMsg(m_disp_image_depth, "mono16", camera_link_, depth_image_publisher_);
-    publishImageAsRosMsg(m_disp_image_ir, "mono16", camera_link_, ir_image_publisher_);
-
-    //publishPointCloud(xyz_frame);
+    if (enable_xyz_publish_) {
+      PROFILE_FUNCTION_START(publish_PointCloud)
+      // PublishPointCloud
+      publishPointCloud(out_frame->xyz_frame_);
+      PROFILE_FUNCTION_END(publish_PointCloud)
+    }
   }
 
   /**
@@ -547,7 +831,7 @@ private:
    */
   void publishRVLCompressedImageAsRosMsg(
     unsigned char * compressed_img, int compressed_img_size, const std::string & encoding_type,
-    std::string frame_id,
+    const std::string & frame_id,
     const rclcpp::Publisher<sensor_msgs::msg::CompressedImage>::SharedPtr publisher)
   {
     cv_bridge::CvImagePtr cv_ptr(new cv_bridge::CvImage);
@@ -561,20 +845,20 @@ private:
       compressed_img_size + 8 + sizeof(compressed_depth_image_transport::ConfigHeader));
 
     // Adding header to compressed depth data as image transport subscribers can decompress.
-    compressed_depth_image_transport::ConfigHeader compressionConfiguration{};
-    compressionConfiguration.format = compressed_depth_image_transport::INV_DEPTH;
+    compressed_depth_image_transport::ConfigHeader compression_configuration{};
+    compression_configuration.format = compressed_depth_image_transport::INV_DEPTH;
 
-    float depthQuantization = 0;
-    float maximumDepth = 1;
+    float depth_quantization = 0;
+    float maximum_depth = 1;
 
     // Inverse depth quantization parameters
-    float depthQuantizationA = depthQuantization * (depthQuantization + 1.0f);
-    float depthQuantizationB = 1.0f - depthQuantizationA / maximumDepth;
-    compressionConfiguration.depthParam[0] = depthQuantizationA;
-    compressionConfiguration.depthParam[1] = depthQuantizationB;
+    float depth_quantization_a = depth_quantization * (depth_quantization + 1.0f);
+    float depth_quantization_b = 1.0f - depth_quantization_a / maximum_depth;
+    compression_configuration.depthParam[0] = depth_quantization_a;
+    compression_configuration.depthParam[1] = depth_quantization_b;
 
     memcpy(
-      &compressed_payload_ptr->data[0], &compressionConfiguration,
+      &compressed_payload_ptr->data[0], &compression_configuration,
       sizeof(compressed_depth_image_transport::ConfigHeader));
     memcpy(
       &compressed_payload_ptr->data[0] + sizeof(compressed_depth_image_transport::ConfigHeader),

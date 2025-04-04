@@ -10,27 +10,10 @@ from launch.substitutions import PathJoinSubstitution, TextSubstitution
 from launch.substitutions import LaunchConfiguration, PythonExpression
 
 # configuration file names
-config_json_file_names = ['config_crosby_old_modes.json',
-                          'config_crosby_adsd3500_new_modes.json']
-config_ini_file_names = ['RawToDepthAdsd3500_qmp.ini',
-                         'RawToDepthAdsd3500_lr-qnative.ini']
+config_json_file_names = ['config_adsd3500_adsd3100.json',
+                          'config_adsd3500_adsd3030.json']
 
-package_dir = get_package_share_directory('adi_3dtof_adtf31xx') + "/../../../../src/adi_3dtof_adtf31xx/"
-
-def modify_ini_path_in_json_file(config_file_name_of_tof_sdk):
-
-    with open(config_file_name_of_tof_sdk, 'r+') as file:
-        data = json.load(file)
-
-    for i in range(len(config_json_file_names)):
-        if (config_file_name_of_tof_sdk.rsplit("/", 1)[1] == config_json_file_names[i]):
-            modified_file_path = package_dir + "config/" + config_ini_file_names[i] 
-
-    data["DEPTH_INI"] = modified_file_path
-
-    with open(config_file_name_of_tof_sdk, 'w') as file:
-        json.dump(data, file, indent=4)
-
+package_dir = get_package_share_directory('adi_3dtof_adtf31xx') + "/../../../../src/rcd-adi-3dtof-adtf31xx/"
 
 def generate_launch_description():
 
@@ -38,17 +21,37 @@ def generate_launch_description():
     arg_camera_height_from_ground_in_mtr_desc = DeclareLaunchArgument(
         'arg_camera_height_from_ground_in_mtr', default_value="0.15")
 
-    # Input mode => 0:Real Time Sensor, 2:Rosbag bin
+    # Input mode => 0:Real Time Sensor, 2:Rosbag bin, 3:Network
     arg_input_sensor_mode_desc = DeclareLaunchArgument(
-        'arg_input_sensor_mode', default_value="0")
+        'arg_input_sensor_mode', default_value="3")
 
     # Input filename : Applicable only if the input mode is 2
     # Relative path to the launch file which gets executed. Here, launch file from install folder is considered
     arg_in_file_name_desc = DeclareLaunchArgument('arg_in_file_name', default_value= package_dir + "../adi_3dtof_input_video_files/adi_3dtof_height_170mm_yaw_135degrees_cam1.bin")
 
-    # Enable RVL compression for depth and ir images
-    arg_enable_depth_ir_compression_desc = DeclareLaunchArgument(
-        'arg_enable_depth_ir_compression', default_value="False")
+    # Input Sensor IP Address : Applicable only if inpiut sensor mode is 3    
+    arg_input_sensor_ip_desc = DeclareLaunchArgument(
+        'arg_input_sensor_ip', default_value="10.43.0.1")
+    
+    # Enable RVL compression for depth and ab images
+    arg_enable_depth_ab_compression_desc = DeclareLaunchArgument(
+        'arg_enable_depth_ab_compression', default_value="False")
+    
+    # Enable Depth image publishing 
+    arg_enable_depth_publish_desc = DeclareLaunchArgument(
+        'arg_enable_depth_publish', default_value="True")
+    
+    # Enable AB image publishing 
+    arg_enable_ab_publish_desc = DeclareLaunchArgument(
+        'arg_enable_ab_publish', default_value="True")
+    
+    # Enable Confidence image publishing 
+    arg_enable_conf_publish_desc = DeclareLaunchArgument(
+        'arg_enable_conf_publish', default_value="True")
+    
+    # Enable Point Cloud image publishing 
+    arg_enable_point_cloud_publish_desc = DeclareLaunchArgument(
+        'arg_enable_point_cloud_publish', default_value="False")
 
     # abThreshold
     arg_ab_threshold_desc = DeclareLaunchArgument(
@@ -58,22 +61,37 @@ def generate_launch_description():
     arg_confidence_threshold_desc = DeclareLaunchArgument(
         'arg_confidence_threshold', default_value="10")
 
-    # Configuration fie name of ToF SDK
-    #    "config_crosby_old_modes.json" - Sensor serial number starting with CR/DV - config_json_file_names[0]
-    #    "config_crosby_adsd3500_new_modes.json" - Sensor serial number starting with AM - config_json_file_names[1]
+    # Configuration file name of ToF SDK 
+    # config_adsd3500_adsd3100.json - For ADSd3100(MP sensor)
+    # config_adsd3500_adsd3030.json - For ADSd3030(VGA sensor)
+    config_json_file_name = "config_adsd3500_adsd3100.json"
     arg_config_file_name_of_tof_sdk_desc = DeclareLaunchArgument(
-        'arg_config_file_name_of_tof_sdk', default_value= package_dir + "config/" + config_json_file_names[0])
+        'arg_config_file_name_of_tof_sdk', default_value= package_dir + "config/" + config_json_file_name)
 
     # Frame Type
-    #    "qmp" - Sensor serial number starting with CR/DV
-    #    "lr-qnative" - Sensor serial number starting with AM
-    arg_frame_type_desc = DeclareLaunchArgument(
-        'arg_frame_type', default_value="qmp")
+    #MP(1024x01024) sensor:
+    #    "sr-native" - 0
+    #    "lr-native" - 1
+    #    "sr-qnative" - 2
+    #    "lr-qnative" - 3
+    #    "sr-mixed" - 5
+    #    "lr-mixed" - 6
 
-    # Modifying the path to ini file in json file.
-    if arg_input_sensor_mode_desc.default_value[0].text == '0':
-        modify_ini_path_in_json_file(arg_config_file_name_of_tof_sdk_desc.default_value[0].text)
+    #VGA(640x512) sensor:
+    #    "sr-native" - 0
+    #    "lr-native" - 1
+    #    "lr-qnative" - 3
+    #    "sr-mixed" - 5
+    #    "lr-mixed" - 6    
+    arg_camera_mode_desc = DeclareLaunchArgument(
+        'arg_camera_mode', default_value="3")
 
+    # Encoding String
+    #   "mono16" - 16 bit sincle color channel
+    #   "16UC1" - 16 bit unsigned integer
+    arg_encoding_type_desc = DeclareLaunchArgument(
+        'arg_encoding_type', default_value="mono16")
+        
     # Parameters for TF
     var_ns_prefix_cam1 = "cam1"
     var_cam1_base_frame_optical = f"{var_ns_prefix_cam1}_adtf31xx_optical"
@@ -114,10 +132,16 @@ def generate_launch_description():
             'param_input_sensor_mode': LaunchConfiguration('arg_input_sensor_mode'),
             'param_input_file_name': LaunchConfiguration('arg_in_file_name'),
             'param_config_file_name_of_tof_sdk': LaunchConfiguration('arg_config_file_name_of_tof_sdk'),
-            'param_frame_type': LaunchConfiguration('arg_frame_type'),
-            'param_enable_depth_ir_compression': LaunchConfiguration('arg_enable_depth_ir_compression'),
+            'param_camera_mode': LaunchConfiguration('arg_camera_mode'),
+            'param_enable_depth_ab_compression': LaunchConfiguration('arg_enable_depth_ab_compression'),
+            'param_enable_depth_publish': LaunchConfiguration('arg_enable_depth_publish'),            
+            'param_enable_ab_publish': LaunchConfiguration('arg_enable_ab_publish'),
+            'param_enable_conf_publish': LaunchConfiguration('arg_enable_conf_publish'),
+            'param_enable_point_cloud_publish': LaunchConfiguration('arg_enable_point_cloud_publish'),
             'param_ab_threshold': LaunchConfiguration('arg_ab_threshold'),
-            'param_confidence_threshold': LaunchConfiguration('arg_confidence_threshold')
+            'param_confidence_threshold': LaunchConfiguration('arg_confidence_threshold'),
+            'param_encoding_type' : LaunchConfiguration('arg_encoding_type'),
+            'param_input_sensor_ip' : LaunchConfiguration('arg_input_sensor_ip')
         }],
         on_exit=launch.actions.Shutdown()
     )
@@ -173,11 +197,17 @@ def generate_launch_description():
         arg_camera_height_from_ground_in_mtr_desc,
         arg_input_sensor_mode_desc,
         arg_in_file_name_desc,
-        arg_enable_depth_ir_compression_desc,
+        arg_input_sensor_ip_desc,
+        arg_enable_depth_ab_compression_desc,
+        arg_enable_depth_publish_desc,
+        arg_enable_ab_publish_desc,
+        arg_enable_conf_publish_desc,
+        arg_enable_point_cloud_publish_desc,
         arg_ab_threshold_desc,
         arg_confidence_threshold_desc,
         arg_config_file_name_of_tof_sdk_desc,
-        arg_frame_type_desc,
+        arg_camera_mode_desc,
+        arg_encoding_type_desc,
         adi_3dtof_adtf31xx_node_desc,
         cam1_base_to_optical_tf_desc,
         map_to_cam1_base_tf_desc,

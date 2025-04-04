@@ -140,7 +140,7 @@
                   "type": "repr"
                 },
                 "mouse_pub_topic": {
-                  "repr": "'/cam1/ir_image_mouse_left'",
+                  "repr": "'/cam1/ab_image_mouse_left'",
                   "type": "repr"
                 },
                 "num_gridlines": {
@@ -164,7 +164,7 @@
                   "type": "repr"
                 },
                 "topic": {
-                  "repr": "'/cam1/ir_image'",
+                  "repr": "'/cam1/ab_image'",
                   "type": "repr"
                 },
                 "zoom1": {

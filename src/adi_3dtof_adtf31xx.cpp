@@ -5,8 +5,13 @@
  ******************************************************************************/
 #include "adi_3dtof_adtf31xx.h"
 
+#ifdef ROS_HUMBLE
 #include <cv_bridge/cv_bridge.h>
 #include <image_geometry/pinhole_camera_model.h>
+#else
+#include <cv_bridge/cv_bridge.hpp>
+#include <image_geometry/pinhole_camera_model.hpp>
+#endif
 #include <sensor_msgs/msg/image.h>
 
 #include <boost/thread/thread.hpp>
@@ -59,11 +64,10 @@ bool ADI3DToFADTF31xx::readNextFrame()
   }
 
   curr_frame_timestamp_ = inframe->getFrameTimestamp();
-  depth_frame_ = inframe->getDepthFrame();
-  ir_frame_ = inframe->getIRFrame();
-  xyz_frame_ = inframe->getXYZFrame();
 
-  if ((depth_frame_ == nullptr) || (ir_frame_ == nullptr) || (xyz_frame_ == nullptr)) {
+  if (
+    (inframe->getDepthFrame() == nullptr) || (inframe->getABFrame() == nullptr) ||
+    (inframe->getXYZFrame() == nullptr) || (inframe->getConfFrame() == nullptr)) {
     delete new_output_frame;
     return false;
   }
@@ -71,35 +75,36 @@ bool ADI3DToFADTF31xx::readNextFrame()
   PROFILE_FUNCTION_START(adtf31xx_readNextFrame)
   PROFILE_FUNCTION_START(adtf31xx_depthFrameCompression)
   compressed_depth_image_transport::RvlCodec rvl;
-  unsigned short * raw_depth_frame = depth_frame_;
-  unsigned char * compressed_depth_frame = new unsigned char[image_width_ * image_height_ * 2];
-  int compressed_size_depth_frame = 0;
-  if (enable_depth_ir_compression_) {
-    compressed_size_depth_frame = rvl.CompressRVL(
-      &raw_depth_frame[0], &compressed_depth_frame[0], image_width_ * image_height_);
-  }
-  PROFILE_FUNCTION_END(adtf31xx_depthFrameCompression)
+  unsigned short * raw_depth_frame = inframe->getDepthFrame();
 
   if (new_output_frame != nullptr) {
+    if (enable_depth_ab_compression_) {
+      new_output_frame->compressed_depth_frame_size_ = 0;
+      if (enable_depth_publish_) {
+        new_output_frame->compressed_depth_frame_size_ = rvl.CompressRVL(
+          &raw_depth_frame[0], &new_output_frame->compressed_depth_frame_[0],
+          image_width_ * image_height_);
+      }
+    }
+    PROFILE_FUNCTION_END(adtf31xx_depthFrameCompression)
+
     new_output_frame->frame_number_ = frame_number_;
-    new_output_frame->compressed_depth_frame_size_ = compressed_size_depth_frame;
     memcpy(
-      new_output_frame->depth_frame_, depth_frame_,
-      image_width_ * image_height_ * sizeof(depth_frame_[0]));
+      new_output_frame->depth_frame_, inframe->getDepthFrame(),
+      image_width_ * image_height_ * sizeof(unsigned short));
     memcpy(
-      new_output_frame->ir_frame_, ir_frame_, image_width_ * image_height_ * sizeof(ir_frame_[0]));
+      new_output_frame->ab_frame_, inframe->getABFrame(),
+      image_width_ * image_height_ * sizeof(unsigned short));
     memcpy(
-      new_output_frame->xyz_frame_, xyz_frame_,
-      3 * image_width_ * image_height_ * sizeof(xyz_frame_[0]));
+      new_output_frame->conf_frame_, inframe->getConfFrame(),
+      image_width_ * image_height_ * sizeof(unsigned short));
     memcpy(
-      new_output_frame->compressed_depth_frame_, compressed_depth_frame,
-      compressed_size_depth_frame * sizeof(compressed_depth_frame[0]));
+      new_output_frame->xyz_frame_, inframe->getXYZFrame(),
+      3 * image_width_ * image_height_ * sizeof(short));
 
     // Push
     adtf31xxSensorPushOutputNode(new_output_frame);
   }
-
-  delete[] compressed_depth_frame;
 
   delete inframe;
 

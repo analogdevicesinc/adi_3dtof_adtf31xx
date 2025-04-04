@@ -3,9 +3,14 @@ Copyright (c), 2023 - Analog Devices Inc. All Rights Reserved.
 This software is PROPRIETARY & CONFIDENTIAL to Analog Devices, Inc.
 and its licensors.
 ******************************************************************************/
-#include <compressed_depth_image_transport/compression_common.h>
+
+#ifdef ROS_HUMBLE
 #include <cv_bridge/cv_bridge.h>
 #include <image_geometry/pinhole_camera_model.h>
+#else
+#include <cv_bridge/cv_bridge.hpp>
+#include <image_geometry/pinhole_camera_model.hpp>
+#endif
 #include <message_filters/subscriber.h>
 #include <message_filters/sync_policies/approximate_time.h>
 #include <message_filters/synchronizer.h>
@@ -35,6 +40,7 @@ and its licensors.
 
 #include "image_proc_utils.h"
 #include "ros-perception/image_transport_plugins/compressed_depth_image_transport/rvl_codec.h"
+#include "ros-perception/image_transport_plugins/compressed_depth_image_transport/compression_common.h"
 
 using namespace std::chrono_literals;
 namespace enc = sensor_msgs::image_encodings;
@@ -54,9 +60,9 @@ public:
    */
   ADI3DToFADTF31xxCompressedImageSubscriber()
   : Node("adi_3dtof_adtf31xx_compressed_image_subscriber"),
-    depth_ir_image_sync_(
-      sync_depth_ir_image(MAX_QUEUE_SIZE_FOR_TIME_SYNC), depth_image_subscriber_,
-      ir_image_subscriber_)
+    depth_ab_image_sync_(
+      sync_depth_ab_image(MAX_QUEUE_SIZE_FOR_TIME_SYNC), depth_image_subscriber_,
+      ab_image_subscriber_)
   {
     RCLCPP_INFO(
       this->get_logger(),
@@ -83,10 +89,10 @@ public:
 
     depth_image_subscriber_.subscribe(
       this, "/" + cam_prefix + "/depth_image/compressedDepth", qos_profile);
-    ir_image_subscriber_.subscribe(
-      this, "/" + cam_prefix + "/ir_image/compressedDepth", qos_profile);
-    depth_ir_image_sync_.registerCallback(
-      &ADI3DToFADTF31xxCompressedImageSubscriber::syncDepthIRImageCallback, this);
+    ab_image_subscriber_.subscribe(
+      this, "/" + cam_prefix + "/ab_image/compressedDepth", qos_profile);
+    depth_ab_image_sync_.registerCallback(
+      &ADI3DToFADTF31xxCompressedImageSubscriber::syncDepthABImageCallback, this);
 
     camera_info_subscriber_ = this->create_subscription<sensor_msgs::msg::CameraInfo>(
       "/" + cam_prefix + "/camera_info",
@@ -95,9 +101,9 @@ public:
         &ADI3DToFADTF31xxCompressedImageSubscriber::camInfoCallback, this, std::placeholders::_1));
 
     depth_image_recvd_ = false;
-    ir_image_recvd_ = false;
+    ab_image_recvd_ = false;
     depth_image_ = nullptr;
-    ir_image_ = nullptr;
+    ab_image_ = nullptr;
     camera_parameters_updated_ = false;
     xyz_image_ = nullptr;
 
@@ -109,8 +115,8 @@ public:
     depth_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
       "raw_depth_image",
       rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
-    ir_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
-      "raw_ir_image", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
+    ab_image_publisher_ = this->create_publisher<sensor_msgs::msg::Image>(
+      "raw_ab_image", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
     pointcloud_publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
       "pointcloud", rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(qos_profile), qos_profile));
 
@@ -140,9 +146,9 @@ public:
    */
   ~ADI3DToFADTF31xxCompressedImageSubscriber() override
   {
-    if (ir_image_ != nullptr) {
-      delete[] ir_image_;
-      ir_image_ = nullptr;
+    if (ab_image_ != nullptr) {
+      delete[] ab_image_;
+      ab_image_ = nullptr;
     }
 
     if (depth_image_ != nullptr) {
@@ -159,20 +165,20 @@ public:
   }
 
   /**
-   * @brief Call back for synchronised topics(depth and IR image pair)
+   * @brief Call back for synchronised topics(depth and AB image pair)
    *
    * @param depth_image_cam1 - Cam1 depth image pointer
-   * @param ir_image_cam1 - Cam1 IR image pointer
+   * @param ab_image_cam1 - Cam1 AB image pointer
    */
-  void syncDepthIRImageCallback(
+  void syncDepthABImageCallback(
     const sensor_msgs::msg::CompressedImage::ConstSharedPtr & depth_image_cam1,
-    const sensor_msgs::msg::CompressedImage::ConstSharedPtr & ir_image_cam1)
+    const sensor_msgs::msg::CompressedImage::ConstSharedPtr & ab_image_cam1)
   {
     // Call respective callbacks with the id.
-    depthIRImageCallback(depth_image_cam1, true);
-    depthIRImageCallback(ir_image_cam1, false);
+    depthABImageCallback(depth_image_cam1, true);
+    depthABImageCallback(ab_image_cam1, false);
     depth_image_recvd_ = true;
-    ir_image_recvd_ = true;
+    ab_image_recvd_ = true;
   }
 
   /**
@@ -187,11 +193,7 @@ public:
       // Save
       image_width_ = cam_info->width;
       image_height_ = cam_info->height;
-      if ((image_width_ != 512) && (image_height_ != 512)) {
-        RCLCPP_INFO_STREAM(this->get_logger(), "Image width and Height are not set to 512x512");
-        return;
-      }
-
+      
       // Check whether original or modified camera intrinsic are sent
       camera_intrinsics_.camera_matrix[0] = cam_info->k[0];
       camera_intrinsics_.camera_matrix[1] = 0.0f;
@@ -213,17 +215,17 @@ public:
   }
 
   /**
-   * @brief Low-level callback for depth/ir image
+   * @brief Low-level callback for depth/ab image
    *
-   * @param depth_ir_image_message - Pointer to depth/ir compressed image message
-   * @param is_depth_image - true:depth image,false:ir image
+   * @param depth_ab_image_message - Pointer to depth/ab compressed image message
+   * @param is_depth_image - true:depth image,false:ab image
    */
-  void depthIRImageCallback(
-    const sensor_msgs::msg::CompressedImage::ConstSharedPtr & depth_ir_image_message,
+  void depthABImageCallback(
+    const sensor_msgs::msg::CompressedImage::ConstSharedPtr & depth_ab_image_message,
     bool is_depth_image)
   {
     compressed_depth_image_transport::RvlCodec rvl;
-    if ((depth_ir_image_message == nullptr)) {
+    if ((depth_ab_image_message == nullptr)) {
       return;
     }
 
@@ -234,18 +236,16 @@ public:
      * sizeof(compressed_depth_image_transport::ConfigHeader) + 8: compressed image
      * */
     unsigned char * compressed_image_buf =
-      (unsigned char *)&depth_ir_image_message
+      (unsigned char *)&depth_ab_image_message
         ->data[sizeof(compressed_depth_image_transport::ConfigHeader) + 8];
     unsigned short * raw_image_buf = nullptr;
     bool * message_recvd_flag;
 
-    int * image_width = (int *)&depth_ir_image_message
+    int * image_width = (int *)&depth_ab_image_message
                           ->data[sizeof(compressed_depth_image_transport::ConfigHeader) + 0];
-    int * image_height = (int *)&depth_ir_image_message
+    int * image_height = (int *)&depth_ab_image_message
                            ->data[sizeof(compressed_depth_image_transport::ConfigHeader) + 4];
-    if ((*image_width != 512) && (*image_height != 512)) {
-      return;
-    }
+    
     image_width_ = *image_width;
     image_height_ = *image_height;
 
@@ -257,19 +257,19 @@ public:
       raw_image_buf = depth_image_;
       message_recvd_flag = &depth_image_recvd_;
     } else {
-      // ir image
-      if (ir_image_ == nullptr) {
-        ir_image_ = new unsigned short[image_width_ * image_height_ * 2];
+      // ab image
+      if (ab_image_ == nullptr) {
+        ab_image_ = new unsigned short[image_width_ * image_height_ * 2];
       }
-      raw_image_buf = ir_image_;
-      message_recvd_flag = &ir_image_recvd_;
+      raw_image_buf = ab_image_;
+      message_recvd_flag = &ab_image_recvd_;
     }
 
     // decompress
     rvl.DecompressRVL(compressed_image_buf, raw_image_buf, image_width_ * image_height_);
 
     if (is_depth_image) {
-      generatePointCloud(depth_ir_image_message);
+      generatePointCloud(depth_ab_image_message);
     }
     *message_recvd_flag = true;
   }
@@ -349,7 +349,7 @@ public:
   {
     // Make sure we have received frames from all the sensors
     bool all_callbacks_recvd = false;
-    if ((depth_image_recvd_) && (ir_image_recvd_)) {
+    if ((depth_image_recvd_) && (ab_image_recvd_)) {
       all_callbacks_recvd = true;
     }
 
@@ -357,18 +357,18 @@ public:
       RCLCPP_INFO(
         this->get_logger(), "adi_3dtof_adtf31xx_compressed_image_subscriber::Running loop");
 
-      cv::Mat m_depth_image, m_ir_image;
-      // convert to 16 bit depth and IR image of CV format.
+      cv::Mat m_depth_image, m_ab_image;
+      // convert to 16 bit depth and AB image of CV format.
       m_depth_image = cv::Mat(image_height_, image_width_, CV_16UC1, depth_image_);
-      m_ir_image = cv::Mat(image_height_, image_width_, CV_16UC1, ir_image_);
+      m_ab_image = cv::Mat(image_height_, image_width_, CV_16UC1, ab_image_);
 
       publishImageAsRosMsg(m_depth_image, "mono16", "raw_depth_image", depth_image_publisher_);
-      publishImageAsRosMsg(m_ir_image, "mono16", "raw_ir_image", ir_image_publisher_);
+      publishImageAsRosMsg(m_ab_image, "mono16", "raw_ab_image", ab_image_publisher_);
 
       pointcloud_publisher_->publish(transformed_pc_);
 
       depth_image_recvd_ = false;
-      ir_image_recvd_ = false;
+      ab_image_recvd_ = false;
 
       // Update frame count
       frame_counter_++;
@@ -385,20 +385,20 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_subscriber_;
   message_filters::Subscriber<sensor_msgs::msg::CompressedImage> depth_image_subscriber_;
-  message_filters::Subscriber<sensor_msgs::msg::CompressedImage> ir_image_subscriber_;
+  message_filters::Subscriber<sensor_msgs::msg::CompressedImage> ab_image_subscriber_;
   typedef message_filters::sync_policies::ApproximateTime<
     sensor_msgs::msg::CompressedImage, sensor_msgs::msg::CompressedImage>
-    sync_depth_ir_image;
-  message_filters::Synchronizer<sync_depth_ir_image> depth_ir_image_sync_;
+    sync_depth_ab_image;
+  message_filters::Synchronizer<sync_depth_ab_image> depth_ab_image_sync_;
 
   bool depth_image_recvd_;
-  bool ir_image_recvd_;
+  bool ab_image_recvd_;
   unsigned short * depth_image_;
-  unsigned short * ir_image_;
+  unsigned short * ab_image_;
   short * xyz_image_;
 
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr depth_image_publisher_;
-  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr ir_image_publisher_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr ab_image_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pointcloud_publisher_;
 
   rclcpp::Time curr_frame_timestamp_ = rclcpp::Clock{}.now();

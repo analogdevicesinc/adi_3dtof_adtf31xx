@@ -73,7 +73,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /cam1/ir_image
+        Value: /cam1/ab_image
       Value: true
   Enabled: true
   Global Options:
