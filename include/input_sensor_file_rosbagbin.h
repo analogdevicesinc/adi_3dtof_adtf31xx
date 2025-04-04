@@ -58,12 +58,13 @@ public:
     camera_extrinsics_.translation_matrix[1] = 0.0f;
     camera_extrinsics_.translation_matrix[2] = 0.0f;
   }
-  void openSensor(std::string sensor_name, int input_image_width, int input_image_height, int processing_scale,
-                  std::string config_file_name);
-  void configureSensor(std::string frame_type);
+  void openSensor(std::string sensor_name, int input_image_width, int input_image_height, std::string config_file_name,
+                  std::string input_sensor_ip);
+  void configureSensor(int camera_mode);
   void getIntrinsics(CameraIntrinsics* camera_intrinsics_data);
   void getExtrinsics(CameraExtrinsics* camera_extrinsics_data);
-  bool readNextFrame(unsigned short* depth_frame, unsigned short* ir_frame);
+  bool readNextFrame(unsigned short* out_depth_frame, unsigned short* out_ab_frame, unsigned short* out_conf_frame,
+                     short* out_xyz_frame);
   bool getFrameTimestamp(ros::Time* timestamp);
   void closeSensor();
 
@@ -84,6 +85,50 @@ public:
    * @param threshold Confidence threshold
    */
   void setConfidenceThreshold(int threshold)
+  {
+    // Does nothing here, should be overridden in derived class.
+    return;
+  }
+
+  /**
+   * @brief sets the state of JBLF filter
+   *
+   * @param enable_jblf_filter parameter to enable or disable JBLF filter
+   */
+  void setJBLFFilterState(bool enable_jblf_filter)
+  {
+    // Does nothing here, should be overridden in derived class.
+    return;
+  }
+
+  /**
+   * @brief sets the size of JBLF filter
+   *
+   * @param jbfl_filter_size parameter to set JBLF filter size
+   */
+  void setJBLFFilterSize(int jbfl_filter_size)
+  {
+    // Does nothing here, should be overridden in derived class.
+    return;
+  }
+
+  /**
+   * @brief sets the minimum threshold for radial filter
+   *
+   * @param radial_threshold_min parameter to set minimum threshold for radial filter
+   */
+  void setRadialFilterMinThreshold(int radial_min_threshold)
+  {
+    // Does nothing here, should be overridden in derived class.
+    return;
+  }
+
+  /**
+   * @brief sets the maximum threshold for radial filter
+   *
+   * @param radial_threshold_max parameter to set maximum threshold for radial filter
+   */
+  void setRadialFilterMaxThreshold(int radial_max_threshold)
   {
     // Does nothing here, should be overridden in derived class.
     return;

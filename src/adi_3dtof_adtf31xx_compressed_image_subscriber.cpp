@@ -46,12 +46,12 @@ public:
    *
    * @param nh - Node handle
    * @param cam_prefix - vector of camera prefix for all the cameras
-   * @param depth_ir_image_sync - Synchronizer handle depth and ir image
+   * @param depth_ab_image_sync - Synchronizer handle depth and ab image
    */
   ADI3DToFADTF31xxCompressedImageSubscriber(ros::NodeHandle& nh, const std::string& cam_prefix)
     : it_(nh)
-    , depth_ir_image_sync_(sync_depth_ir_image_(MAX_QUEUE_SIZE_FOR_TIME_SYNC), depth_image_subscriber_,
-                           ir_image_subscriber_)
+    , depth_ab_image_sync_(sync_depth_ab_image_(MAX_QUEUE_SIZE_FOR_TIME_SYNC), depth_image_subscriber_,
+                           ab_image_subscriber_)
   {
     ROS_INFO("adi_3dtof_adtf31xx_compressed_image_subscriber::Inside ADI3DToFADTF31xxCompressedImageSubscriber()");
 
@@ -60,15 +60,15 @@ public:
         boost::bind(&ADI3DToFADTF31xxCompressedImageSubscriber::camInfoCallback, this, _1));
 
     depth_image_subscriber_.subscribe(it_, "/" + cam_prefix + "/depth_image", 5);
-    ir_image_subscriber_.subscribe(it_, "/" + cam_prefix + "/ir_image", 5);
+    ab_image_subscriber_.subscribe(it_, "/" + cam_prefix + "/ab_image", 5);
 
-    depth_ir_image_sync_.registerCallback(
-        boost::bind(&ADI3DToFADTF31xxCompressedImageSubscriber::syncDepthIRImageCallback, this, _1, _2));
+    depth_ab_image_sync_.registerCallback(
+        boost::bind(&ADI3DToFADTF31xxCompressedImageSubscriber::syncDepthABImageCallback, this, _1, _2));
 
     depth_image_recvd_ = false;
-    ir_image_recvd_ = false;
+    ab_image_recvd_ = false;
     depth_image_ = nullptr;
-    ir_image_ = nullptr;
+    ab_image_ = nullptr;
     camera_parameters_updated_ = false;
     xyz_image_ = nullptr;
     depth_image_message_ = nullptr;
@@ -78,7 +78,7 @@ public:
 
     // Create publishers.
     depth_image_publisher_ = this->advertise<sensor_msgs::Image>("raw_depth_image", 10);
-    ir_image_publisher_ = this->advertise<sensor_msgs::Image>("raw_ir_image", 10);
+    ab_image_publisher_ = this->advertise<sensor_msgs::Image>("raw_ab_image", 10);
     pointcloud_publisher_ = this->advertise<sensor_msgs::PointCloud2>("pointcloud", 10);
 
     // init
@@ -105,10 +105,10 @@ public:
    */
   ~ADI3DToFADTF31xxCompressedImageSubscriber()
   {
-    if (ir_image_ != nullptr)
+    if (ab_image_ != nullptr)
     {
-      delete[] ir_image_;
-      ir_image_ = nullptr;
+      delete[] ab_image_;
+      ab_image_ = nullptr;
     }
 
     if (depth_image_ != nullptr)
@@ -128,19 +128,19 @@ public:
   }
 
   /**
-   * @brief Call back for synchronised topics(depth and IR image pair)
+   * @brief Call back for synchronised topics(depth and AB image pair)
    *
    * @param depth_image_cam1 - Cam1 depth image pointer
-   * @param ir_image_cam1 - Cam1 IR image pointer
+   * @param ab_image_cam1 - Cam1 AB image pointer
    */
-  void syncDepthIRImageCallback(const sensor_msgs::ImageConstPtr& depth_image_cam1,
-                                const sensor_msgs::ImageConstPtr& ir_image_cam1)
+  void syncDepthABImageCallback(const sensor_msgs::ImageConstPtr& depth_image_cam1,
+                                const sensor_msgs::ImageConstPtr& ab_image_cam1)
   {
     // Call respective callbacks with the id.
-    depthIRImageCallback(depth_image_cam1, true);
-    depthIRImageCallback(ir_image_cam1, false);
+    depthABImageCallback(depth_image_cam1, true);
+    depthABImageCallback(ab_image_cam1, false);
     depth_image_recvd_ = true;
-    ir_image_recvd_ = true;
+    ab_image_recvd_ = true;
   }
 
   /**
@@ -184,24 +184,24 @@ public:
   }
 
   /**
-   * @brief Low-level callback for depth/ir image
+   * @brief Low-level callback for depth/ab image
    *
-   * @param depth_ir_image_message - Pointer to depth/ir compressed image message
-   * @param is_depth_image - true:depth image,false:ir image
+   * @param depth_ab_image_message - Pointer to depth/ab compressed image message
+   * @param is_depth_image - true:depth image,false:ab image
    */
-  void depthIRImageCallback(const sensor_msgs::ImageConstPtr& depth_ir_image_message, bool is_depth_image)
+  void depthABImageCallback(const sensor_msgs::ImageConstPtr& depth_ab_image_message, bool is_depth_image)
   {
-    if ((depth_ir_image_message == nullptr))
+    if ((depth_ab_image_message == nullptr))
     {
       return;
     }
 
-    unsigned char* image_buf = (unsigned char*)&depth_ir_image_message->data[0];
+    unsigned char* image_buf = (unsigned char*)&depth_ab_image_message->data[0];
     unsigned short* raw_image_buf = nullptr;
     bool* message_recvd_flag;
 
-    int* image_width = (int*)&depth_ir_image_message->width;
-    int* image_height = (int*)&depth_ir_image_message->height;
+    int* image_width = (int*)&depth_ab_image_message->width;
+    int* image_height = (int*)&depth_ab_image_message->height;
     if ((*image_width != 512) && (*image_height != 512))
     {
       return;
@@ -218,17 +218,17 @@ public:
       // depth image
       raw_image_buf = depth_image_;
       message_recvd_flag = &depth_image_recvd_;
-      depth_image_message_ = depth_ir_image_message;
+      depth_image_message_ = depth_ab_image_message;
     }
     else
     {
-      // ir image
-      if (ir_image_ == nullptr)
+      // ab image
+      if (ab_image_ == nullptr)
       {
-        ir_image_ = new unsigned short[image_width_ * image_height_];
+        ab_image_ = new unsigned short[image_width_ * image_height_];
       }
-      raw_image_buf = ir_image_;
-      message_recvd_flag = &ir_image_recvd_;
+      raw_image_buf = ab_image_;
+      message_recvd_flag = &ab_image_recvd_;
     }
 
     memcpy(raw_image_buf, image_buf, image_width_ * image_height_ * 2);
@@ -311,27 +311,29 @@ public:
   {
     // Make sure we have received frames from all the sensors
     bool all_callbacks_recvd = false;
-    if ((depth_image_recvd_) && (ir_image_recvd_))
+    if ((depth_image_recvd_) && (ab_image_recvd_))
     {
       all_callbacks_recvd = true;
     }
 
     if (all_callbacks_recvd)
     {
-      cv::Mat m_depth_image, m_ir_image;
+      cv::Mat m_depth_image, m_ab_image;
 
-      // convert to 16 bit depth and IR image of CV format.
+      ROS_INFO("adi_3dtof_adtf31xx_compressed_image_subscriber::Running loop");
+
+      // convert to 16 bit depth and AB image of CV format.
       m_depth_image = cv::Mat(image_height_, image_width_, CV_16UC1, depth_image_);
-      m_ir_image = cv::Mat(image_height_, image_width_, CV_16UC1, ir_image_);
+      m_ab_image = cv::Mat(image_height_, image_width_, CV_16UC1, ab_image_);
 
       publishImageAsRosMsg(m_depth_image, "mono16", "raw_depth_image", depth_image_publisher_);
-      publishImageAsRosMsg(m_ir_image, "mono16", "raw_ir_image", ir_image_publisher_);
+      publishImageAsRosMsg(m_ab_image, "mono16", "raw_ab_image", ab_image_publisher_);
 
       generatePointCloud();
       pointcloud_publisher_.publish(transformed_pc_);
 
       depth_image_recvd_ = false;
-      ir_image_recvd_ = false;
+      ab_image_recvd_ = false;
 
       // Update frame count
       frame_counter_++;
@@ -348,15 +350,15 @@ private:
   ros::Subscriber camera_info_subscriber_;
   image_transport::ImageTransport it_;
   image_transport::SubscriberFilter depth_image_subscriber_;
-  image_transport::SubscriberFilter ir_image_subscriber_;
+  image_transport::SubscriberFilter ab_image_subscriber_;
   bool depth_image_recvd_;
-  bool ir_image_recvd_;
+  bool ab_image_recvd_;
   unsigned short* depth_image_;
-  unsigned short* ir_image_;
+  unsigned short* ab_image_;
   short* xyz_image_;
 
   ros::Publisher depth_image_publisher_;
-  ros::Publisher ir_image_publisher_;
+  ros::Publisher ab_image_publisher_;
   ros::Publisher pointcloud_publisher_;
   sensor_msgs::ImageConstPtr depth_image_message_;
 
@@ -370,9 +372,9 @@ private:
   tf2_ros::TransformListener* tf_listener_;
   sensor_msgs::PointCloud2 transformed_pc_;
 
-  typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> sync_depth_ir_image_;
+  typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> sync_depth_ab_image_;
 
-  message_filters::Synchronizer<sync_depth_ir_image_> depth_ir_image_sync_;
+  message_filters::Synchronizer<sync_depth_ab_image_> depth_ab_image_sync_;
 
   /**
    * @brief This function publishes images as Ros messages.
@@ -420,8 +422,6 @@ int main(int argc, char** argv)
 
   while (ros::ok())
   {
-    ROS_INFO("adi_3dtof_adtf31xx_compressed_image_subscriber::Running loop");
-
     if (!adi_3dtof_adtf31xx_compressed_image_subscriber.publishFrames())
     {
       break;

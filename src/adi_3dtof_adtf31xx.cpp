@@ -47,6 +47,34 @@ void ADI3DToFADTF31xx::updateDynamicReconfigureVariablesInputThread()
     ROS_INFO("Changed Confidence threshold value is %d", confidence_threshold_);
     input_sensor_->setConfidenceThreshold(confidence_threshold_);
   }
+
+  if (jblf_filter_state_ != dynamic_reconfigure_config_.jblf_filter_state)
+  {
+    jblf_filter_state_ = dynamic_reconfigure_config_.jblf_filter_state;
+    ROS_INFO("Changed JBLF filter state is %d", jblf_filter_state_);
+    input_sensor_->setJBLFFilterState(jblf_filter_state_);
+  }
+
+  if (jblf_filter_size_ != dynamic_reconfigure_config_.jblf_filter_size)
+  {
+    jblf_filter_size_ = dynamic_reconfigure_config_.jblf_filter_size;
+    ROS_INFO("Changed JBLF filter size is %d", jblf_filter_size_);
+    input_sensor_->setJBLFFilterSize(jblf_filter_size_);
+  }
+
+  if (radial_filter_min_threshold_ != dynamic_reconfigure_config_.radial_threshold_min)
+  {
+    radial_filter_min_threshold_ = dynamic_reconfigure_config_.radial_threshold_min;
+    ROS_INFO("Changed Radial filter min threshold is %d", radial_filter_min_threshold_);
+    input_sensor_->setRadialFilterMinThreshold(radial_filter_min_threshold_);
+  }
+
+  if (radial_filter_max_threshold_ != dynamic_reconfigure_config_.radial_threshold_max)
+  {
+    radial_filter_max_threshold_ = dynamic_reconfigure_config_.radial_threshold_max;
+    ROS_INFO("Changed Radial filter max threshold is %d", radial_filter_max_threshold_);
+    input_sensor_->setRadialFilterMaxThreshold(radial_filter_max_threshold_);
+  }
 }
 
 /**
@@ -84,43 +112,39 @@ bool ADI3DToFADTF31xx::readNextFrame()
 
   curr_frame_timestamp_ = inframe->getFrameTimestamp();
   depth_frame_ = inframe->getDepthFrame();
-  ir_frame_ = inframe->getIRFrame();
+  ab_frame_ = inframe->getABFrame();
   xyz_frame_ = inframe->getXYZFrame();
+  conf_frame_ = inframe->getConfFrame();
 
-  if ((depth_frame_ == nullptr) || (ir_frame_ == nullptr) || (xyz_frame_ == nullptr))
+  if ((depth_frame_ == nullptr) || (ab_frame_ == nullptr) || (xyz_frame_ == nullptr) || (conf_frame_ == nullptr))
   {
     delete new_output_frame;
     return false;
   }
-
-  PROFILE_FUNCTION_START(adtf31xx_readNextFrame)
-  PROFILE_FUNCTION_START(adtf31xx_depthFrameCompression)
-  compressed_depth_image_transport::RvlCodec rvl;
-  unsigned short* raw_depth_frame = depth_frame_;
-  unsigned char* compressed_depth_frame = new unsigned char[image_width_ * image_height_ * 2];
-  int compressed_size_depth_frame = 0;
-  if (enable_depth_ir_compression_)
-  {
-    compressed_size_depth_frame =
-        rvl.CompressRVL(&raw_depth_frame[0], &compressed_depth_frame[0], image_width_ * image_height_);
-  }
-  PROFILE_FUNCTION_END(adtf31xx_depthFrameCompression)
-
   if (new_output_frame != nullptr)
   {
+    PROFILE_FUNCTION_START(adtf31xx_readNextFrame)
+    if (enable_depth_ab_compression_)
+    {
+      // Compress depth and confidence frame. ab image compression is done in the output thread
+      PROFILE_FUNCTION_START(adtf31xx_depthFrameCompression)
+      compressed_depth_image_transport::RvlCodec rvl;
+      new_output_frame->compressed_depth_frame_size_ = rvl.CompressRVL(
+          &depth_frame_[0], &new_output_frame->compressed_depth_frame_[0], image_width_ * image_height_);
+      new_output_frame->compressed_conf_frame_size_ =
+          rvl.CompressRVL(&conf_frame_[0], &new_output_frame->compressed_conf_frame_[0], image_width_ * image_height_);
+      PROFILE_FUNCTION_END(adtf31xx_depthFrameCompression)
+    }
+
     new_output_frame->frame_number_ = frame_number_;
-    new_output_frame->compressed_depth_frame_size_ = compressed_size_depth_frame;
     memcpy(new_output_frame->depth_frame_, depth_frame_, image_width_ * image_height_ * sizeof(depth_frame_[0]));
-    memcpy(new_output_frame->ir_frame_, ir_frame_, image_width_ * image_height_ * sizeof(ir_frame_[0]));
+    memcpy(new_output_frame->ab_frame_, ab_frame_, image_width_ * image_height_ * sizeof(ab_frame_[0]));
+    memcpy(new_output_frame->conf_frame_, conf_frame_, image_width_ * image_height_ * sizeof(conf_frame_[0]));
     memcpy(new_output_frame->xyz_frame_, xyz_frame_, 3 * image_width_ * image_height_ * sizeof(xyz_frame_[0]));
-    memcpy(new_output_frame->compressed_depth_frame_, compressed_depth_frame,
-           compressed_size_depth_frame * sizeof(compressed_depth_frame[0]));
 
     // Push
     adtf31xxSensorPushOutputNode(new_output_frame);
   }
-
-  delete[] compressed_depth_frame;
 
   delete inframe;
 
@@ -142,8 +166,11 @@ void ADI3DToFADTF31xx::dynamicallyReconfigureVariables(adi_3dtof_adtf31xx::ADTF3
 {
   dynamic_reconfigure_config_ = config;
 
-  ROS_INFO("changed Configuration variables are ab_threshold, confidence_threshold %d %d ", ab_threshold_,
-           confidence_threshold_);
+  ROS_INFO(
+      "Configuration variables: ab_threshold: %d, confidence_threshold: %d, jblf_filter_state: %d, jblf_filter_size: "
+      "%d, radial_filter_min_threshold: %d, radial_filter_max_threshold: %d",
+      ab_threshold_, confidence_threshold_, jblf_filter_state_, jblf_filter_size_, radial_filter_min_threshold_,
+      radial_filter_max_threshold_);
 }
 
 /**
@@ -154,6 +181,10 @@ void ADI3DToFADTF31xx::initSettingsForDynamicReconfigure()
 {
   dynamic_reconfigure_config_.ab_threshold = ab_threshold_;
   dynamic_reconfigure_config_.confidence_threshold = confidence_threshold_;
+  dynamic_reconfigure_config_.jblf_filter_state = jblf_filter_state_;
+  dynamic_reconfigure_config_.jblf_filter_size = jblf_filter_size_;
+  dynamic_reconfigure_config_.radial_threshold_min = radial_filter_min_threshold_;
+  dynamic_reconfigure_config_.radial_threshold_max = radial_filter_max_threshold_;
 }
 
 /**

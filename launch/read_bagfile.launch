@@ -13,7 +13,7 @@
     <arg name="camera_names" default="[$(arg camera1_name), $(arg camera2_name), $(arg camera3_name), $(arg camera4_name)]"/>
 
     <!-- Launch RViz-->
-    <node name="read_rosbags_node" pkg="adi_3dtof_adtf31xx" type="read_rosbags_node" output="screen" >
+    <node name="read_rosbags_node" pkg="adi_3dtof_adtf31xx" type="read_rosbags_node" output="screen" required="true">
         <param name="param_input_file_name" value="$(arg in_file_name)"/>
         <rosparam param="param_camera_prefixes" subst_value="True">$(arg camera_names)</rosparam> 
     </node>

@@ -46,7 +46,7 @@ void ADI3DToFADTF31xx::adtf31xxSensorPushOutputNode(ADI3DToFADTF31xxOutputInfo* 
   }
   else
   {
-    ADI3DToFADTF31xxOutputInfo* last_node = nullptr;
+    [[maybe_unused]] ADI3DToFADTF31xxOutputInfo* last_node = nullptr;
     // Replace the last item with the current one.
     output_thread_mtx_.lock();
     last_node = (ADI3DToFADTF31xxOutputInfo*)output_node_queue_.back();
@@ -84,32 +84,17 @@ void ADI3DToFADTF31xx::processOutput()
       output_node_queue_.pop();
       output_thread_mtx_.unlock();
 
-      // Publish other debug images
-      if (enable_depth_ir_compression_)
+      if (enable_depth_ab_compression_)
       {
-        PROFILE_FUNCTION_START(adtf31xx_irFrameCompression)
-        // IR
-        unsigned short* raw_ir_frame = new_frame->ir_frame_;
-        unsigned char* compressed_ir_frame = new unsigned char[image_width_ * image_height_ * 2];
-        int compressed_size_ir_frame = 0;
+        // Compress ab frame
+        PROFILE_FUNCTION_START(adtf31xx_abFrameCompression)
         compressed_depth_image_transport::RvlCodec rvl;
-        if (enable_depth_ir_compression_)
-        {
-          compressed_size_ir_frame =
-              rvl.CompressRVL(&raw_ir_frame[0], &compressed_ir_frame[0], image_width_ * image_height_);
-        }
-        PROFILE_FUNCTION_END(adtf31xx_irFrameCompression)
-
-        publishImageAndCameraInfo(new_frame->compressed_depth_frame_, new_frame->compressed_depth_frame_size_,
-                                  compressed_ir_frame, compressed_size_ir_frame);
-
-        delete[] compressed_ir_frame;
+        new_frame->compressed_ab_frame_size_ = rvl.CompressRVL(
+            &new_frame->ab_frame_[0], &new_frame->compressed_ab_frame_[0], image_width_ * image_height_);
+        PROFILE_FUNCTION_END(adtf31xx_abFrameCompression)
       }
-      else
-      {
-        publishImageAndCameraInfo(new_frame->depth_frame_, new_frame->ir_frame_, new_frame->xyz_frame_);
-      }
-
+      // Publish the output
+      publishImageAndCameraInfo(new_frame);
       delete new_frame;
       PROFILE_FUNCTION_END(processOutput_Thread)
     }

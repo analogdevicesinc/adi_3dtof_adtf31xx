@@ -3,9 +3,9 @@
 
   <!-- Launch file to run the node to decompress and publish the raw image 
     The camera prefix can be passed as an argument, 
-    the node assumes the topic names for depth and ir as
-    compressed_depth_image and compressed_ir_image respectively.
-    The decompressed output is published as depth_image and ir_image 
+    the node assumes the topic names for depth and ab as
+    compressed_depth_image and compressed_ab_image respectively.
+    The decompressed output is published as depth_image and ab_image 
   -->
 
     <!-- General arguments -->

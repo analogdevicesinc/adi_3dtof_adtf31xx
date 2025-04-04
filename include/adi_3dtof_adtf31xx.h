@@ -60,46 +60,88 @@ public:
     std::string input_file_name;
     nh.param<std::string>("param_input_file_name", input_file_name, "no name");
 
-    int enable_depth_ir_compression;
-    nh.param<int>("param_enable_depth_ir_compression", enable_depth_ir_compression, 0);
+    int enable_depth_ab_compression;
+    nh.param<int>("param_enable_depth_ab_compression", enable_depth_ab_compression, 0);
 
     int ab_threshold;
-    nh.param<int>("param_ab_threshold", ab_threshold, 1);
+    nh.param<int>("param_ab_threshold", ab_threshold, 10);
 
     int confidence_threshold;
-    nh.param<int>("param_confidence_threshold", confidence_threshold, 1);
+    nh.param<int>("param_confidence_threshold", confidence_threshold, 10);
+
+    // JBLF Filter State
+    int jblf_filter_state;
+    nh.param<int>("param_jblf_filter_state", jblf_filter_state, 1);
+
+    // JBLF Filter Size
+    int jblf_filter_size;
+    nh.param<int>("param_jblf_filter_size", jblf_filter_size, 7);
+
+    // Radial Filter Min Threshold
+    int radial_filter_min_threshold;
+    nh.param<int>("param_radial_filter_min_threshold", radial_filter_min_threshold, 100);
+
+    // Radial Filter Max Threshold
+    int radial_filter_max_threshold;
+    nh.param<int>("param_radial_filter_max_threshold", radial_filter_max_threshold, 10000);
 
     std::string config_file_name_of_tof_sdk;
     nh.param<std::string>("param_config_file_name_of_tof_sdk", config_file_name_of_tof_sdk, "no name");
 
-    std::string frame_type;
-    nh.param<std::string>("param_frame_type", frame_type, "no name");
+    int camera_mode;
+    nh.param<int>("param_camera_mode", camera_mode, 3);
+
+    std::string input_sensor_ip;
+    nh.param<std::string>("param_input_sensor_ip", input_sensor_ip, "no name");
+
+    int enable_point_cloud_publish;
+    nh.param<int>("param_enable_point_cloud_publish", enable_point_cloud_publish, 0);
+
+    std::string encoding_type;
+    nh.param<std::string>("param_encoding_type", encoding_type, "mono16");
+
+    enable_point_cloud_publish_ = (enable_point_cloud_publish == 1) ? true : false;
 
     camera_link_ = std::move(camera_link);
     input_sensor_mode_ = input_sensor_mode;
     input_file_name_ = std::move(input_file_name);
+    input_sensor_ip_ = std::move(input_sensor_ip);
+    encoding_type_ = std::move(encoding_type);
     frame_number_ = 0;
-    enable_depth_ir_compression_ = (enable_depth_ir_compression == 1) ? true : false;
+    enable_depth_ab_compression_ = (enable_depth_ab_compression == 1) ? true : false;
 
     ab_threshold_ = ab_threshold;
     confidence_threshold_ = confidence_threshold;
+    jblf_filter_state_ = (jblf_filter_state == 1) ? true : false;
+    jblf_filter_size_ = jblf_filter_size;
+    radial_filter_min_threshold_ = radial_filter_min_threshold;
+    radial_filter_max_threshold_ = radial_filter_max_threshold;
 
     // Get input sensor module
     input_sensor_ = InputSensorFactory::getInputSensor(input_sensor_mode_);
 
     // Open the sensor
-    input_sensor_->openSensor(input_file_name_, image_width_, image_height_, processing_scale_,
-                              config_file_name_of_tof_sdk);
+    if (input_sensor_mode_ != 3)
+    {
+      // If the mode is not ADTF31xx sensor over Network, then the ip should be set to ""
+      input_sensor_ip_.clear();
+    }
+    input_sensor_->openSensor(input_file_name_, image_width_, image_height_, config_file_name_of_tof_sdk,
+                              input_sensor_ip_);
     if (!input_sensor_->isOpened())
     {
       ROS_ERROR("Could not open the sensor %s", input_file_name_.c_str());
       shutDownAllNodes();
     }
 
-    input_sensor_->setProcessingScale(processing_scale_);
-
     // Configure the sensor
-    input_sensor_->configureSensor(frame_type);
+    input_sensor_->configureSensor(camera_mode);
+
+    input_sensor_->setRadialFilterMinThreshold(radial_filter_min_threshold_);
+
+    input_sensor_->setRadialFilterMaxThreshold(radial_filter_max_threshold_);
+
+    input_sensor_->setJBLFFilterSize(jblf_filter_size_);
 
     // Buffer allocations.
     image_width_ = input_sensor_->getFrameWidth();
@@ -112,17 +154,23 @@ public:
 
     // Create publishers.
     // Input and Intermediate Debug Images
-    if (enable_depth_ir_compression_ == 1)
+    if (enable_depth_ab_compression_ == 1)
     {
       depth_image_publisher_ = this->advertise<sensor_msgs::CompressedImage>("depth_image/compressedDepth", 10);
-      ir_image_publisher_ = this->advertise<sensor_msgs::CompressedImage>("ir_image/compressedDepth", 10);
+      ab_image_publisher_ = this->advertise<sensor_msgs::CompressedImage>("ab_image/compressedDepth", 10);
+      conf_image_publisher_ = this->advertise<sensor_msgs::CompressedImage>("conf_image/compressedDepth", 10);
     }
     else
     {
       depth_image_publisher_ = this->advertise<sensor_msgs::Image>("depth_image", 10);
-      ir_image_publisher_ = this->advertise<sensor_msgs::Image>("ir_image", 10);
+      ab_image_publisher_ = this->advertise<sensor_msgs::Image>("ab_image", 10);
+      conf_image_publisher_ = this->advertise<sensor_msgs::Image>("conf_image", 10);
     }
-    // xyz_image_publisher_ = this->advertise<sensor_msgs::PointCloud2>("point_cloud", 10);
+
+    if (enable_point_cloud_publish_ == 1)
+    {
+      xyz_image_publisher_ = this->advertise<sensor_msgs::PointCloud2>("point_cloud", 10);
+    }
 
     // Camera Infos
     depth_info_publisher_ = this->advertise<sensor_msgs::CameraInfo>("camera_info", 10);
@@ -133,9 +181,14 @@ public:
 
     input_sensor_->setConfidenceThreshold(confidence_threshold_);
 
+    input_sensor_->setJBLFFilterState(jblf_filter_state_);
+
     // Printing the output in console as parameters are overwritten by launch file.
-    ROS_INFO("Changed Configuration variables ab_threshold, confidence_threshold %d %d", ab_threshold_,
-             confidence_threshold_);
+    ROS_INFO(
+        "Configuration variables: ab_threshold: %d, confidence_threshold: %d, jblf_filter_state: %d, jblf_filter_size: "
+        "%d, radial_filter_min_threshold: %d, radial_filter_max_threshold: %d",
+        ab_threshold_, confidence_threshold_, jblf_filter_state_, jblf_filter_size_, radial_filter_min_threshold_,
+        radial_filter_max_threshold_);
 
     // Initially setting dynamic reconfigure values to same as launch file
     initSettingsForDynamicReconfigure();
@@ -185,16 +238,25 @@ private:
   int image_width_ = 1024;
   int image_height_ = 1024;
   int frame_number_;
-  bool enable_depth_ir_compression_;
+  bool enable_depth_ab_compression_;
   int ab_threshold_ = 10;
   int confidence_threshold_ = 10;
+  bool jblf_filter_state_ = true;
+  int jblf_filter_size_ = 7;
+  int radial_filter_min_threshold_ = 100;
+  int radial_filter_max_threshold_ = 10000;
   std::string input_file_name_;
+  std::string input_sensor_ip_;
+  std::string encoding_type_;
+  bool enable_point_cloud_publish_ = false;
   sensor_msgs::CameraInfo cam_info_msg_;
   unsigned short* depth_frame_;
-  unsigned short* ir_frame_;
+  unsigned short* ab_frame_;
   short* xyz_frame_;
+  unsigned short* conf_frame_;
   ros::Publisher depth_image_publisher_;
-  ros::Publisher ir_image_publisher_;
+  ros::Publisher ab_image_publisher_;
+  ros::Publisher conf_image_publisher_;
   ros::Publisher xyz_image_publisher_;
   ros::Publisher depth_info_publisher_;
   CameraIntrinsics depth_intrinsics_;
@@ -314,9 +376,11 @@ private:
   /**
    * @brief This function publishes the point cloud
    *
+   * @param xyz_frame - Pointer to xyz frame
+   *
    * Note: Assumes that cam_info_msg_ is already populated
    */
-  void publishPointCloud()
+  void publishPointCloud(short* xyz_frame)
   {
     sensor_msgs::PointCloud2::Ptr pointcloud_msg(new sensor_msgs::PointCloud2);
 
@@ -330,7 +394,7 @@ private:
 
     // XYZ data from sensor.
     // This data is in 16 bpp format.
-    short* xyz_sensor_buf = xyz_frame_;
+    short* xyz_sensor_buf = xyz_frame;
 
     sensor_msgs::PointCloud2Modifier pcd_modifier(*pointcloud_msg);
     pcd_modifier.setPointCloud2FieldsByString(1, "xyz");
@@ -356,68 +420,53 @@ private:
   }
 
   /**
-   * @brief This function publihes the camera info, compressed depth and ir images.
+   * @brief Publishes the image and camera information.
+   * This function publishes the camera information and
+   * depth, AB, and confidence images.
    *
-   * @param compressed_depth_frame - Pointer to compressed depth image
-   * @param compressed_depth_frame_size - Buffer size(compressed depth image)
-   * @param compressed_ir_frame - Pointer to compressed ir image
-   * @param compressed_ir_frame_size - Buffer size(compressed ir image)
+   * @param out_frame Pointer to the output frame containing the compressed depth frame and its size.
    */
-  void publishImageAndCameraInfo(unsigned char* compressed_depth_frame, int compressed_depth_frame_size,
-                                 unsigned char* compressed_ir_frame, int compressed_ir_frame_size)
+  void publishImageAndCameraInfo(ADI3DToFADTF31xxOutputInfo* out_frame)
   {
-    // Publish image as Ros message
-    cv::Mat m_disp_image_depth, m_disp_image_ir, m_disp_virtual_depth;
-
-    // convert to 16 bit depth and IR image of CV format.
-    m_disp_image_depth = cv::Mat(image_height_, image_width_, CV_16UC1, depth_frame_);
-    m_disp_image_ir = cv::Mat(image_height_, image_width_, CV_16UC1, ir_frame_);
-
+    // Publish Camera info
     fillAndPublishCameraInfo(camera_link_, depth_info_publisher_);
 
-    if (enable_depth_ir_compression_ == true)
+    if (enable_depth_ab_compression_ == true)
     {
+      // Publish compressed depth,ab and confidence image
       PROFILE_FUNCTION_START(Publish_CompressImg)
-      publishRVLCompressedImageAsRosMsg(compressed_depth_frame, compressed_depth_frame_size, "mono16", camera_link_,
-                                        depth_image_publisher_);
+      publishRVLCompressedImageAsRosMsg(out_frame->compressed_depth_frame_, out_frame->compressed_depth_frame_size_,
+                                        encoding_type_, camera_link_, depth_image_publisher_);
 
-      publishRVLCompressedImageAsRosMsg(compressed_ir_frame, compressed_ir_frame_size, "mono16", camera_link_,
-                                        ir_image_publisher_);
+      publishRVLCompressedImageAsRosMsg(out_frame->compressed_ab_frame_, out_frame->compressed_ab_frame_size_,
+                                        encoding_type_, camera_link_, ab_image_publisher_);
+
+      publishRVLCompressedImageAsRosMsg(out_frame->compressed_conf_frame_, out_frame->compressed_conf_frame_size_,
+                                        encoding_type_, camera_link_, conf_image_publisher_);
       PROFILE_FUNCTION_END(Publish_CompressImg)
     }
     else
     {
-      publishImageAsRosMsg(m_disp_image_depth, "mono16", camera_link_, depth_image_publisher_);
-      publishImageAsRosMsg(m_disp_image_ir, "mono16", camera_link_, ir_image_publisher_);
+      // Publish uncompressed depth, ab and confidence image
+      // convert to CV format.
+      cv::Mat m_disp_image_depth, m_disp_image_ab, m_disp_image_conf;
+      m_disp_image_depth = cv::Mat(image_height_, image_width_, CV_16UC1, out_frame->depth_frame_);
+      m_disp_image_ab = cv::Mat(image_height_, image_width_, CV_16UC1, out_frame->ab_frame_);
+      m_disp_image_conf = cv::Mat(image_height_, image_width_, CV_16UC1, out_frame->conf_frame_);
+
+      // Publish image as Ros message
+      publishImageAsRosMsg(m_disp_image_depth, encoding_type_, camera_link_, depth_image_publisher_);
+      publishImageAsRosMsg(m_disp_image_ab, encoding_type_, camera_link_, ab_image_publisher_);
+      publishImageAsRosMsg(m_disp_image_conf, encoding_type_, camera_link_, conf_image_publisher_);
     }
 
     PROFILE_FUNCTION_START(publish_PointCloud)
-    // PublishPointCloud
-    // publishPointCloud();
+    if (enable_point_cloud_publish_ == true)
+    {
+      // Publish point cloud
+      publishPointCloud(out_frame->xyz_frame_);
+    }
     PROFILE_FUNCTION_END(publish_PointCloud)
-  }
-
-  /**
-   * @brief This function publishes depth image , ir image, point-cloud and camera info.
-   *
-   * @param depth_frame - Pointer to the depth frame buffer
-   * @param ir_frame - Pointer to the ir frame buffer
-   * @param xyz_frame - Pointer to the xyz frame buffer
-   */
-  void publishImageAndCameraInfo(unsigned short* depth_frame, unsigned short* ir_frame, short* xyz_frame)
-  {
-    // Publish image as Ros message
-    cv::Mat m_disp_image_depth, temp_depth, m_disp_image_ir, m_disp_virtual_depth;
-
-    // convert to 16 bit depth and IR image of CV format.
-    m_disp_image_depth = cv::Mat(image_height_, image_width_, CV_16UC1, depth_frame);
-    m_disp_image_ir = cv::Mat(image_height_, image_width_, CV_16UC1, ir_frame);
-
-    fillAndPublishCameraInfo(camera_link_, depth_info_publisher_);
-    publishImageAsRosMsg(m_disp_image_depth, "mono16", camera_link_, depth_image_publisher_);
-    publishImageAsRosMsg(m_disp_image_ir, "mono16", camera_link_, ir_image_publisher_);
-
-    // publishPointCloud();
   }
 
   /**

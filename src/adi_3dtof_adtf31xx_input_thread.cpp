@@ -62,8 +62,6 @@ ADI3DToFADTF31xxFrameInfo* ADI3DToFADTF31xx::adtf31xxSensorGetNextFrame()
  */
 void ADI3DToFADTF31xx::readInput()
 {
-  int frame_count = 0;
-
   while (!read_input_thread_abort_)
   {
     // ROS_INFO("Read loop");
@@ -73,7 +71,8 @@ void ADI3DToFADTF31xx::readInput()
     if (new_frame != nullptr)
     {
       PROFILE_FUNCTION_START(readInput_Thread)
-      bool result = input_sensor_->readNextFrame(new_frame->getDepthFrame(), new_frame->getIRFrame());
+      bool result = input_sensor_->readNextFrame(new_frame->getDepthFrame(), new_frame->getABFrame(),
+                                                 new_frame->getConfFrame(), new_frame->getXYZFrame());
       input_sensor_->getFrameTimestamp(new_frame->getFrameTimestampPtr());
       PROFILE_FUNCTION_END(readInput_Thread)
       if (!result)
@@ -106,7 +105,7 @@ void ADI3DToFADTF31xx::readInput()
       std::cout << "Overwrite buffer" << std::endl;
       // If the Queue is full, then overwrite the last buffer with the latest frame
       input_thread_mtx_.lock();
-      ADI3DToFADTF31xxFrameInfo* last_node = (ADI3DToFADTF31xxFrameInfo*)input_frames_queue_.back();
+      [[maybe_unused]] ADI3DToFADTF31xxFrameInfo* last_node = (ADI3DToFADTF31xxFrameInfo*)input_frames_queue_.back();
       input_thread_mtx_.unlock();
       last_node = new_frame;
       delete new_frame;

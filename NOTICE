@@ -1,5 +1,5 @@
-OSPO_ADI_3dtof_adtf31xx 1.0.0
-Copyright 2023 Analog Devices, Inc.
+ADI_3dtof_adtf31xx_ROS1 1.1.0
+Copyright 2025 Analog Devices, Inc.
 
 The main license for this software is identified in the LICENSE file.
 
@@ -7,106 +7,246 @@ This product includes third party IP identified below:
 
 Components:
 
+
 actionlib 1.14.0 : BSD 3-clause "New" or "Revised" License
+
+
 actionlib-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
+
+
+angles 1.9.13 : BSD 3-clause "New" or "Revised" License
+
+
 bond 1.8.6 : BSD 3-clause "New" or "Revised" License
-bond-core 1.8.6 : BSD 3-clause "New" or "Revised" License
+
+
 bondcpp 1.8.6 : BSD 3-clause "New" or "Revised" License
-bondpy 1.8.6 : BSD 3-clause "New" or "Revised" License
+
+
 camera-calibration-parsers 1.12.0 : BSD 3-clause "New" or "Revised" License
+
+
 catkin 0.8.10 : (Apache License 2.0 AND BSD 3-clause "New" or "Revised" License)
+
+
 class-loader 0.5.0 : BSD 3-clause "New" or "Revised" License
+
+
 cmake-modules 0.5.0 : (MIT License AND BSD 3-clause "New" or "Revised" License)
-common-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
+
+
 compressed-depth-image-transport 1.14.0 : BSD 3-clause "New" or "Revised" License
-compressed-image-transport 1.14.0 : BSD 3-clause "New" or "Revised" License
-cpp-common 0.7.2 : BSD 3-clause "New" or "Revised" License
+
+
+cpp-common 0.7.3 : BSD 3-clause "New" or "Revised" License
+
+
 cv-bridge 1.16.2 : BSD 3-clause "New" or "Revised" License
+
+
 diagnostic-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
+
+
 dynamic-reconfigure 1.7.3 : BSD 3-clause "New" or "Revised" License
+
+
 eigen-conversions 1.13.2 : BSD 3-clause "New" or "Revised" License
+
+
 gencpp 0.7.0 : BSD 3-clause "New" or "Revised" License
+
+
 geneus 3.0.0 : BSD 3-clause "New" or "Revised" License
+
+
 genlisp 0.4.18 : BSD 3-clause "New" or "Revised" License
+
+
 genmsg 0.6.0 : BSD 3-clause "New" or "Revised" License
+
+
 gennodejs 2.0.2-1 : Apache License 2.0
+
+
+genpy 0.6.15 : BSD 3-clause "New" or "Revised" License
+
+
 geometry-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
+
+
 image-geometry 1.16.2 : BSD 3-clause "New" or "Revised" License
+
+
 image-transport 1.12.0 : BSD 3-clause "New" or "Revised" License
-image-transport-plugins 1.14.0-1 : BSD 3-clause "New" or "Revised" License
+
+
 image-view 1.17.0 : BSD 3-clause "New" or "Revised" License
+
+
 message-filters 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 message-generation 0.4.1 : BSD 3-clause "New" or "Revised" License
+
+
 message-runtime 0.4.13 : BSD 3-clause "New" or "Revised" License
-mk 1.15.8 : BSD 3-clause "New" or "Revised" License
-nav-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
-nodelet 1.10.2 : BSD 3-clause "New" or "Revised" License
-nodelet-core 1.10.2 : BSD 3-clause "New" or "Revised" License
-nodelet-topic-tools 1.10.2 : BSD 3-clause "New" or "Revised" License
+
+
+nodelet 1.11.0 : BSD 3-clause "New" or "Revised" License
+
+
+nodelet-topic-tools 1.11.0 : BSD 3-clause "New" or "Revised" License
+
+
 pcl-conversions 1.7.4 : BSD 3-clause "New" or "Revised" License
+
+
 pcl-msgs 0.3.0 : BSD 3-clause "New" or "Revised" License
+
+
 pcl-ros 1.7.4 : BSD 3-clause "New" or "Revised" License
+
+
 pluginlib 1.13.0 : BSD 3-clause "New" or "Revised" License
+
+
 python-smclib 1.8.6 : (Mozilla Public License 1.1 AND BSD 3-clause "New" or "Revised" License)
-ros 1.15.8 : BSD 3-clause "New" or "Revised" License
-ros-base 1.5.0 : BSD 3-clause "New" or "Revised" License
-ros-comm 1.16.0 : BSD 3-clause "New" or "Revised" License
-ros-core 1.5.0 : BSD 3-clause "New" or "Revised" License
+
+
 ros-environment 1.3.2 : Apache License 2.0
+
+
+ros-pkg 1.14.0 : (MIT License AND BSD 3-clause "New" or "Revised" License)
+
+
 rosbag 1.16.0 : BSD 3-clause "New" or "Revised" License
-rosbag-migration-rule 1.0.1 : BSD 3-clause "New" or "Revised" License
+
+
+rosbag-storage 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosbash 1.15.8 : BSD 3-clause "New" or "Revised" License
-rosboost-cfg 1.15.8 : BSD 3-clause "New" or "Revised" License
+
+
 rosbuild 1.15.8 : (BSD 3-clause "New" or "Revised" License AND BSD-Style)
+
+
 rosclean 1.15.8 : BSD 3-clause "New" or "Revised" License
+
+
 rosconsole 1.14.3 : BSD 3-clause "New" or "Revised" License
-rosconsole-bridge 0.5.4 : BSD 3-clause "New" or "Revised" License
-roscpp 1.16.0 : (BSD-3-Clause Like AND BSD 3-clause "New" or "Revised" License)
-roscpp-core 0.7.2 : BSD 3-clause "New" or "Revised" License
-roscpp-serialization 0.7.2 : BSD 3-clause "New" or "Revised" License
-roscpp-traits 0.7.2 : BSD 3-clause "New" or "Revised" License
-roscreate 1.15.8 : BSD 3-clause "New" or "Revised" License
+
+
+roscpp 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
+roscpp-serialization 0.7.3 : BSD 3-clause "New" or "Revised" License
+
+
+roscpp-traits 0.7.3 : BSD 3-clause "New" or "Revised" License
+
+
 rosgraph 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosgraph-msgs 1.11.3 : BSD 3-clause "New" or "Revised" License
+
+
 roslang 1.15.8 : BSD 3-clause "New" or "Revised" License
+
+
 roslaunch 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 roslib 1.15.8 : BSD 3-clause "New" or "Revised" License
-roslisp 1.9.25 : BSD 3-clause "New" or "Revised" License
+
+
 roslz4 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosmake 1.15.8 : BSD 3-clause "New" or "Revised" License
+
+
 rosmaster 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosmsg 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosnode 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosout 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rospack 2.6.2 : BSD 3-clause "New" or "Revised" License
+
+
 rosparam 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rospy 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosservice 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rostest 1.16.0 : BSD 3-clause "New" or "Revised" License
-rostime 0.7.2 : BSD 3-clause "New" or "Revised" License
+
+
+rostime 0.7.3 : BSD 3-clause "New" or "Revised" License
+
+
 rostopic 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 rosunit 1.15.8 : BSD 3-clause "New" or "Revised" License
+
+
 roswtf 1.16.0 : BSD 3-clause "New" or "Revised" License
+
+
 sensor-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
-shape-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
+
+
 std-msgs 0.5.13 : BSD 3-clause "New" or "Revised" License
+
+
 std-srvs 1.11.3 : BSD 3-clause "New" or "Revised" License
+
+
 stereo-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
-tf 1.13.2 : (zlib License AND BSD 3-clause Clear License AND BSD 3-clause "New" or "Revised" License)
-tf2 0.7.6 : (zlib License AND Apache License 2.0 AND BSD 3-clause "New" or "Revised" License)
-tf2-eigen 0.7.6 : BSD 2-clause "Simplified" License
-tf2-geometry-msgs 0.7.6 : BSD 3-clause "New" or "Revised" License
-tf2-msgs 0.7.6 : BSD 3-clause "New" or "Revised" License
-tf2-py 0.7.6 : BSD 3-clause "New" or "Revised" License
-tf2-ros 0.7.6 : BSD 3-clause "New" or "Revised" License
-theora-image-transport 1.14.0 : BSD 3-clause "New" or "Revised" License
+
+
+tf 1.13.2 : (zlib License AND BSD 3-clause "New" or "Revised" License)
+
+
+tf2 0.7.7 : (zlib License AND Apache License 2.0 AND BSD 3-clause "New" or "Revised" License)
+
+
+tf2-eigen 0.7.7 : BSD 3-clause "New" or "Revised" License
+
+
+tf2-geometry-msgs 0.7.7 : BSD 3-clause "New" or "Revised" License
+
+
+tf2-msgs 0.7.7 : BSD 3-clause "New" or "Revised" License
+
+
+tf2-py 0.7.7 : BSD 3-clause "New" or "Revised" License
+
+
+tf2-ros 0.7.7 : BSD 3-clause "New" or "Revised" License
+
+
 topic-tools 1.16.0 : BSD 3-clause "New" or "Revised" License
-trajectory-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
-vision-opencv 1.16.2 : BSD 3-clause "New" or "Revised" License
-visualization-msgs 1.13.1 : BSD 3-clause "New" or "Revised" License
+
+
 xmlrpcpp 1.16.0 : GNU Lesser General Public License v2.1 only
 
+
 Licenses:
+
 
 --------------------------------------------------------------------------------
 actionlib 1.14.0
@@ -146,6 +286,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -188,6 +330,49 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
+--------------------------------------------------------------------------------
+angles 1.9.13
+License: BSD 3-clause "New" or "Revised" License
+Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-angles
+
+
+
+License: BSD 3-clause "New" or "Revised" License
+SPDX-License-Identifier: BSD-3-Clause
+ Copyright (c) 2008, Willow Garage, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+    be used to endorse or promote products derived from this software without
+    specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
 --------------------------------------------------------------------------------
 bond 1.8.6
 License: BSD 3-clause "New" or "Revised" License
@@ -227,44 +412,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-bond-core 1.8.6
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-bond-core
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
- Copyright (c) 2009, Willow Garage, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of Willow Garage, Inc. nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -307,44 +454,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-bondpy 1.8.6
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-bondpy
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
- Copyright (c) 2009, Willow Garage, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of Willow Garage, Inc. nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -385,6 +494,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -611,6 +722,8 @@ Redistribution and use in source and binary forms, with or without
  POSSIBILITY OF SUCH DAMAGE
 
 
+
+
 --------------------------------------------------------------------------------
 class-loader 0.5.0
 License: BSD 3-clause "New" or "Revised" License
@@ -646,6 +759,8 @@ SPDX-License-Identifier: BSD-3-Clause
  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -713,42 +828,6 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-common-msgs 1.13.1
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-common-msgs
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -791,48 +870,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-compressed-image-transport 1.14.0
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-compressed-image-transport
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
- Copyright (c) 20012, Willow Garage, Inc.
- All rights reserved.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-cpp-common 0.7.2
+cpp-common 0.7.3
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-cpp-common
 
@@ -864,6 +905,8 @@ SPDX-License-Identifier: BSD-3-Clause
  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -905,6 +948,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 diagnostic-msgs 1.13.1
 License: BSD 3-clause "New" or "Revised" License
@@ -941,6 +986,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -982,6 +1029,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 eigen-conversions 1.13.2
 License: BSD 3-clause "New" or "Revised" License
@@ -1021,6 +1070,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 gencpp 0.7.0
 License: BSD 3-clause "New" or "Revised" License
@@ -1058,6 +1109,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -1100,6 +1153,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 genlisp 0.4.18
 License: BSD 3-clause "New" or "Revised" License
@@ -1139,6 +1194,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 genmsg 0.6.0
 License: BSD 3-clause "New" or "Revised" License
@@ -1176,6 +1233,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -1370,6 +1429,49 @@ third-party archives.
   governing permissions and limitations under the License.
 
 
+
+
+--------------------------------------------------------------------------------
+genpy 0.6.15
+License: BSD 3-clause "New" or "Revised" License
+Origin: http://packages.ros.org/ros/pool/main/r/ros-melodic-genpy
+
+
+
+License: BSD 3-clause "New" or "Revised" License
+SPDX-License-Identifier: BSD-3-Clause
+Copyright (c) 2008, Willow Garage, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+    be used to endorse or promote products derived from this software without
+    specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
 --------------------------------------------------------------------------------
 geometry-msgs 1.13.1
 License: BSD 3-clause "New" or "Revised" License
@@ -1408,6 +1510,8 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 image-geometry 1.16.2
 License: BSD 3-clause "New" or "Revised" License
@@ -1443,6 +1547,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -1484,41 +1590,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-image-transport-plugins 1.14.0-1
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://www.ros.org/wiki/image_transport_plugins
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -1556,6 +1627,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -1597,6 +1670,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 message-generation 0.4.1
 License: BSD 3-clause "New" or "Revised" License
@@ -1636,6 +1711,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 message-runtime 0.4.13
 License: BSD 3-clause "New" or "Revised" License
@@ -1673,84 +1750,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-mk 1.15.8
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-mk
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-  Copyright: 2010 Willow Garage, Inc.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-nav-msgs 1.13.1
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-nav-msgs
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
---------------------------------------------------------------------------------
-nodelet 1.10.2
+nodelet 1.11.0
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-nodelet
 
@@ -1788,45 +1791,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-nodelet-core 1.10.2
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-nodelet-core
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-nodelet-topic-tools 1.10.2
+nodelet-topic-tools 1.11.0
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-nodelet-topic-tools
 
@@ -1863,6 +1831,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -1907,6 +1877,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 pcl-msgs 0.3.0
 License: BSD 3-clause "New" or "Revised" License
@@ -1942,6 +1914,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -1983,6 +1957,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 pluginlib 1.13.0
 License: BSD 3-clause "New" or "Revised" License
@@ -2018,6 +1994,8 @@ SPDX-License-Identifier: BSD-3-Clause
  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -2483,154 +2461,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-ros 1.15.8
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-ros
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
---------------------------------------------------------------------------------
-ros-base 1.5.0
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-ros-base
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
---------------------------------------------------------------------------------
-ros-comm 1.16.0
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-ros-comm
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
---------------------------------------------------------------------------------
-ros-core 1.5.0
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-ros-core
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -2825,6 +2655,73 @@ third-party archives.
   governing permissions and limitations under the License.
 
 
+
+
+--------------------------------------------------------------------------------
+ros-pkg 1.14.0
+License: (MIT License AND BSD 3-clause "New" or "Revised" License)
+Origin: https://github.com/ros-perception/image_transport_plugins
+
+
+
+License: MIT License
+SPDX-License-Identifier: MIT
+The MIT License
+===============
+
+ Andrew D. Wilson in "Fast Lossless Depth Image Compression" at SIGCHI'17
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in the
+Software without restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+License: BSD 3-clause "New" or "Revised" License
+SPDX-License-Identifier: BSD-3-Clause
+Copyright (c) 20012, Willow Garage, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+    be used to endorse or promote products derived from this software without
+    specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
 --------------------------------------------------------------------------------
 rosbag 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -2864,16 +2761,19 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-rosbag-migration-rule 1.0.1
+rosbag-storage 1.16.0
 License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-rosbag-migration-rule
+Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-rosbag-storage
 
 
 
 License: BSD 3-clause "New" or "Revised" License
 SPDX-License-Identifier: BSD-3-Clause
-
+Copyright (c) 2008, Willow Garage, Inc.
+All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -2900,6 +2800,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -2939,43 +2841,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-rosboost-cfg 1.15.8
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-rosboost-cfg
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-  Copyright: 2010 Willow Garage, Inc.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -3041,6 +2906,8 @@ License: BSD-Style
  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosclean 1.15.8
 License: BSD 3-clause "New" or "Revised" License
@@ -3078,6 +2945,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3119,77 +2988,14 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-rosconsole-bridge 0.5.4
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-rosconsole-bridge
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-  Copyright: 2011 Willow Garage, Inc.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
 roscpp 1.16.0
-License: (BSD-3-Clause Like AND BSD 3-clause "New" or "Revised" License)
+License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-roscpp
 
 
-
-License: BSD-3-Clause Like
- Copyright (C) 2008, Morgan Quigley and Willow Garage, Inc.
-
-1. Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
-  Redistributions of source code must retain the above copyright notice,
- this list of conditions and the following disclaimer.
-2.  Redistributions in binary form must reproduce the above copyright
- notice, this list of conditions and the following disclaimer in the
- documentation and/or other materials provided with the distribution.
-3.  Neither the names of Stanford University or Willow Garage, Inc. nor the names of its
- contributors may be used to endorse or promote products derived from
- this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 License: BSD 3-clause "New" or "Revised" License
 SPDX-License-Identifier: BSD-3-Clause
@@ -3223,45 +3029,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-roscpp-core 0.7.2
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-roscpp-core
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
-roscpp-serialization 0.7.2
+roscpp-serialization 0.7.3
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-roscpp-serialization
 
@@ -3299,8 +3070,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-roscpp-traits 0.7.2
+roscpp-traits 0.7.3
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-roscpp-traits
 
@@ -3338,43 +3111,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-roscreate 1.15.8
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-roscreate
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-  Copyright: 2008 Willow Garage, Inc.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -3416,6 +3152,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosgraph-msgs 1.11.3
 License: BSD 3-clause "New" or "Revised" License
@@ -3453,6 +3191,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3494,6 +3234,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 roslaunch 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -3531,6 +3273,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3572,43 +3316,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-roslisp 1.9.25
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-roslisp
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-  Copyright: 2008 Willow Garage, Inc.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -3651,6 +3358,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosmake 1.15.8
 License: BSD 3-clause "New" or "Revised" License
@@ -3688,6 +3397,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3729,6 +3440,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosmsg 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -3766,6 +3479,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3807,6 +3522,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosout 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -3842,6 +3559,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3883,6 +3602,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosparam 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -3920,6 +3641,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -3961,6 +3684,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosservice 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -3998,6 +3723,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -4039,8 +3766,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-rostime 0.7.2
+rostime 0.7.3
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-rostime
 
@@ -4076,6 +3805,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -4117,6 +3848,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 rosunit 1.15.8
 License: BSD 3-clause "New" or "Revised" License
@@ -4156,6 +3889,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 roswtf 1.16.0
 License: BSD 3-clause "New" or "Revised" License
@@ -4193,6 +3928,8 @@ SPDX-License-Identifier: BSD-3-Clause
  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -4239,41 +3976,6 @@ SPDX-License-Identifier: BSD-3-Clause
  modification, are permitted provided that the following conditions
 
 
---------------------------------------------------------------------------------
-shape-msgs 1.13.1
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-shape-msgs
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -4315,6 +4017,8 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 std-srvs 1.11.3
 License: BSD 3-clause "New" or "Revised" License
@@ -4349,6 +4053,8 @@ OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
@@ -4388,9 +4094,11 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
 tf 1.13.2
-License: (zlib License AND BSD 3-clause Clear License AND BSD 3-clause "New" or "Revised" License)
+License: (zlib License AND BSD 3-clause "New" or "Revised" License)
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf
 
 
@@ -4408,44 +4116,6 @@ subject to the following restrictions:
 1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
 2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
-
-License: BSD 3-clause Clear License
-SPDX-License-Identifier: BSD-3-Clause-Clear
-The Clear BSD License
-=====================
-
-This is a license template.
-
-Copyright (c) [xxxx]-[xxxx] [Owner Organization]
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted (subject to the limitations in the disclaimer below) provided that
-the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of [Owner Organization] nor the names of its contributors
-    may be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
-LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 License: BSD 3-clause "New" or "Revised" License
 SPDX-License-Identifier: BSD-3-Clause
@@ -4479,8 +4149,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-tf2 0.7.6
+tf2 0.7.7
 License: (zlib License AND Apache License 2.0 AND BSD 3-clause "New" or "Revised" License)
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf2
 
@@ -4716,42 +4388,51 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-tf2-eigen 0.7.6
-License: BSD 2-clause "Simplified" License
+tf2-eigen 0.7.7
+License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf2-eigen
 
 
 
-License: BSD 2-clause "Simplified" License
-SPDX-License-Identifier: BSD-2-Clause
- Copyright (c) Koji Terada
- All rights reserved.
+License: BSD 3-clause "New" or "Revised" License
+SPDX-License-Identifier: BSD-3-Clause
+Copyright (c) Koji Terada
+All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
 
-*  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-*  Redistributions in binary form must reproduce the above copyright
- notice, this list of conditions and the following disclaimer in the
- documentation and/or other materials provided with the distribution.
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+
+  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+    be used to endorse or promote products derived from this software without
+    specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 
 
 --------------------------------------------------------------------------------
-tf2-geometry-msgs 0.7.6
+tf2-geometry-msgs 0.7.7
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf2-geometry-msgs
 
@@ -4789,8 +4470,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-tf2-msgs 0.7.6
+tf2-msgs 0.7.7
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf2-msgs
 
@@ -4828,8 +4511,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-tf2-py 0.7.6
+tf2-py 0.7.7
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf2-py
 
@@ -4867,8 +4552,10 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
+
+
 --------------------------------------------------------------------------------
-tf2-ros 0.7.6
+tf2-ros 0.7.7
 License: BSD 3-clause "New" or "Revised" License
 Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-tf2-ros
 
@@ -4906,43 +4593,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-theora-image-transport 1.14.0
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-theora-image-transport
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-  Copyright 2012 Willow Garage, Inc.
-
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions
- are met:
-
-  Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
-  Redistributions in binary form must reproduce the above
- copyright notice, this list of conditions and the following
- disclaimer in the documentation and/or other materials provided
- with the distribution.
-  Neither the name of the Willow Garage nor the names of its
- contributors may be used to endorse or promote products derived
- from this software without specific prior written permission.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -4984,116 +4634,6 @@ SPDX-License-Identifier: BSD-3-Clause
  POSSIBILITY OF SUCH DAMAGE.
 
 
---------------------------------------------------------------------------------
-trajectory-msgs 1.13.1
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-trajectory-msgs
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
---------------------------------------------------------------------------------
-vision-opencv 1.16.2
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-vision-opencv
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
---------------------------------------------------------------------------------
-visualization-msgs 1.13.1
-License: BSD 3-clause "New" or "Revised" License
-Origin: http://packages.ros.org/ros/pool/main/r/ros-noetic-visualization-msgs
-
-
-
-License: BSD 3-clause "New" or "Revised" License
-SPDX-License-Identifier: BSD-3-Clause
-
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
-  * Neither the name of the <ORGANIZATION> nor the names of its contributors may
-    be used to endorse or promote products derived from this software without
-    specific prior written permission.
-
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
-OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 --------------------------------------------------------------------------------
@@ -5104,7 +4644,7 @@ Origin: http://wiki.ros.org/xmlrpcpp
 
 
 License: GNU Lesser General Public License v2.1 only
-SPDX-License-Identifier: LGPL-2.1
+SPDX-License-Identifier: LGPL-2.1-only
 GNU Lesser General Public License Version 2.1 Only
 --------------------------------------------------
 
@@ -5602,4 +5142,5 @@ sample; alter the names:
       Ty Coon, President of Vice
 
 That's all there is to it!
+
 

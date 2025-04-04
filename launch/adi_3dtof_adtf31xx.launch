@@ -8,9 +8,13 @@
     <arg name="ns_prefix_cam1" default="cam1" />
     <!-- Input mode
         0:Real Time Sensor
+        1:Reserved
         2:Rosbag bin
+        3:Host connected to ADTF31xx
     -->
-    <arg name="arg_input_sensor_mode"  default="0"/>
+    <arg name="arg_input_sensor_mode"  default="3"/>
+    <!-- IP of the ADTF31xx board : Applicable only if the input mode is 3 -->
+    <arg name="arg_input_sensor_ip"  default="10.43.0.1"/>
     <!-- Input filename : Applicable only if the input mode is 2 -->
     <arg name="arg_in_file_name" default="$(find adi_3dtof_adtf31xx)/../adi_3dtof_input_video_files/adi_3dtof_height_170mm_yaw_0degrees_cam3.bin" />
     <!-- Height of the sensor from camera in meters -->
@@ -19,18 +23,37 @@
     <arg name="arg_ab_threshold" value="10" />
     <!-- confidenceThreshold -->
     <arg name="arg_confidence_threshold" value="10" />
-    <!-- Enable RVL compression for depth and ir images -->
-    <arg name="arg_enable_depth_ir_compression" default="0"/>
-    <!-- Configuration fie name of ToF SDK 
-        "config_crosby_old_modes.json" - Sensor serial number starting with CR/DV
-        "config_crosby_adsd3500_new_modes.json" - Sensor serial number starting with AM
+    <!-- Enable RVL compression for depth and ab images -->
+    <arg name="arg_enable_depth_ab_compression" default="0"/>
+    <!-- Enable Point cloud publishing -->
+    <arg name="arg_enable_point_cloud_publish" default="0"/>
+    <!-- Encoding Type
+        "mono16" - 16 bit sincle color channel
+        "16UC1" - 16 bit unsigned integer
+     -->
+    <arg name="arg_encoding_type" value="mono16" />
+    <!-- Configuration file name of ToF SDK 
+         config_adsd3500_adsd3100.json - For ADSd3100(MP sensor)
+         config_adsd3500_adsd3030.json - For ADSd3030(VGA sensor)
     -->
-    <arg name="arg_config_file_name_of_tof_sdk" value="config/config_crosby_old_modes.json" />
-    <!-- Frame Type
-        "qmp" - Sensor serial number starting with CR/DV
-        "lr-qnative" - Sensor serial number starting with AM
+    <arg name="arg_config_file_name_of_tof_sdk" value="config/config_adsd3500_adsd3100.json" />
+    <!-- camera_mode
+    MP(1024x01024) sensor:
+        "sr-native" - 0
+        "lr-native" - 1
+        "sr-qnative" - 2
+        "lr-qnative" - 3
+        "sr-mixed" - 5
+        "lr-mixed" - 6
+
+    VGA(640x512) sensor:
+        "sr-native" - 0
+        "lr-native" - 1
+        "lr-qnative" - 3
+        "sr-mixed" - 5
+        "lr-mixed" - 6
     -->
-    <arg name="arg_frame_type" value="qmp" />
+    <arg name="arg_camera_mode" value="3" />
 
     <!-- Arguments on TF-related info  -->
     <!-- Camera device frame name -->
@@ -63,15 +86,18 @@
 
     <!-- Main Node-->
     <group ns="$(arg ns_prefix_cam1)">
-        <node name="adi_3dtof_adtf31xx_node" pkg="adi_3dtof_adtf31xx" type="adi_3dtof_adtf31xx_node" output="screen">
+        <node name="adi_3dtof_adtf31xx_node" pkg="adi_3dtof_adtf31xx" type="adi_3dtof_adtf31xx_node" cwd="node" output="screen" >
             <param name="param_camera_link" value="$(arg cam1_base_frame_optical)"/>
             <param name="param_input_sensor_mode" value="$(arg arg_input_sensor_mode)" />
+            <param name="param_input_sensor_ip" value="$(arg arg_input_sensor_ip)" />
             <param name="param_input_file_name" value="$(arg arg_in_file_name)"/>
             <param name="param_config_file_name_of_tof_sdk" value="$(arg arg_config_file_name_of_tof_sdk)" />
-            <param name="param_frame_type" value="$(arg arg_frame_type)"/>
-            <param name="param_enable_depth_ir_compression" value="$(arg arg_enable_depth_ir_compression)"  />
+            <param name="param_camera_mode" value="$(arg arg_camera_mode)"/>
+            <param name="param_enable_depth_ab_compression" value="$(arg arg_enable_depth_ab_compression)"  />
             <param name="param_ab_threshold" value="$(arg arg_ab_threshold)"/>
             <param name="param_confidence_threshold" value="$(arg arg_confidence_threshold)" />
+            <param name="param_enable_point_cloud_publish" value="$(arg arg_enable_point_cloud_publish)"  />
+            <param name="param_encoding_type" value="$(arg arg_encoding_type)" />
         </node>
 
         <!-- Do the transforms of optical_frame to camera_base frame -->
