@@ -202,7 +202,7 @@ Sample output images are shown below:
 | Parameter                             | Type    | Default Value                          | Description  |
 |---------------------------------------|---------|----------------------------------------|-------------------------------------------------------------------------------------------------------|
 | **param_camera_link**                 | String  | "adi_camera_link"                      | Name of camera Link                                                                                   |
-| **param_input_sensor_mode**           | int     | 0                                      | Input mode, _0:Real Time Sensor, 2:Rosbag bin_|
+| **param_input_sensor_mode**           | int     | 0                                      | Input mode, _0:Real Time Sensor, 2:Rosbag bin, 3:Network Mode_|
 | **param_input_file_name**             | String  | "no name"                              | Input filename : Applicable only if the input mode is 2|
 | **param_ab_threshold**                | int     | 10                                     | abThreshold for the sensor|
 | **param_confidence_threshold**        | int     | 10                                     | confidenceThreshold for the sensor|
@@ -215,13 +215,13 @@ Sample output images are shown below:
 
 | Imager Type       | Mode Name     | Mode Value |
 |-------------------|---------------|------------|
-| Crosby            | sr-native     | 0          |
+| [ADSD3100](https://www.analog.com/en/products/adsd3100.html)          | sr-native     | 0          |
 |                   | lr-native     | 1          |
 |                   | sr-qnative    | 2          |
 |                   | lr-qnative    | 3          |
 |                   | sr-mixed      | 5          |
 |                   | lr-mixed      | 6          |
-| Tembin or Mystic  | sr-native     | 0          |
+| [ADSD3030](https://www.analog.com/en/products/adsd3030.html)          | sr-native     | 0          |
 |                   | lr-native     | 1          |
 |                   | lr-qnative    | 3          |
 |                   | sr-mixed      | 5          |
@@ -313,7 +313,7 @@ tag into catkin workspace directory
     ```bash
     source /opt/ros/noetic/setup.bash
     cd ~/catkin_ws/src
-    git clone https://github.com/analogdevicesinc/adi_3dtof_adtf31xx.git -b v1.0.0
+    git clone https://github.com/analogdevicesinc/adi_3dtof_adtf31xx.git -b v1.1.0
     ```
 2. Install dependencies:
 

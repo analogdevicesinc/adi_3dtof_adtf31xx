@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>adi_3dtof_adtf31xx</name>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <description>The ROS node to capture depth and AB images from ADI's 3D ToF ADTF31xx sensor</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
