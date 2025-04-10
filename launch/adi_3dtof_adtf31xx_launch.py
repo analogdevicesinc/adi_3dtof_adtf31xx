@@ -13,7 +13,7 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 config_json_file_names = ['config_adsd3500_adsd3100.json',
                           'config_adsd3500_adsd3030.json']
 
-package_dir = get_package_share_directory('adi_3dtof_adtf31xx') + "/../../../../src/rcd-adi-3dtof-adtf31xx/"
+package_dir = get_package_share_directory('adi_3dtof_adtf31xx') + "/../../../../src/adi_3dtof_adtf31xx/"
 
 def generate_launch_description():
 
