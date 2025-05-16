@@ -66,7 +66,7 @@ def generate_launch_description():
     # config_adsd3500_adsd3030.json - For ADSd3030(VGA sensor)
     config_json_file_name = "config_adsd3500_adsd3100.json"
     arg_config_file_name_of_tof_sdk_desc = DeclareLaunchArgument(
-        'arg_config_file_name_of_tof_sdk', default_value= package_dir + "config/" + config_json_file_name)
+        'arg_config_file_name_of_tof_sdk', default_value= get_package_share_directory('adi_3dtof_adtf31xx') + "/config/" + config_json_file_name)
 
     # Frame Type
     #MP(1024x01024) sensor:
