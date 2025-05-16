@@ -97,8 +97,10 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
     *Note*: If you do not have a Linux Host machine, then install Windows Subsystem for Linux(WSL) and Ubuntu 20.04 on Windows. 
     Refer to this [link](https://learn.microsoft.com/en-us/windows/wsl/install) for instructions.
 
-
-
+    *Note*: From this point on, if you are using any ROS commands, be sure to source ROS Noetic first
+    ```bash
+    $ source /opt/ros/noetic/setup.bash
+    ```
 
     > :memo:  
     > 1. **Setting Date/Time:**  
@@ -118,7 +120,6 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
     >    cd ~/catkin_ws/  
     >    catkin build -DCMAKE_BUILD_TYPE=RELEASE -DSENSOR_CONNECTED=TRUE -DNXP=1 -j2  
     >    ```
-    >    **Note:** `/home/analog/catkin_ws/` is set up as the catkin workspace and this workspace is already sourced in the `~/.bashrc`
 
 ### Running the ROS Node
 1.	On the EVAL-ADTF3175D-NXZ device, the ROS Master is set to the IP address of the Host machine, hence it is required to run `roscore` on the Host machine (*applicable only to Linux host*).
