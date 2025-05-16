@@ -116,7 +116,6 @@ For details refer to [EVAL-ADTF3175D-NXZ NVM upgrade guide](https://wiki.analog.
     >     $ chmod +x setup_rmw_settings.sh
     >     $ source setup_rmw_settings.sh
     >     ```
-    > Note: `/home/analog/ros2_ws/` is set up as the ros2 workspace and this workspace is already sourced in the `~/.bashrc`
 
 ### Running the ROS Node:
 
