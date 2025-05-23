@@ -267,10 +267,62 @@ Please contact the `Maintainers` if you want to evaluate the algorithm for your 
 Any other inquiries are also welcome.
 
 # Appendix 1 : 
-## Steps to run the Node on a Host machine in File-IO mode
-The Node can be run on a Host machine without the need for the actual 3D ToF sensor. This mode is supported for users who would want to test some algorithms on the recorded video files. In this mode the *adi_3dtof_adtf31xx_node* will read the video file and publish the frames as ROS topics. Follow the below instructions to build and run the node in File-IO mode.
+## Steps to run the ROS Node on a Host machine
+The ROS Node can be run on a Host machine to obtain Depth and AB images. The ROS nodes supports two modes, 1. The Network mode and 2. File-IO mode. 
+In Network mode, the wrapper uses libaditof package to obtain the images from the camera and publishes these images as ROS topics. 
+In File-IO mode the ROS node reads the images from a file, note that this mode can run without the need for a ToF sensor. This mode is supported for users who would want to test algorithms on the recorded video files. In this mode the *adi_3dtof_adtf31xx_node* will read the video file and publish the frames as ROS topics. 
+Follow the below instructions to build and run the node on a Linux based Host machine.
 
 *Note:* It is assumed that the correct version of ROS is installed and configured properly, if not please install the ROS from [here](https://docs.ros.org/en/humble/Installation.html) 
+
+### Steps to build and run *adi_3dtof_adtf31xx_node* node
+
+
+1. Clone aditof SDK
+    ```bash
+    $ cd ~/ros2_ws/src
+    $ git clone https://github.com/analogdevicesinc/libaditof.git -b v6.0.1
+    ```
+
+2. Update submodules of aditof SDK
+    ```bash
+    $ cd ~/ros2_ws/src/libaditof
+    $ git submodule update --init --recursive
+    ```
+
+3. Clone the repo and checkout the correct release branch/
+tag into ros2 workspace directory
+    ```bash
+    $ source /opt/ros/humble/install/setup.bash
+    $ cd ~/ros2_ws/src
+    $ git clone https://github.com/analogdevicesinc/adi_3dtof_adtf31xx.git -b v2.1.0
+    ```
+
+4. Install dependencies:
+    ```bash
+    $ cd ~/ros2_ws/
+    $ rosdep install --from-paths src -y --ignore-src    
+    ```
+
+5. Build the package
+    ```bash
+    $ cd ~/ros2_ws
+    $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+    $ source install/setup.bash
+    ```
+
+6. Open the launch file(adi_3dtof_adtf31xx_launch) and update the following parameters
+    `arg_input_sensor_mode` : `2` for File-Io and '3' for Network mode
+    `arg_in_file_name` : Input file name(only for File_IO mode)
+    `arg_input_sensor_ip` : IP Address of the EVAL-ADTF3175D-NXZ module(Only for Network mode)
+   
+7. After updating the launch file, run the roslaunch with the updated launch file.
+    ```bash
+    $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_launch.py
+    ```
+At this stage, the `adi_3dtof_adtf31xx_node` will be launched and start publishing the topics `/cam1/depth_image, /cam1/ab_image and /cam1/camera_info`.
+
+To see the depth and AB images open an other Terminal and open the RVIZ and add `/cam1/depth_image` and `/cam1/ab_image` topics to visualize the images
 
 ### Requirement on file-io input video files
 To run the *adi_3dtof_adtf31xx_node* in file-io mode, the video files should be given as input.
@@ -280,57 +332,6 @@ Please follow the below instructions to set up the input video files.
 3. Unzip it and copy the directory as *~/ros2_ws/src/adi_3dtof_input_video_files*.
 4. Update the input file argument *arg_in_file_name* in the launch file *adi_3dtof_adtf31xx_launch.py* as per the above file path.
 
-### Steps to run *adi_3dtof_adtf31xx_node* node
-
-1. Clone the repo and checkout the correct release branch/
-tag into ros2 workspace directory
-    ```bash
-    $ source /opt/ros/humble/install/setup.bash
-    $ cd ~/ros2_ws/src
-    $ git clone https://github.com/analogdevicesinc/adi_3dtof_adtf31xx.git -b v2.1.0
-    ```
-
-2. Install dependencies:
-    ```bash
-    $ cd ~/ros2_ws/
-    $ rosdep install --from-paths src -y --ignore-src    
-    ```
-
-3. Clone aditof SDK
-    ```bash
-    $ cd ~/ros2_ws/src
-    $ git clone https://github.com/analogdevicesinc/libaditof.git -b v6.0.1
-    ```
-
-4. Update submodules of aditof SDK
-    ```bash
-    $ cd ~/ros2_ws/src/libaditof
-    $ git submodule update --init --recursive
-    ```
-
-5. Build the package
-    ```bash
-    $ cd ~/ros2_ws
-    $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-up-to adi_3dtof_adtf31xx
-    $ source install/setup.bash
-    ```
-
-6. Link runtime libraries
-    ```bash
-    $ export LD_LIBRARY_PATH=~/ros2_ws/install/lib:$LD_LIBRARY_PATH
-    ```
-
-7. To run the `adi_3dtof_adtf31xx_node` in File-IO mode, we need to make some changes in the launch file. Change the following parameters in launch file.  
-    `arg_input_sensor_mode` to be set to `2`  
-    `arg_in_file_name` to be set to the input file name
-
-8. After updating the launch file, run the roslaunch with the updated launch file.
-    ```bash
-    $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_launch.py
-    ```
-At this stage, the `adi_3dtof_adtf31xx_node` will be launched and start publishing the topics `/cam1/depth_image, /cam1/ab_image and /cam1/camera_info`.
-
-To see the depth and AB images open an other Terminal and open the RVIZ and add `/cam1/depth_image` and `/cam1/ab_image` topics to visualize the images
 
 #### Build Flags
 | Flag Name                        | Type | Default Value | Description                                                                 |
