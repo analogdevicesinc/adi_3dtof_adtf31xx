@@ -20,7 +20,6 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(rosbag2_cpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
@@ -90,6 +89,8 @@ if(BUILD_EXAMPLE_SUBSCRIBER_NODE)
 endif()
 
 if(BUILD_READ_ROSBAG_NODE)
+  find_package(rosbag2_cpp REQUIRED)
+
   add_executable(adi_3dtof_adtf31xx_read_rosbag_node src/read_rosbags.cpp src/ros-perception/image_transport_plugins/compressed_depth_image_transport/rvl_codec.cpp)
 
   ament_target_dependencies(adi_3dtof_adtf31xx_read_rosbag_node rclcpp std_msgs sensor_msgs tf2 tf2_ros tf2_geometry_msgs pcl_ros cv_bridge image_geometry image_transport OpenCV compressed_depth_image_transport rosbag2_cpp)
