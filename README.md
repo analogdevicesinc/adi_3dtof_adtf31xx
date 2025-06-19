@@ -1,7 +1,7 @@
 <h1 style="text-align: center;"> Analog Devices 3DToF ADTF31xx</h1>
 
 ## Overview
-The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working with ADI’s EVAL-ADTF5175D-NXZ ToF sensor. This node captures the Depth and AB frames from the sensor and publishes them as ROS topics. The node uses [*ADI ToF SDK*](https://github.com/analogdevicesinc/ToF/) APIs to capture frames from the sensor. The node publishes Depth and AB Images at different resolutions.
+The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working with ADI’s EVAL-ADTF3175D-NXZ ToF sensor. This node captures the Depth and AB frames from the sensor and publishes them as ROS topics. The node uses [*ADI ToF SDK*](https://github.com/analogdevicesinc/ToF/) APIs to capture frames from the sensor. The node publishes Depth and AB Images at different resolutions.
 
 
 [![Humble](https://img.shields.io/badge/-humble-green?style=plastic&logo=ros)](https://docs.ros.org/en/humble/index.html) [![Ubuntu 22.04](https://img.shields.io/badge/-UBUNTU%2020.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/focal/) [![Ubuntu 24.04](https://img.shields.io/badge/-UBUNTU%2022.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/jammy/) [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE) ![ARM64](https://img.shields.io/badge/arm64-blue?style=plastic&logo=arm&logoColor=white) ![x86_64](https://img.shields.io/badge/x86__64-blue?style=plastic&logo=intel&logoColor=white) 
@@ -16,7 +16,7 @@ The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working
  > Refer the [EVAL-ADTF3175D-NXZ User Guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz) to ensure the Eval module has adequate power supply during operation.
 
  > [!important]
- > The EVAL-ADTF5175D-NXZ Sensor module must have a firmware version of at least **5.2.5.0**. Refer to [user guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz-upgrade-firmware) on firmware upgrade, or see [upgrading the firmware](#upgrading-the-firmware).
+ > The EVAL-ADTF3175D-NXZ Sensor module must have a firmware version of at least **5.2.5.0**. Refer to [user guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz-upgrade-firmware) on firmware upgrade, or see [upgrading the firmware](#upgrading-the-firmware).
 
 <div style="text-align:center"><img src="./docs/images/connection_diagram.png" alt="Connection Diagram"/></div>
 
@@ -27,7 +27,7 @@ This package has three different operation modes. Refer to the following intra-l
 3. [Network Mode](#network-mode)
 
 ## Camera Sensor Mode
-The package is built on the sensor module and directly interfaces with the image sensor. The adi_3dtof_nxp_ubuntu_20_04_relx.x.x.img provided for the EVAL-ADTF5175D-NXZ sensor already contains this ROS package and is pre-built. In order to use this package, first we need to connect the sensor to the PC, and then SSH into it:
+The package is built on the sensor module and directly interfaces with the image sensor. The adi_3dtof_nxp_ubuntu_20_04_relx.x.x.img provided for the EVAL-ADTF3175D-NXZ sensor already contains this ROS package and is pre-built. In order to use this package, first we need to connect the sensor to the PC, and then SSH into it:
 
 1. SSH into the Sensor
 ```bash
@@ -199,7 +199,7 @@ Sample output images are shown below:
 ![ab_image](docs/images/ir_image.png)
 
 ## Parameter Tuning
-Some parameters of *adi_3dtof_adtf31xx* ROS node can be modifed during run time. The Perspective file is present in ```rqt_config/``` folder.  
+Some parameters of *adi_3dtof_adtf31xx* ROS node can be modified during run time. The Perspective file is present in ```rqt_config/``` folder.  
 
 <div style="text-align:center"><img src="./docs/images/dynamic_reconfigure.png" alt="Dynamic Reconfigure"/></div>  
 The GUI can be started by running the following command.
@@ -242,14 +242,14 @@ V4L2 custom control interface app version: 1.0.1
 ```
 The first four values in the third line represents the version number, in this case, 5.2.5.0. If it is lower than this value, follow these steps below to update.
 1. On your PC, install ADI ToF SDK release [v6.0.1](https://github.com/analogdevicesinc/ToF/releases/tag/v6.0.1)  
-2. After installing goto the inastallation folder and run the following commands to download the image   
+2. After installing goto the installation folder and run the following commands to download the image   
    ```bash
    cd ~/Analog\ Devices/ToF_Evaluation_Ubuntu_ADTF3175D-Relx.x.x/image.
    chmod +x get_image.sh and ./get_image.sh.
    ```
    - Latest image will be downloaded at ./image path as NXP-Img-Relx.x.x-ADTF3175D-.zip. Extract this folder using unzip NXP-Img-Relx.x.x-ADTF3175D-.zip command.
    - This folder contains the NXP image and ADSD3500 firmware(Fw_Update_x.x.x.bin).  
-3. Run the following command to copy the Fimware to the NXP device
+3. Run the following command to copy the Firmware to the NXP device
    ```bash
    $ scp Fw_Update_5.2.5.bin analog@10.43.0.1:/home/analog/Workspace
       Username: analog 
@@ -303,7 +303,7 @@ Change below parameters in ```adi_3dtof_adtf31xx_read_rosbag_launch.py``` file
 
 1. arg_in_file_name : The rosbag2 file name
 
-2. arg_camera_prefixes : Camera prefix, more than one camera prefixes can be passed. For example if the recoreded topic names are /cam1/depth_image and /cam2/depth_image, arg_camera_prefixes can be set to "[cam1,cam2]"
+2. arg_camera_prefixes : Camera prefix, more than one camera prefixes can be passed. For example if the recorded topic names are /cam1/depth_image and /cam2/depth_image, arg_camera_prefixes can be set to "[cam1,cam2]"
 									  
 4. Run the below command to launch adi_3dtof_adtf31xx_read_rosbag_node node
    ``` 
