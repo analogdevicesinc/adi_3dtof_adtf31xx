@@ -119,7 +119,7 @@ roslaunch adi_3dtof_adtf31xx adi_3dtof_adtf31xx.launch arg_input_sensor_mode:=2
 > The `arg_input_sensor_mode:=2` sets the node to operate in file-io mode. This can be set in the launch file. Refer to the [parameter](#parameters) table to see what other parameters can be passed.
 
 ## Network Mode
-The sensor can be operated in network mode where depth and AB (Active Brightness) images are fetched over the local area network. The simplest way to use this is to connect the sensor directly to the PC so that a network interface via USB is created with a default IP address of `10.43.0.1`. In order to use the sensor mode, follow the following steps:
+The sensor can be operated in network mode where depth and AB (Active Brightness) images are fetched over the local area network. The simplest way to use this is to connect the sensor directly to the PC so that a network interface via USB is created with a default IP address of `10.43.0.1`. In order to use the network mode, follow the following steps:
 
 ### Building the package
 The `adi_3dtof_adtf31xx` depends on [libaditof](https://github.com/analogdevicesinc/libaditof) in order to communicate with the sensor. So we will need to build this in the same workspace as `adi_3dtof_adtf31xx`.
