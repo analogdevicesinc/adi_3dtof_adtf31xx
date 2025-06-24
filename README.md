@@ -213,7 +213,7 @@ Sample output images are shown below:
 
 ```/cam1/ab_image```
 
-![ab_image](docs/images/ir_image.png)
+![ab_image](docs/images/ab_image.png)
 
 ## Parameter Tuning
 Some parameters of *adi_3dtof_adtf31xx* ROS node can be modified during run time. The Perspective file is present in ```rqt_config/``` folder.  
