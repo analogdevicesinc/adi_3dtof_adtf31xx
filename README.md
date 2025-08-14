@@ -4,7 +4,7 @@
 The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working with ADI’s EVAL-ADTF3175D-NXZ ToF sensor. This node captures the Depth and AB frames from the sensor and publishes them as ROS topics. The node uses [*ADI ToF SDK*](https://github.com/analogdevicesinc/ToF/) APIs to capture frames from the sensor. The node publishes Depth and AB Images at different resolutions.
 
 
-[![Humble](https://img.shields.io/badge/-humble-green?style=plastic&logo=ros)](https://docs.ros.org/en/humble/index.html) [![Ubuntu 22.04](https://img.shields.io/badge/-UBUNTU%2020.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/focal/) [![Ubuntu 24.04](https://img.shields.io/badge/-UBUNTU%2022.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/jammy/) [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE) ![ARM64](https://img.shields.io/badge/arm64-blue?style=plastic&logo=arm&logoColor=white) ![x86_64](https://img.shields.io/badge/x86__64-blue?style=plastic&logo=intel&logoColor=white) 
+[![Humble](https://img.shields.io/badge/-humble-green?style=plastic&logo=ros)](https://docs.ros.org/en/humble/index.html) [![Ubuntu 22.04](https://img.shields.io/badge/-UBUNTU%2020.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/focal/) [![Ubuntu 24.04](https://img.shields.io/badge/-UBUNTU%2022.04-orange?style=plastic&logo=ubuntu&logoColor=white)](https://releases.ubuntu.com/jammy/) [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE) ![ARM64](https://img.shields.io/badge/arm64-blue?style=plastic&logo=arm&logoColor=white) ![x86_64](https://img.shields.io/badge/x86__64-blue?style=plastic&logo=intel&logoColor=white)
 
 ## Hardware
 
@@ -12,16 +12,16 @@ The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working
 - USB Type-C to Type-A cable - with 5gbps data speed support
 - Host laptop with intel i5 of higher cpu running Ubuntu-22.04LTS
 
- > [!note]  
+ > [!note]
  > Refer the [EVAL-ADTF3175D-NXZ User Guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz) to ensure the Eval module has adequate power supply during operation.
 
  > [!important]
  > The EVAL-ADTF3175D-NXZ Sensor module must have a firmware version of at least **5.2.5.0**. Refer to [user guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz-upgrade-firmware) on firmware upgrade, or see [upgrading the firmware](#upgrading-the-firmware).
 
-<div style="text-align:center"><img src="./docs/images/connection_diagram.png" alt="Connection Diagram"/></div>
+![Connection Diagram](./doc/images/connection_diagram.png)
 
 ## Operation Modes
-This package has three different operation modes. Refer to the following intra-links to setup the package accordingly.  
+This package has three different operation modes. Refer to the following intra-links to setup the package accordingly.
 1. [Camera Sensor Mode](#camera-sensor-mode)
 2. [File-IO Mode](#file-io-mode)
 3. [Network Mode](#network-mode)
@@ -48,7 +48,7 @@ source ~/ros2_ws/install/setup.bash
 ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_launch.py arg_input_sensor_mode:=0
 ```
 
-> [!note]  
+> [!note]
 > The operation mode is determined by the launch parameter `arg_input_sensor_mode:=0`. This can be modified in the launch file. Refer to the [parameter](#parameters) table to see what other parameters can be passed.
 
 ### Updating the package
@@ -100,7 +100,7 @@ source ~/ros2_ws/install/setup.bash
 ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_launch.py arg_input_sensor_mode:=2
 ```
 
-> [!note]  
+> [!note]
 > The `arg_input_sensor_mode:=2` sets the node to operate in file-io mode. This can be set in the launch file. Refer to the [parameter](#parameters) table to see what other parameters can be passed.
 
 ## Network Mode
@@ -191,22 +191,23 @@ Sample output images are shown below:
 
 ```/cam1/depth_image```
 
-![depth_image](docs/images/depth_image.png)
+![depth_image](./doc/images/depth_image.png)
 
 
 ```/cam1/ab_image```
 
-![ab_image](docs/images/ir_image.png)
+![ab_image](./doc/images/ir_image.png)
 
 ## Parameter Tuning
-Some parameters of *adi_3dtof_adtf31xx* ROS node can be modified during run time. The Perspective file is present in ```rqt_config/``` folder.  
+Some parameters of *adi_3dtof_adtf31xx* ROS node can be modified during run time. The Perspective file is present in ```rqt_config/``` folder.
 
-<div style="text-align:center"><img src="./docs/images/dynamic_reconfigure.png" alt="Dynamic Reconfigure"/></div>  
+![Dynamic Reconfigure](./doc/images/dynamic_reconfigure.png)
+
 The GUI can be started by running the following command.
 
 ```bash
 ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_rqt_launch.py
-```  
+```
 
 Make sure the *adi_3dtof_adtf31xx node* is already running before executing this command.
 
@@ -241,34 +242,34 @@ V4L2 custom control interface app version: 1.0.1
 59 31
 ```
 The first four values in the third line represents the version number, in this case, 5.2.5.0. If it is lower than this value, follow these steps below to update.
-1. On your PC, install ADI ToF SDK release [v6.0.1](https://github.com/analogdevicesinc/ToF/releases/tag/v6.0.1)  
-2. After installing goto the installation folder and run the following commands to download the image   
+1. On your PC, install ADI ToF SDK release [v6.0.1](https://github.com/analogdevicesinc/ToF/releases/tag/v6.0.1)
+2. After installing goto the installation folder and run the following commands to download the image
    ```bash
    cd ~/Analog\ Devices/ToF_Evaluation_Ubuntu_ADTF3175D-Relx.x.x/image.
    chmod +x get_image.sh and ./get_image.sh.
    ```
    - Latest image will be downloaded at ./image path as NXP-Img-Relx.x.x-ADTF3175D-.zip. Extract this folder using unzip NXP-Img-Relx.x.x-ADTF3175D-.zip command.
-   - This folder contains the NXP image and ADSD3500 firmware(Fw_Update_x.x.x.bin).  
+   - This folder contains the NXP image and ADSD3500 firmware(Fw_Update_x.x.x.bin).
 3. Run the following command to copy the Firmware to the NXP device
    ```bash
    $ scp Fw_Update_5.2.5.bin analog@10.43.0.1:/home/analog/Workspace
-      Username: analog 
+      Username: analog
       Password: analog
-   ```    
-4. Now login to the device and run the Firmware upgrade command.  
-> [!warning]  
+   ```
+4. Now login to the device and run the Firmware upgrade command.
+> [!warning]
 > Do NOT reboot the board or interrupt the process as this may corrupt the module
    ```bash
-   $ ssh analog@10.43.0.1 
-      Username: analog 
-      Password: analog   
+   $ ssh analog@10.43.0.1
+      Username: analog
+      Password: analog
    $ cd Workspace/ToF/build/examples/data_collect/
    $ ./data_collect --fw ~/Workspace/Fw_Update_x.x.x.bin config/config_default.json
-   ```  
--  Reboot the board after the successful operation.  
+   ```
+-  Reboot the board after the successful operation.
 
 ## Creating Bin files for File-IO
-[rosbag2](https://github.com/ros2/rosbag2), a utility provided by ROS, is used to record topics. The data is collected in bag format, and the adi_3dtof_adtf31xx_read_rosbag_node node converts it to bin file format. 
+[rosbag2](https://github.com/ros2/rosbag2), a utility provided by ROS, is used to record topics. The data is collected in bag format, and the adi_3dtof_adtf31xx_read_rosbag_node node converts it to bin file format.
 The format of bin file as given below.
 ```
 start of bin file
@@ -304,14 +305,13 @@ Change below parameters in ```adi_3dtof_adtf31xx_read_rosbag_launch.py``` file
 1. arg_in_file_name : The rosbag2 file name
 
 2. arg_camera_prefixes : Camera prefix, more than one camera prefixes can be passed. For example if the recorded topic names are /cam1/depth_image and /cam2/depth_image, arg_camera_prefixes can be set to "[cam1,cam2]"
-									  
+
 4. Run the below command to launch adi_3dtof_adtf31xx_read_rosbag_node node
-   ``` 
+   ```
    $ ros2 launch adi_3dtof_adtf31xx adi_3dtof_adtf31xx_read_rosbag_launch.py
    ```
-5. The output files will have names in following manner: **input_file_name_camera_name_out.bin**   
-   Ex: if input file name is `4cameras.bag` and camera prefix is `cam5` then output is `4cameras_cam5_out.bin`  
+5. The output files will have names in following manner: **input_file_name_camera_name_out.bin**
+   Ex: if input file name is `4cameras.bag` and camera prefix is `cam5` then output is `4cameras_cam5_out.bin`
 
 ### Why is this required?
-The reason for this is that rosbags may store images in a disorganized order rather than in a sequential manner. For this reason, in order to produce the output, the FileIO code must queue up the publishing rosbag images and synchronize the depth and AB images. The FileIO process becomes slower as a result.  
-     
+The reason for this is that rosbags may store images in a disorganized order rather than in a sequential manner. For this reason, in order to produce the output, the FileIO code must queue up the publishing rosbag images and synchronize the depth and AB images. The FileIO process becomes slower as a result.
