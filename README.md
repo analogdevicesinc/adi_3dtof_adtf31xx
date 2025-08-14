@@ -18,7 +18,7 @@ The **ADI 3DToF ADTF31xx** is a ROS (Robot Operating System) package for working
  > [!important]
  > The EVAL-ADTF3175D-NXZ Sensor module must have a firmware version of at least **5.2.5.0**. Refer to [user guide](https://wiki.analog.com/resources/eval/user-guides/eval-adtf3175d-nxz-upgrade-firmware) on firmware upgrade, or see [upgrading the firmware](#upgrading-the-firmware).
 
-<div style="text-align:center"><img src="./doc/images/connection_diagram.png" alt="Connection Diagram"/></div>
+![Connection Diagram](./doc/images/connection_diagram.png)
 
 ## Operation Modes
 This package has three different operation modes. Refer to the following intra-links to setup the package accordingly.
@@ -201,7 +201,8 @@ Sample output images are shown below:
 ## Parameter Tuning
 Some parameters of *adi_3dtof_adtf31xx* ROS node can be modified during run time. The Perspective file is present in ```rqt_config/``` folder.
 
-<div style="text-align:center"><img src="./doc/images/dynamic_reconfigure.png" alt="Dynamic Reconfigure"/></div>
+![Dynamic Reconfigure](./doc/images/dynamic_reconfigure.png)
+
 The GUI can be started by running the following command.
 
 ```bash
