@@ -129,7 +129,7 @@ rosdep install --from-paths src --ignore-src -r -y
 ```
 3. Build the packages
 ```bash
-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-up-to adi_3dtof_adtf31xx
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DSENSOR_CONNECTED=True --packages-up-to adi_3dtof_adtf31xx
 source install/setup.bash
 ```
 
